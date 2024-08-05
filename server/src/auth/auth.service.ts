@@ -27,12 +27,13 @@ export class AuthService {
 				select: {
 					id: true,
 					email: true,
+					role: true,
 					createdAt: true
 				}
 			})
 			return {
 				user,
-				token: await this.signToken(user.id, user.email)
+				token: await this.signToken(user.id, user.email, user.role)
 			};	
 		} catch (error) {
 			return this.prisma.errorHandler(error);
@@ -60,17 +61,18 @@ export class AuthService {
 			return {
 				id: user.id,
 				email: user.email,
-				token: await this.signToken(user.id, user.email)
+				token: await this.signToken(user.id, user.email, user.role)
 			};
 		} catch (error) {
 			return this.prisma.errorHandler(error);
 		}
 	}
 
-	async signToken (userId: string, email: string): Promise<string> {
+	async signToken (userId: string, email: string, role: string): Promise<string> {
 		const payload = {
 			sub: userId,
-			email
+			email,
+			role
 		}
 
 		const access_token = await this.jwt.sign(payload, { expiresIn: '24h', secret: this.config.get('JWT_SECRET') })
