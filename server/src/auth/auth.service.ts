@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { LoginDTO, SignupDTO } from './dto';
 import * as argon from "argon2"
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -40,8 +40,31 @@ export class AuthService {
 	}
 
 	async login (dto: LoginDTO) {
-		const {} = dto;
-		return "login";
+		try {
+			const { email, password } = dto;
+			const user = await this.prisma.user.findUnique({
+				where: {
+					email
+				}
+			});
+
+			if (!user) {
+				throw new ForbiddenException('Credentials incorrect');
+			}
+
+			const pwMatches = await argon.verify(user.password, password);
+			if (!pwMatches) {
+				throw new ForbiddenException('Credentials incorrect');
+			}
+
+			return {
+				id: user.id,
+				email: user.email,
+				token: await this.signToken(user.id, user.email)
+			};
+		} catch (error) {
+			return this.prisma.errorHandler(error);
+		}
 	}
 
 	async signToken (userId: string, email: string): Promise<string> {
