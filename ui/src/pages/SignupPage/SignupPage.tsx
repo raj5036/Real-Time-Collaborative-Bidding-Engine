@@ -1,8 +1,8 @@
 import React, {
 	useState
-} from 'react';
+} from 'react'
 
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import { 
 	Avatar, 
 	Box, 
@@ -14,13 +14,13 @@ import {
 	TextField, 
 	Typography,
 } from '@mui/material';
-import { RoleSelector, SignupFormContainer } from './SignupPageStyles';
-import { USER_TYPES, UserType } from '../../utils/Constants';
-import { Link } from 'react-router-dom';
+import { RoleSelector, SignupFormContainer } from './SignupPageStyles'
+import { USER_TYPES, UserType } from '../../utils/Constants'
+import { Link } from 'react-router-dom'
 
 
 const SignUp = () => {
-	const [firstName, setFirstName] = useState<string>("''")
+	const [firstName, setFirstName] = useState<string>("")
 	const [lastName, setLastName] = useState<string>("")
 	const [email, setEmail] = useState<string>("")
 	const [password, setPassword] = useState<string>("")
