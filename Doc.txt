@@ -1,0 +1,28 @@
+Task Description: Create a Real-Time Collaborative Bidding Engine
+
+User Types:
+1. Bid Creators
+2. Bidders
+
+Use Cases:
+
+For Bid Creators:
+1. Create a bid with a title and one or more BID_ITEMS (with descriptions) under a single bidding request.
+2. Invite BIDDERS to participate in the bid.
+3. Set the Start and End times for the BID.
+4. PUBLISH the bid, which will send invites to bidders and instantiate the BID.
+5. MONITOR all BIDS with a real-time leaderboard of PARTICIPANTS.
+6. After the bidding ends, view a Bid Summary with information on all participants' bids.
+
+For Bidders:
+1. ACCEPT or REJECT bid requests.
+2. Once accepted, place amounts on the items in the Bid Request.
+3. View their current rank (in real-time) in the bid.
+4. Update their bid amounts any number of times before the BID closes to improve their rank if necessary.
+
+Tech Stack Requirements:
+Backend: NodeJs (feel free to use frameworks like NestJS)
+Frontend: Single-page application using ReactJS (NextJS is an option)
+Database: Your choice
+
+https://www.geeksforgeeks.org/real-time-auction-platform-using-node-and-express-js/
