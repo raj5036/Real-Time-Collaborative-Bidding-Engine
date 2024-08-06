@@ -1,16 +1,18 @@
-import { Body, Controller, Delete, Post, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Post, UseGuards } from '@nestjs/common';
 import { BidItemService } from './bid-item.service';
 import { CreateBidDTO } from './dto';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { JWTGuard } from 'src/auth/guard';
+import { GetUser } from 'src/auth/decorator';
+import { BidCreatorGuard } from 'src/user/guard';
 
+@UseGuards(JWTGuard, BidCreatorGuard)
 @Controller('bid-item')
 export class BidItemController {
 	constructor (private bidItemService: BidItemService) {}
 
 	@Post('create')
-	@UseInterceptors(FileInterceptor('file'))
-	createBid (@Body() dto: CreateBidDTO) {
-		return this.bidItemService.createBid(dto);
+	createBid (@Body() dto: CreateBidDTO, @GetUser('id') userId: string) {
+		return this.bidItemService.createBid(dto, userId);
 	}
 
 	@Delete('delete')

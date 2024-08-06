@@ -7,7 +7,7 @@ import BidViewer from "../../components/BidsViewer/BidsViewer"
 
 const HomePage: React.FC = () => {
 	const { user } = useContext(UserContext) as IUserContext
-	console.log(user)
+	
 	return (
 		<React.Fragment>
 			{user?.role === USER_TYPES.BID_CREATOR 

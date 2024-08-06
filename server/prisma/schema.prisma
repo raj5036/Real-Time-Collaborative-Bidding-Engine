@@ -19,11 +19,12 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  email          String           @unique
-  password       String
-  firstname      String
-  lastname       String
-  role           String
+  email           String           @unique
+  password        String
+  firstname       String
+  lastname        String
+  role            String
+  bids             Bid[] @relation("userBids")
 
   @@map("users")
 }
@@ -33,6 +34,9 @@ model Bid {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  userId    String @db.ObjectId
+  user      User @relation("userBids", fields: [userId], references: [id])
 
   title     String
   startTime String
@@ -46,5 +50,4 @@ type BidItem {
   title       String
   description String
   price       Int
-  image       String
 }

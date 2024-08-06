@@ -1,13 +1,33 @@
-export interface CreateBidDTO {
-	title: string,
-	startTime: string,
-	endTime: string,
-	bidItem: BidItem[]
+import { IsArray, IsNotEmpty, IsString } from "class-validator"
+
+export class CreateBidDTO {
+	@IsString()
+	@IsNotEmpty()
+	title: string;
+
+	@IsString()
+	@IsNotEmpty()
+	startTime: string
+
+	@IsString()
+	@IsNotEmpty()
+	endTime: string
+
+	@IsNotEmpty()
+	@IsArray()
+	bidItems: Array<BidItem>
 }
 
-export interface BidItem {
-	title: string,
-	description: string,
-	price: number,
-	image: string
+export class BidItem {
+	@IsString()
+	@IsNotEmpty()
+	title: string;
+
+	@IsString()
+	@IsNotEmpty()
+	description: string;
+
+	@IsString()
+	@IsNotEmpty()
+	price: number;
 }

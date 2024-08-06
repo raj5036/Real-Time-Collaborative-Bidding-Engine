@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { PrismaClientKnownRequestError, PrismaClientValidationError } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class PrismaService extends PrismaClient {
@@ -43,7 +43,11 @@ export class PrismaService extends PrismaClient {
 					message: 'Requested data not found',
 				}
 			}
-		} else {
+		} 
+		else if (error instanceof PrismaClientValidationError) {
+			return {error};
+		}
+		else {
 			return {error};
 		}
 	};

@@ -6,8 +6,24 @@ import { CreateBidDTO } from './dto';
 export class BidItemService {
 	constructor (private prisma: PrismaService) {}
 
-	async createBid (bid: CreateBidDTO) {
-		console.log(bid)
+	async createBid (bid: CreateBidDTO, userId: string) {
+		try {
+			console.log("userId in service", userId);
+			const { title,  startTime, endTime, bidItems} = bid;
+			const newBid = await this.prisma.bid.create({
+				data: {
+					title,
+					startTime,
+					endTime,
+					bidItems,
+					userId: userId,
+				}
+			});
+
+			return {newBid};
+		} catch (error) {
+			return this.prisma.errorHandler(error);
+		}
 	}
 
 	async deleteBid () {}
