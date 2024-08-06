@@ -5,6 +5,8 @@ import dayjs, { Dayjs } from "dayjs"
 import { DateTimePicker } from "@mui/x-date-pickers"
 import { IBidItem } from "../../utils/Constants"
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import DeleteIcon from '@mui/icons-material/Delete';
+import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 
 const BidCreator: React.FC = () => {
 	const [title, setTitle] = useState<string>("")
@@ -83,9 +85,9 @@ const BidCreator: React.FC = () => {
 			/>
 			<BidItemsContainer>
 				<Typography variant="h6">Create Bid Items</Typography>
-				<Box className="bid-inputs-container">
+				<Box className="bids-container">
 					{bidItems.map((bidItem, index) => (
-						<Stack direction={"row"} spacing={2} flexWrap={"wrap"} key={index}>
+						<Stack direction={"row"} spacing={2} flexWrap={"wrap"} key={index} className="bid-input-container">
 							<TextField
 								label="Item title"
 								name="title"
@@ -132,13 +134,16 @@ const BidCreator: React.FC = () => {
 								<Button
 									variant="contained"
 									color="error"
+									size="small"
+									className="delete-button"
 									onClick={handleDeleteBidItem(index)}
-								>Delete</Button>
+								><DeleteIcon /></Button>
 							): (<Button 
 								variant="contained"
+								color="success"
 								disabled={addDisabled}
 								onClick={handleAddBidItem}
-							>Add</Button>)}
+							><DoneOutlineIcon /></Button>)}
 						</Stack>	
 					))}
 				</Box>
