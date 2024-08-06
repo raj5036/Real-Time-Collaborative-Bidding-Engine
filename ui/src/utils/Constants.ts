@@ -9,3 +9,10 @@ export const LocalStorageKeys = {
 	USER_TOKEN: "user_token",
 	USER_DETAILS: "user_details"
 }
+
+export type IBidItem = {
+	title: string,
+	description?: string,
+	price: number,
+	image?: string
+}

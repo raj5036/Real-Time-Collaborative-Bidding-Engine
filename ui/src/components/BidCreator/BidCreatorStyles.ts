@@ -6,6 +6,17 @@ export const BidCreatorContainer = styled(Container)(({ theme }) => `
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+
+	& .title-input {
+		margin-top: ${theme.spacing(2)};
+	}
 `)
 
-export const SetTimer = styled(Box)(() => ``)
+export const BidItemsContainer = styled(Box)(({ theme }) => `
+	margin-top: ${theme.spacing(2)};
+	margin-bottom: ${theme.spacing(2)};
+`)
+
+export const SetTimer = styled(Box)(({ theme }) => `
+	margin: ${theme.spacing(2)} 0;
+`)

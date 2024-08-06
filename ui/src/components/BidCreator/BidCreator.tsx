@@ -1,8 +1,9 @@
-import { Button, TextField, Typography } from "@mui/material"
-import { BidCreatorContainer, SetTimer } from "./BidCreatorStyles"
+import { Box, Button, Stack, TextField, Typography } from "@mui/material"
+import { BidCreatorContainer, BidItemsContainer, SetTimer } from "./BidCreatorStyles"
 import { useEffect, useState } from "react"
 import dayjs, { Dayjs } from "dayjs"
 import { DateTimePicker } from "@mui/x-date-pickers"
+import { IBidItem } from "../../utils/Constants"
 
 const BidCreator: React.FC = () => {
 	const [title, setTitle] = useState<string>("")
@@ -12,6 +13,11 @@ const BidCreator: React.FC = () => {
 	const [endTime, setEndTime] = useState<Dayjs>(
 		dayjs('2014-08-18T21:11:54'),
 	);
+	const [bidItems, setBidItems] = useState<IBidItem[]>([{
+		title: "",
+		price: 0,
+		description: "",
+	}])
 	const [submitDisabled, setSubmitDisabled] = useState<boolean>(true)
 
 	useEffect(() => {
@@ -37,6 +43,29 @@ const BidCreator: React.FC = () => {
 				value={title}
 				onChange={(e) => setTitle(e.target.value)}
 			/>
+			<BidItemsContainer>
+				<Typography variant="h6">Create Bid Items</Typography>
+				<Box className="bid-inputs-container">
+					{bidItems.map((bidItem, index) => (
+						<Stack direction={"row"} spacing={2} flexWrap={"wrap"} key={index}>
+							<TextField
+								label="Bid Item Name"
+								name="title"
+								required
+								value={bidItem.title}
+							/>
+							<TextField 
+								label="Description"
+								name="description"
+								value={bidItem.description}
+							/>
+							<Button 
+								variant="contained"
+							>Add</Button>
+						</Stack>	
+					))}
+				</Box>
+			</BidItemsContainer>
 			<SetTimer>
 				<DateTimePicker
 					label="Start Time"
