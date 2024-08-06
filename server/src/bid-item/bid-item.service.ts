@@ -26,5 +26,16 @@ export class BidItemService {
 		}
 	}
 
-	async deleteBid () {}
+	async deleteBid (id: string) {
+		try {
+			const bid = await this.prisma.bid.delete({
+				where: {
+					id
+				}
+			});
+			return bid;
+		} catch(error) {
+			return this.prisma.errorHandler(error);
+		}
+	}
 }

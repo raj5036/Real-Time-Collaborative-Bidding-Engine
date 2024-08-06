@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
 import { BidItemService } from './bid-item.service';
 import { CreateBidDTO } from './dto';
 import { JWTGuard } from 'src/auth/guard';
@@ -15,8 +15,9 @@ export class BidItemController {
 		return this.bidItemService.createBid(dto, userId);
 	}
 
-	@Delete('delete')
-	deleteBid () {
-		return this.bidItemService.deleteBid();
+	@Delete('delete/:id')
+	deleteBid (@Param('id') id: string) {
+		console.log("here in delete bid", id);
+		return this.bidItemService.deleteBid(id);
 	}
 }
