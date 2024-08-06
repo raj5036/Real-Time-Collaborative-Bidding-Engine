@@ -11,8 +11,12 @@ import {
 	TextField, 
 	Typography 
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LoginUser } from '../../utils/ApiClient';
+import { LoginController } from './LoginPageStyles';
+import { CommonUtils } from '../../utils/CommonUtils';
+import { LocalStorageKeys } from '../../utils/Constants';
+import { toast } from 'react-toastify';
 
 
 
@@ -20,25 +24,24 @@ export default function Login() {
 	const [email, setEmail] = useState<string>("")
 	const [password, setPassword] = useState<string>("")
 
+  const navigate = useNavigate()
+
 	const handleSubmit = async () => {
     try {
-      const user = await LoginUser({email, password});
-      console.log(user);
+      const user = await LoginUser({email, password})
+      console.log(user)
+      CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_TOKEN, user.token)
+      toast.success("Login Successful")
+      navigate("/dashboard")
     } catch (error) {
-      console.error(error);
+      console.error(error)
+      toast.error("Something went wrong! Please try again")
     }
   }
 
   return (
       <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
+        <LoginController>
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
@@ -91,7 +94,7 @@ export default function Login() {
               </Grid>
             </Grid>
           </Box>
-        </Box>
+        </LoginController>
       </Container>
   );
 }
