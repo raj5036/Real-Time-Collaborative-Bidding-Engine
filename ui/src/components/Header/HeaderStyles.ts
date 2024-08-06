@@ -16,6 +16,11 @@ export const HeaderStyles = {
 			color: theme.palette.text.primary,
 			backgroundColor: theme.palette.background.default,
 			zIndex: 1,
+
+			'& .header-right': {
+				display: 'flex',
+				marginRight: theme.spacing(3),
+			}
 		}
 	}),
 	AppNameContainer: styled(Box)(({ theme }) => {

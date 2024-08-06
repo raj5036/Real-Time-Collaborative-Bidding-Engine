@@ -1,6 +1,6 @@
 import { useTheme } from "@mui/material/styles";
 import React from "react";
-import { capitalize, IconButton, Typography } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { ToggleColorModeStyles } from "./ToggleColorModeStyles";
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
@@ -12,7 +12,6 @@ const ToggleColorMode = () => {
 	const {colorMode, setColorMode} = React.useContext(ColorModeContext) as ColorModeContextType;
 	return (
 		<ToggleColorModeStyles.Box>
-			<Typography variant="body1">{capitalize(theme.palette.mode)}</Typography>
 			<IconButton sx={{ ml: 1 }} onClick={() => setColorMode(
 				colorMode === 'light' ? 'dark' : 'light'
 			)} color="inherit">
