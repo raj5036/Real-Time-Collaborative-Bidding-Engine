@@ -26,6 +26,7 @@ Frontend: Single-page application using ReactJS (NextJS is an option)
 Database: Your choice
 
 https://www.geeksforgeeks.org/real-time-auction-platform-using-node-and-express-js/
+https://oyugoobonyo.medium.com/uploading-files-in-nestjs-eeec53883696
 
 TODO: 
 1. Handle Login / Signup button disability

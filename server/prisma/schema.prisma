@@ -34,6 +34,17 @@ model Bid {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  title String
+  title     String
+  startTime String
+  endTime   String
+  bidItems BidItem[]
+  
   @@map("bids")
+}
+
+type BidItem {
+  title       String
+  description String
+  price       Int
+  image       String
 }
