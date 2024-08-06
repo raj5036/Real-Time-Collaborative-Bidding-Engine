@@ -49,7 +49,7 @@ export default function Login() {
   }
 
   return (
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" sx={{ height: "100vh" }}>
         <LoginController>
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />

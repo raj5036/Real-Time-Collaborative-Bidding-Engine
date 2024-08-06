@@ -72,7 +72,7 @@ const BidCreator: React.FC = () => {
 		<BidCreatorContainer>
 			<Typography variant="h3" sx={{ mb: 2 }}>Create a new Bid</Typography>
 			<TextField
-				label="Bid Title"
+				label="Bid Title" 
 				name="title"
 				className="title-input"
 				required

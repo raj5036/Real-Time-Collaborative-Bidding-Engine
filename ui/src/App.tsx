@@ -8,6 +8,7 @@ import { RouterProvider } from 'react-router-dom'
 import { Bounce, ToastContainer } from 'react-toastify'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AppStyles } from './AppStyles'
 
 
 
@@ -20,20 +21,22 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en'>
-          <RouterProvider router={router} />
-          <ToastContainer 
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme={theme.palette.mode}
-                transition={Bounce}
-            />
+          <AppStyles.Container>
+            <RouterProvider router={router} />
+            <ToastContainer 
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme={theme.palette.mode}
+                  transition={Bounce}
+              />
+            </AppStyles.Container>
         </LocalizationProvider>
     </ThemeProvider>
   )

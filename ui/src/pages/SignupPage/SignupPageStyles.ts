@@ -4,7 +4,6 @@ import { styled } from "@mui/material/styles";
 export const SignupFormContainer = styled(Box)(({ theme }) => {
 	console.log(theme)
 	return `
-		margin-top: ${theme.spacing(1)};
 		display: flex;
 		flex-direction: column;
 		align-items: center;

@@ -10,6 +10,7 @@ export const BidCreatorContainer = styled(Container)(({ theme }) => `
 	& .title-input {
 		margin-top: ${theme.spacing(2)};
 		width: 72%;
+		color: ${theme.palette.text.primary};
 	}
 `)
 
