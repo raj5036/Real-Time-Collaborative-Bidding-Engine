@@ -1,8 +1,10 @@
+import { Box } from "@mui/material"
+
 const BidViewer: React.FC = () => {
 	return (
-		<div>
+		<Box component={"div"}>
 			Bids Viewer
-		</div>
+		</Box>
 	)
 }
 
