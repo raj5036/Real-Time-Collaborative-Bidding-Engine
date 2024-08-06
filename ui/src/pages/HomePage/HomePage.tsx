@@ -5,6 +5,7 @@ import { USER_TYPES } from "../../utils/Constants"
 import BidCreator from "../../components/BidCreator/BidCreator"
 import BidViewer from "../../components/BidsViewer/BidsViewer"
 import Header from "../../components/Header/Header"
+import { HomePageContainer } from "./HomePageStyles"
 
 const HomePage: React.FC = () => {
 	const { user } = useContext(UserContext) as IUserContext
@@ -12,9 +13,11 @@ const HomePage: React.FC = () => {
 	return (
 		<React.Fragment>
 			<Header />
-			{user?.role === USER_TYPES.BID_CREATOR 
-				? <BidCreator /> 
-				: <BidViewer />}
+			<HomePageContainer>
+				{user?.role === USER_TYPES.BID_CREATOR 
+					? <BidCreator /> 
+					: <BidViewer />}
+			</HomePageContainer>
 		</React.Fragment>
 	)
 }
