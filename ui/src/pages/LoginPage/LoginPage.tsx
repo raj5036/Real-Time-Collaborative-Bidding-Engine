@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useContext, useState} from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { 
 	Avatar, 
@@ -17,6 +17,8 @@ import { LoginController } from './LoginPageStyles';
 import { CommonUtils } from '../../utils/CommonUtils';
 import { LocalStorageKeys } from '../../utils/Constants';
 import { toast } from 'react-toastify';
+import { UserContext } from '../../context/UserContext/UserContext';
+import { IUserContext } from '../../context/UserContext/Types';
 
 
 
@@ -24,6 +26,7 @@ export default function Login() {
 	const [email, setEmail] = useState<string>("")
 	const [password, setPassword] = useState<string>("")
 
+  const { setUser } = useContext(UserContext) as IUserContext
   const navigate = useNavigate()
 
 	const handleSubmit = async () => {
@@ -36,6 +39,7 @@ export default function Login() {
       }
       CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_TOKEN, result.token)
       CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_DETAILS, JSON.stringify(result.user))
+      setUser(result.user)
       toast.success("Login Successful")
       navigate("/dashboard")
     } catch (error) {

@@ -26,3 +26,7 @@ Frontend: Single-page application using ReactJS (NextJS is an option)
 Database: Your choice
 
 https://www.geeksforgeeks.org/real-time-auction-platform-using-node-and-express-js/
+
+TODO: 
+1. Handle Login / Signup button disability
+2. Add this DOC in .gitignore
