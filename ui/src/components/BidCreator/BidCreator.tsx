@@ -1,12 +1,12 @@
-import { Box, Button, Stack, TextField, Typography } from "@mui/material"
-import { BidCreatorContainer, BidItemsContainer, SetTimer, VisuallyHiddenInput } from "./BidCreatorStyles"
+import { Box, Button, InputAdornment, Stack, TextField, Typography } from "@mui/material"
+import { BidCreatorContainer, BidItemsContainer, SetTimer } from "./BidCreatorStyles"
 import { useEffect, useState } from "react"
 import dayjs, { Dayjs } from "dayjs"
 import { DateTimePicker } from "@mui/x-date-pickers"
 import { IBidItem } from "../../utils/Constants"
-import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
 const BidCreator: React.FC = () => {
 	const [title, setTitle] = useState<string>("")
@@ -20,7 +20,6 @@ const BidCreator: React.FC = () => {
 		title: "",
 		price: 0,
 		description: "",
-		image: ""
 	})
 	const [bidItems, setBidItems] = useState<IBidItem[]>([{
 		title: "",
@@ -54,8 +53,7 @@ const BidCreator: React.FC = () => {
 			setCurrentBidItem({
 				title: "",
 				price: 0,
-				description: "",
-				image: ""
+				description: ""
 			}) 
 
 			return [...prevBidItems, temp]
@@ -84,7 +82,7 @@ const BidCreator: React.FC = () => {
 				onChange={(e) => setTitle(e.target.value)}
 			/>
 			<BidItemsContainer>
-				<Typography variant="h6">Create Bid Items</Typography>
+				<Typography variant="h6">Create Items for the Bid</Typography>
 				<Box className="bids-container">
 					{bidItems.map((bidItem, index) => (
 						<Stack direction={"row"} spacing={2} flexWrap={"wrap"} key={index} className="bid-input-container">
@@ -106,26 +104,19 @@ const BidCreator: React.FC = () => {
 									setCurrentBidItem({ ...currentBidItem, description: e.target.value })
 								}}
 							/>
-							<Button
-								component="label"
-								role={undefined}
-								variant="outlined"
-								tabIndex={-1}
-								startIcon={<CloudUploadIcon />}
-								onChange={(e: any) => {
-									console.log(e.target.files[0])
-									setCurrentBidItem({ ...currentBidItem, image: e.target.files[0] })
-								}}
-							>
-								Upload image
-								<VisuallyHiddenInput type="file" />
-							</Button>
 							<TextField 
 								label="Price"
 								name="price"
 								value={bidItem.price || currentBidItem.price}
 								type="number"
 								required
+								InputProps={{
+									endAdornment: (
+										<InputAdornment position="end">
+											<MonetizationOnIcon color="warning"/>
+										</InputAdornment>
+									),
+								}}
 								onChange={(e) => {
 									setCurrentBidItem({ ...currentBidItem, price: Number(e.target.value) })
 								}}

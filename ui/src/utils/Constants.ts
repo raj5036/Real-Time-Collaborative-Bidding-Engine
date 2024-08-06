@@ -14,5 +14,4 @@ export type IBidItem = {
 	title: string,
 	description?: string,
 	price: number,
-	image?: string
 }
