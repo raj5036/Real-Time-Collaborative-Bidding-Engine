@@ -60,7 +60,7 @@ const BidCreator: React.FC = () => {
 								value={bidItem.description}
 							/>
 							<Button 
-								variant="contained"
+								variant="outlined"
 							>Add</Button>
 						</Stack>	
 					))}
@@ -77,7 +77,11 @@ const BidCreator: React.FC = () => {
 						}
 						setStartTime(newValue)
 					}}
-					renderInput={(params: any) => <TextField {...params} />}
+					slotProps={{
+						textField: {
+							variant: "outlined",
+						}
+					}}
 				/>
 				<DateTimePicker
 					label="End Time"
@@ -89,7 +93,11 @@ const BidCreator: React.FC = () => {
 						}
 						setEndTime(newValue)
 					}}
-					renderInput={(params: any) => <TextField {...params} />}
+					slotProps={{
+						textField: {
+							variant: "outlined",
+						}
+					}}
 				/>
 			</SetTimer>
 			<Button
