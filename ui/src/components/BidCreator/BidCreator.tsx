@@ -81,8 +81,8 @@ const BidCreator: React.FC = () => {
 				value={title}
 				onChange={(e) => setTitle(e.target.value)}
 			/>
+			<Typography variant="h6" sx={{ mt: 2 }}>Create Items for the Bid</Typography>
 			<BidItemsContainer>
-				<Typography variant="h6">Create Items for the Bid</Typography>
 				<Box className="bids-container">
 					{bidItems.map((bidItem, index) => (
 						<Stack direction={"row"} spacing={2} flexWrap={"wrap"} key={index} className="bid-input-container">
