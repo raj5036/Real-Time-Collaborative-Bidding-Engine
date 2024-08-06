@@ -28,9 +28,14 @@ export default function Login() {
 
 	const handleSubmit = async () => {
     try {
-      const user = await LoginUser({email, password})
-      console.log(user)
-      CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_TOKEN, user.token)
+      const result = await LoginUser({email, password})
+      console.log(result)
+      if (result.error) {
+        toast.error(result.error.message)
+        return
+      }
+      CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_TOKEN, result.token)
+      CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_DETAILS, JSON.stringify(result.user))
       toast.success("Login Successful")
       navigate("/dashboard")
     } catch (error) {

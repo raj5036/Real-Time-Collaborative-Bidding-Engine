@@ -58,9 +58,10 @@ export class AuthService {
 				throw new ForbiddenException('Credentials incorrect');
 			}
 
+			delete user.password
+			
 			return {
-				id: user.id,
-				email: user.email,
+				user,
 				token: await this.signToken(user.id, user.email, user.role)
 			};
 		} catch (error) {

@@ -1,4 +1,4 @@
-import React, {
+import {
 	useState
 } from 'react'
 
@@ -15,24 +15,44 @@ import {
 	Typography,
 } from '@mui/material';
 import { RoleSelector, SignupFormContainer } from './SignupPageStyles'
-import { USER_TYPES, UserType } from '../../utils/Constants'
-import { Link } from 'react-router-dom'
+import { LocalStorageKeys, USER_TYPES, UserType } from '../../utils/Constants'
+import { Link, useNavigate } from 'react-router-dom'
+import { ApiError, SignupUser } from '../../utils/ApiClient';
+import { toast } from 'react-toastify';
+import { CommonUtils } from '../../utils/CommonUtils';
 
 
 const SignUp = () => {
-	const [firstName, setFirstName] = useState<string>("")
-	const [lastName, setLastName] = useState<string>("")
+	const [firstname, setFirstname] = useState<string>("")
+	const [lastname, setLastname] = useState<string>("")
 	const [email, setEmail] = useState<string>("")
 	const [password, setPassword] = useState<string>("")
-	const [userType, setUserType] = useState<UserType>("")
+	const [role, setRole] = useState<UserType>("")
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		const data = new FormData(event.currentTarget);
-		console.log({
-		email: data.get('email'),
-		password: data.get('password'),
-		});
+	const navigate = useNavigate()
+
+	const handleSubmit = async () => {
+		try {
+			const result = await SignupUser({
+				email, password, firstname, lastname, role
+			})
+			console.log(result)
+			if (result.success == false) {
+				if (result.message === ApiError.CONFLICT) {
+					toast.error("User already exists")
+				} else {
+					toast.error(result.message)
+				}
+			} else {
+				toast.success("Signup Successful")
+				CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_TOKEN, result.token)
+				CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_DETAILS, JSON.stringify(result.user))
+				navigate("/dashboard")
+			}
+		} catch (error) {
+			console.error(error)
+			toast.error("Something went wrong! Please try again")
+		}
 	};
 
 	return (
@@ -44,7 +64,7 @@ const SignUp = () => {
 			<Typography component="h1" variant="h5">
 				Sign up
 			</Typography>
-			<Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+			<Box component="div" sx={{ mt: 3 }}>
 				<Grid container spacing={2}>
 					<Grid item sm={6} xs={12}>
 						<TextField
@@ -55,8 +75,8 @@ const SignUp = () => {
 							label="First Name"
 							autoFocus
 							type="text"
-							value={firstName}
-							onChange={(e) => setFirstName(e.target.value)}
+							value={firstname}
+							onChange={(e) => setFirstname(e.target.value)}
 						/>
 					</Grid>
 					<Grid item sm={6} xs={12}>
@@ -67,8 +87,8 @@ const SignUp = () => {
 							name="lastName"
 							autoComplete="family-name"
 							type="text"
-							value={lastName}
-							onChange={(e) => setLastName(e.target.value)}
+							value={lastname}
+							onChange={(e) => setLastname(e.target.value)}
 						/>
 					</Grid>
 					<Grid item xs={12}>
@@ -101,8 +121,8 @@ const SignUp = () => {
 							<RoleSelector 
 								select
 								required
-								value={userType}
-								onChange={(e) => setUserType(e.target.value as UserType)}
+								value={role}
+								onChange={(e) => setRole(e.target.value as UserType)}
 							>
 								{Object.values(USER_TYPES).map((value) => (
 									<MenuItem key={value} value={value}>
@@ -118,6 +138,7 @@ const SignUp = () => {
 					fullWidth
 					variant="contained"
 					sx={{ mt: 3, mb: 2 }}
+					onClick={handleSubmit}
 				>
 					Sign Up
 				</Button>
