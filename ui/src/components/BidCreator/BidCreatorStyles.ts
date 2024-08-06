@@ -9,6 +9,7 @@ export const BidCreatorContainer = styled(Container)(({ theme }) => `
 
 	& .title-input {
 		margin-top: ${theme.spacing(2)};
+		width: 72%;
 	}
 `)
 
@@ -17,9 +18,9 @@ export const BidItemsContainer = styled(Box)(({ theme }) => `
 	margin-bottom: ${theme.spacing(2)};
 	padding: ${theme.spacing(2)} ${theme.spacing(4)};
 	text-align: center;
-	border: 1px solid ${theme.palette.divider};
+	border: 1px solid gray;
 	border-radius: ${theme.spacing(2)};
-	box-shadow: 0 1px 3px 0 ${theme.palette.divider};
+	box-shadow: 0 0 5px gray;
 	max-height: ${theme.spacing(40)};
 	overflow-y: scroll;
 
@@ -38,7 +39,14 @@ export const BidItemsContainer = styled(Box)(({ theme }) => `
 `)
 
 export const SetTimer = styled(Box)(({ theme }) => `
-	margin: ${theme.spacing(2)} 0;
+	margin: ${theme.spacing(3)} 0 ${theme.spacing(5)};
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: ${theme.spacing(10)};
+	width: 100%;
+	flex-wrap: wrap;
 `)
 
 export const VisuallyHiddenInput = styled('input')({

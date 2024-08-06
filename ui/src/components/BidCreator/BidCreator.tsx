@@ -70,7 +70,7 @@ const BidCreator: React.FC = () => {
 
 	return (
 		<BidCreatorContainer>
-			<Typography variant="h3">Create a new Bid</Typography>
+			<Typography variant="h3" sx={{ mb: 2 }}>Create a new Bid</Typography>
 			<TextField
 				label="Bid Title"
 				name="title"
