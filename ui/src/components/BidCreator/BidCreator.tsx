@@ -1,9 +1,10 @@
 import { Box, Button, Stack, TextField, Typography } from "@mui/material"
-import { BidCreatorContainer, BidItemsContainer, SetTimer } from "./BidCreatorStyles"
+import { BidCreatorContainer, BidItemsContainer, SetTimer, VisuallyHiddenInput } from "./BidCreatorStyles"
 import { useEffect, useState } from "react"
 import dayjs, { Dayjs } from "dayjs"
 import { DateTimePicker } from "@mui/x-date-pickers"
 import { IBidItem } from "../../utils/Constants"
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 
 const BidCreator: React.FC = () => {
 	const [title, setTitle] = useState<string>("")
@@ -13,11 +14,18 @@ const BidCreator: React.FC = () => {
 	const [endTime, setEndTime] = useState<Dayjs>(
 		dayjs('2014-08-18T21:11:54'),
 	);
+	const [currentBidItem, setCurrentBidItem] = useState<IBidItem>({
+		title: "",
+		price: 0,
+		description: "",
+		image: ""
+	})
 	const [bidItems, setBidItems] = useState<IBidItem[]>([{
 		title: "",
 		price: 0,
 		description: "",
 	}])
+	const [addDisabled, setAddDisabled] = useState<boolean>(true)
 	const [submitDisabled, setSubmitDisabled] = useState<boolean>(true)
 
 	useEffect(() => {
@@ -27,6 +35,36 @@ const BidCreator: React.FC = () => {
 			setSubmitDisabled(true)
 		}
 	}, [title])
+
+	useEffect(() => {
+		if (currentBidItem.title && currentBidItem.price && currentBidItem.description) {
+			setAddDisabled(false)
+		} else {
+			setAddDisabled(true)
+		}
+	}, [currentBidItem])
+
+	const handleAddBidItem = () => {
+		setBidItems(prevBidItems => {
+			const temp = currentBidItem
+
+			// reset the current bid item
+			setCurrentBidItem({
+				title: "",
+				price: 0,
+				description: "",
+				image: ""
+			}) 
+
+			return [...prevBidItems, temp]
+		})
+	}
+
+	const handleDeleteBidItem = (index: number) => () => {
+		setBidItems(prevBidItems => {
+			return [...prevBidItems.slice(0, index), ...prevBidItems.slice(index + 1)]
+		})
+	}
 
 	const handleSubmit = () => {}
 
@@ -49,19 +87,58 @@ const BidCreator: React.FC = () => {
 					{bidItems.map((bidItem, index) => (
 						<Stack direction={"row"} spacing={2} flexWrap={"wrap"} key={index}>
 							<TextField
-								label="Bid Item Name"
+								label="Item title"
 								name="title"
 								required
-								value={bidItem.title}
+								value={bidItem.title || currentBidItem.title}
+								onChange={(e) => {
+									setCurrentBidItem({ ...currentBidItem, title: e.target.value })
+								}}
 							/>
 							<TextField 
 								label="Description"
 								name="description"
-								value={bidItem.description}
+								required
+								value={bidItem.description || currentBidItem.description}
+								onChange={(e) => {
+									setCurrentBidItem({ ...currentBidItem, description: e.target.value })
+								}}
 							/>
-							<Button 
+							<Button
+								component="label"
+								role={undefined}
 								variant="outlined"
-							>Add</Button>
+								tabIndex={-1}
+								startIcon={<CloudUploadIcon />}
+								onChange={(e: any) => {
+									console.log(e.target.files[0])
+									setCurrentBidItem({ ...currentBidItem, image: e.target.files[0] })
+								}}
+							>
+								Upload image
+								<VisuallyHiddenInput type="file" />
+							</Button>
+							<TextField 
+								label="Price"
+								name="price"
+								value={bidItem.price || currentBidItem.price}
+								type="number"
+								required
+								onChange={(e) => {
+									setCurrentBidItem({ ...currentBidItem, price: Number(e.target.value) })
+								}}
+							/>
+							{bidItem.title && bidItem.price && bidItem.description ? (
+								<Button
+									variant="contained"
+									color="error"
+									onClick={handleDeleteBidItem(index)}
+								>Delete</Button>
+							): (<Button 
+								variant="contained"
+								disabled={addDisabled}
+								onClick={handleAddBidItem}
+							>Add</Button>)}
 						</Stack>	
 					))}
 				</Box>
