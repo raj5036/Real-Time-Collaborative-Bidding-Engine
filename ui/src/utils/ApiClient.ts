@@ -46,6 +46,16 @@ export const CreateBid = (bidDetails: IBid) => {
 		})
 }
 
+export const GetAllBidsByUser = () => {
+	return Promise.resolve(
+		axios.get(`${Config.SERVER_URL_TEST}/api/bid-item/get-all-by-user`)
+	)
+		.then(res => res.data)
+		.catch(error => {
+			throw error
+		})
+}
+
 export const deleteBid = (bidId: string) => {
 	return Promise.resolve(
 		axios.delete(`${Config.SERVER_URL_TEST}/api/bid-item/delete/${bidId}`)

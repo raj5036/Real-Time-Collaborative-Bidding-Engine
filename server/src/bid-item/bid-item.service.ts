@@ -29,6 +29,22 @@ export class BidItemService {
 		}
 	}
 
+	async getAllBidsByUser (userId: string) {
+		try {
+			const bids = await this.prisma.bid.findMany({
+				where: {
+					userId
+				}
+			});
+			return {
+				success: true,
+				bids
+			};
+		} catch (error) {
+			return this.prisma.errorHandler(error);
+		}
+	}
+
 	async deleteBid (id: string) {
 		try {
 			const bid = await this.prisma.bid.delete({
