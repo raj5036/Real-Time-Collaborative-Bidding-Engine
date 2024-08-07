@@ -21,6 +21,7 @@ import { ApiError, SignupUser } from '../../utils/ApiClient';
 import { toast } from 'react-toastify';
 import { CommonUtils } from '../../utils/CommonUtils';
 import { UserType } from '../../utils/Types';
+import AppRoutes from '../../routes/routes';
 
 
 const SignUp = () => {
@@ -48,7 +49,7 @@ const SignUp = () => {
 				toast.success("Signup Successful")
 				CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_TOKEN, result.token)
 				CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_DETAILS, JSON.stringify(result.user))
-				navigate("/dashboard")
+				navigate(AppRoutes.DASHBOARD)
 			}
 		} catch (error) {
 			console.error(error)

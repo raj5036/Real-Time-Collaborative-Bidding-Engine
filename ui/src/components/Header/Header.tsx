@@ -13,6 +13,7 @@ import { toast } from 'react-toastify';
 import MenuIcon from '@mui/icons-material/Menu';
 import SidebarContext from '../../context/SidebarContext/SidebarContext';
 import { ISideBarContext } from '../../context/SidebarContext/Types';
+import AppRoutes from '../../routes/routes';
 
 const Header = () => {
 	const theme = useTheme()
@@ -24,7 +25,7 @@ const Header = () => {
 		setUser({} as IUser)
 		CommonUtils.removeItemFromLocalStorage(LocalStorageKeys.USER_TOKEN)
 		CommonUtils.removeItemFromLocalStorage(LocalStorageKeys.USER_DETAILS)
-		navigate('/login')
+		navigate(AppRoutes.LOGIN)
 		toast.success("Logout Successful")
 	}
 

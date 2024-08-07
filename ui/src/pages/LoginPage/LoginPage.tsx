@@ -19,6 +19,7 @@ import { LocalStorageKeys } from '../../utils/Constants';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../context/UserContext/UserContext';
 import { IUserContext } from '../../context/UserContext/Types';
+import AppRoutes from '../../routes/routes';
 
 
 
@@ -50,7 +51,7 @@ export default function Login() {
       CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_DETAILS, JSON.stringify(result.user))
       setUser(result.user)
       toast.success("Login Successful")
-      navigate("/dashboard")
+      navigate(AppRoutes.DASHBOARD)
     } catch (error) {
       console.error(error)
       toast.error("Something went wrong! Please try again")
