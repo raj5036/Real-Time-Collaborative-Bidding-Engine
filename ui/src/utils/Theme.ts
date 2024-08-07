@@ -2,6 +2,18 @@ import { PaletteMode } from "@mui/material";
 import { amber, blue, green, grey } from "@mui/material/colors";
 
 declare module "@mui/material/styles" {
+	interface Palette {
+		bgColor: {
+			primary: string;
+			secondary: string;
+		};
+	}
+	interface PaletteOptions {
+		bgColor?: {
+			primary?: string;
+			secondary?: string;
+		};
+	}
   interface TypeText {
 		success: string,
 		info: string,
@@ -22,6 +34,10 @@ const Theme = (mode: PaletteMode) => ({
 				success: green['A700'],
 				info: '#ed6c02',
 			},
+			bgColor: {
+				primary: grey['100'],
+				secondary: '#f5f5f5',
+			}
 		}
 		: {
 			// palette values for dark mode
@@ -37,6 +53,10 @@ const Theme = (mode: PaletteMode) => ({
 				success: green['A400'],
 				info: '#29b6f6',
 			},
+			bgColor: {
+				primary: '#fff',
+				secondary: '#f5f5f5',
+			}
 		}),
 	},
   });

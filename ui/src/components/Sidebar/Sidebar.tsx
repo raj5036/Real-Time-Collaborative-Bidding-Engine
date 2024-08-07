@@ -1,10 +1,12 @@
-import { Box, Drawer, List, ListItem, ListItemText } from "@mui/material"
+import { Drawer, List, ListItem, ListItemText } from "@mui/material"
 import React, { useContext } from "react"
 import { IUserContext } from "../../context/UserContext/Types"
 import { UserContext } from "../../context/UserContext/UserContext"
 import { USER_TYPES } from "../../utils/Constants"
 import SidebarContext from "../../context/SidebarContext/SidebarContext"
 import { ISideBarContext } from "../../context/SidebarContext/Types"
+import { DrawerItemsContainer } from "./SidebarStyles"
+import { Link } from "react-router-dom"
 
 
 const Sidebar: React.FC = () => {
@@ -12,11 +14,11 @@ const Sidebar: React.FC = () => {
 	const { sidebarOpen, setSidebarOpen } = useContext(SidebarContext) as ISideBarContext
 
 	const drawerItems = user.role === USER_TYPES.BID_CREATOR ? [
-		"Create Bid",
-		"View Bids Leaderboard",
+		{text: "Create Bid", link: "/create-bid"},
+		{text: "View Bids Leaderboard", link: "/bids-leaderboard"},
 	]: [
-		"View Bids Leaderboard",
-		"Place Bids"
+		{text: "Create Bid", link: "/create-bid"},
+		{text: "View Bids Leaderboard", link: "/bids-leaderboard"},
 	]
 
 	const toggleDrawerOpen = () => {
@@ -25,15 +27,17 @@ const Sidebar: React.FC = () => {
 
 	return (
 		<Drawer open={sidebarOpen} onClose={toggleDrawerOpen}>
-			<Box sx={{ width: 250 }} role="presentation">
+			<DrawerItemsContainer role="presentation">
 				<List>
-					{drawerItems.map((text, index) => (
-						<ListItem key={text + index} disablePadding>
-							<ListItemText primary={text} />
+					{drawerItems.map((item, index) => (
+						<ListItem key={item.text + index} className="list-item">
+							<ListItemText className="list-item-text">
+								<Link to={item.link}>{item.text}</Link>
+							</ListItemText>
 						</ListItem>
 					))}
 				</List>
-			</Box>
+			</DrawerItemsContainer>
 		</Drawer>
 	)
 }
