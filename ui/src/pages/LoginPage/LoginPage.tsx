@@ -15,7 +15,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { LoginUser } from '../../utils/ApiClient';
 import { LoginController } from './LoginPageStyles';
 import { CommonUtils } from '../../utils/CommonUtils';
-import { LocalStorageKeys } from '../../utils/Constants';
+import { LocalStorageKeys, USER_TYPES } from '../../utils/Constants';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../context/UserContext/UserContext';
 import { IUserContext } from '../../context/UserContext/Types';
@@ -51,7 +51,11 @@ export default function Login() {
       CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_DETAILS, JSON.stringify(result.user))
       setUser(result.user)
       toast.success("Login Successful")
-      navigate(AppRoutes.DASHBOARD)
+      if (result.user.role === USER_TYPES.BID_CREATOR) {
+        navigate(AppRoutes.CREATE_BID)
+      } else {
+        navigate(AppRoutes.BIDDING_PAGE)
+      }
     } catch (error) {
       console.error(error)
       toast.error("Something went wrong! Please try again")
