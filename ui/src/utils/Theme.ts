@@ -36,7 +36,7 @@ const Theme = (mode: PaletteMode) => ({
 			},
 			bgColor: {
 				primary: grey['100'],
-				secondary: '#f5f5f5',
+				secondary: amber['400'],
 			}
 		}
 		: {
@@ -48,14 +48,14 @@ const Theme = (mode: PaletteMode) => ({
 				paper: grey[900],
 			},
 			text: {
-				primary: blue['700'],
+				primary: "#fff",
 				secondary: grey[500],
 				success: green['A400'],
-				info: '#29b6f6',
+				info: blue[400],
 			},
 			bgColor: {
 				primary: '#fff',
-				secondary: '#f5f5f5',
+				secondary: blue['400'],
 			}
 		}),
 	},

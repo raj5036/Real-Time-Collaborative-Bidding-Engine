@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import { useContext } from 'react';
 import { UserContext } from '../../context/UserContext/UserContext';
 import { IUser, IUserContext } from '../../context/UserContext/Types';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { CommonUtils } from '../../utils/CommonUtils';
 import { LocalStorageKeys } from '../../utils/Constants';
 import { toast } from 'react-toastify';
@@ -19,13 +19,11 @@ const Header = () => {
 	const theme = useTheme()
 	const { setUser } = useContext(UserContext) as IUserContext
 	const { setSidebarOpen } = useContext(SidebarContext) as ISideBarContext
-	const navigate = useNavigate()
 
 	const handleLogout = () => {
 		setUser({} as IUser)
 		CommonUtils.removeItemFromLocalStorage(LocalStorageKeys.USER_TOKEN)
 		CommonUtils.removeItemFromLocalStorage(LocalStorageKeys.USER_DETAILS)
-		navigate(AppRoutes.LOGIN)
 		toast.success("Logout Successful")
 	}
 
@@ -54,8 +52,9 @@ const Header = () => {
 				<Button
 					variant='contained'
 					onClick={handleLogout}
+					className='logout-button'
 				>
-					Log out
+					<Link to={AppRoutes.LOGIN}>Log out</Link>
 				</Button>
 			</Box>
 		</HeaderStyles.Box>

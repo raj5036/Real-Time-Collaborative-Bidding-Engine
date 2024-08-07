@@ -20,6 +20,16 @@ export const HeaderStyles = {
 			'& .header-right': {
 				display: 'flex',
 				marginRight: theme.spacing(3),
+
+				'& .logout-button': {
+					backgroundColor: theme.palette.bgColor.secondary,
+					
+					a: {
+						textDecoration: 'none',
+						color: theme.palette.text.primary,
+						fontSize: theme.typography.body1.fontSize,
+					}
+				}
 			}
 		}
 	}),
