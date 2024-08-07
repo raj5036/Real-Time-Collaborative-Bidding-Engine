@@ -74,7 +74,7 @@ const BidCreator: React.FC = () => {
 				title,
 				startTime,
 				endTime,
-				bidItems: bidItems.splice(1),	
+				bidItems: bidItems.slice(1),	
 			})
 			console.log("result", result)
 			if (result.success) {

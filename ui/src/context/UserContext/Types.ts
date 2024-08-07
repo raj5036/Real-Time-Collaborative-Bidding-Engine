@@ -1,4 +1,4 @@
-import { UserType } from "../../utils/Constants"
+import { UserType } from "../../utils/Types"
 
 export type IUser = {
 	id: string,

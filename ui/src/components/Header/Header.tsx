@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { CommonUtils } from '../../utils/CommonUtils';
 import { LocalStorageKeys } from '../../utils/Constants';
 import { toast } from 'react-toastify';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const Header = () => {
 	const theme = useTheme()
@@ -23,10 +24,16 @@ const Header = () => {
 		navigate('/login')
 		toast.success("Logout Successful")
 	}
+
+	const handleOpenSidebar = () => {}
 	
 	return (
 		<HeaderStyles.Box>
 			<HeaderStyles.AppNameContainer>
+				<MenuIcon 
+					className="menu-icon"
+					onClick={handleOpenSidebar}	
+				/>
 				<CurrencyExchangeIcon 
 					color={theme.palette.mode === 'dark' ? 'info' : 'warning'}
 					fontSize='large'

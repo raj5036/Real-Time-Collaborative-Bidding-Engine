@@ -6,6 +6,7 @@ import { IBid } from "./Types"
 export const ApiError = {
 	CONFLICT: "Data already exists",
 }
+
 axios.interceptors.request.use(
 	async (config) => {
 		const token = localStorage.getItem(LocalStorageKeys.USER_TOKEN)

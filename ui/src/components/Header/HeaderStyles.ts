@@ -26,9 +26,16 @@ export const HeaderStyles = {
 	AppNameContainer: styled(Box)(({ theme }) => {
 		return {
 			display: 'flex',
-			justifyContent: 'center',
+			justifyContent: 'flex-start',
 			alignItems: 'center',
-			marginLeft: theme.spacing(3),
+			marginLeft: theme.spacing(1),
+			gap: theme.spacing(1),
+
+			'& .menu-icon': {
+				fontSize: theme.typography.h4.fontSize,
+				marginRight: theme.spacing(1.5),
+				cursor: "pointer",
+			},
 
 			[theme.breakpoints.down('sm')]: {
 				marginLeft: theme.spacing(2),
@@ -39,11 +46,9 @@ export const HeaderStyles = {
 		return {
 			color: theme.palette.text.info,
 			fontSize: theme.typography.h6.fontSize,
-			marginLeft: theme.spacing(2),
 
 			[theme.breakpoints.down('sm')]: {
 				fontSize: theme.typography.body1.fontSize,
-				marginLeft: theme.spacing(1),
 			}
 		}
 	}),
