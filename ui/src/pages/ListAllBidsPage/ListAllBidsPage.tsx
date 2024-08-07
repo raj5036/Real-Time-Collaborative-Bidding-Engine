@@ -23,6 +23,7 @@ import { visuallyHidden } from '@mui/utils';
 import { GetAllBidsByUser } from '../../utils/ApiClient';
 import { toast } from 'react-toastify';
 import { IBidItem } from '../../utils/Types';
+import { CommonUtils } from '../../utils/CommonUtils';
 
 interface Data {
 	id: number,
@@ -137,7 +138,7 @@ const headCells: readonly HeadCell[] = [
     id: 'endDate',
     numeric: false,
     disablePadding: false,
-    label: 'EndDate',
+    label: 'End Date',
   },
   {
 	id: 'endTime',
@@ -271,7 +272,14 @@ export default function ListAddBidsPage() {
 			if (result.success) {
 				console.log(result)
 				setBids(() => {
-					const newRows = result.bids.map((b: BidData, i: number) => createData(i, b.title, b.startDate, b.startTime, b.endDate, b.endTime))
+					const newRows = result.bids.map((b: BidData, i: number) => createData(
+						i, 
+						b.title, 
+						CommonUtils.parseDate(b.startTime), 
+						CommonUtils.parseTime(b.startTime), 
+						CommonUtils.parseDate(b.endTime), 
+						CommonUtils.parseTime(b.endTime)
+					))
 					setRows(newRows)
 					console.log(bids)
 					return result
