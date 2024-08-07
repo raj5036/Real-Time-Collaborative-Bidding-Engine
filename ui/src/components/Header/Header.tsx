@@ -11,10 +11,13 @@ import { CommonUtils } from '../../utils/CommonUtils';
 import { LocalStorageKeys } from '../../utils/Constants';
 import { toast } from 'react-toastify';
 import MenuIcon from '@mui/icons-material/Menu';
+import SidebarContext from '../../context/SidebarContext/SidebarContext';
+import { ISideBarContext } from '../../context/SidebarContext/Types';
 
 const Header = () => {
 	const theme = useTheme()
 	const { setUser } = useContext(UserContext) as IUserContext
+	const { setSidebarOpen } = useContext(SidebarContext) as ISideBarContext
 	const navigate = useNavigate()
 
 	const handleLogout = () => {
@@ -25,7 +28,10 @@ const Header = () => {
 		toast.success("Logout Successful")
 	}
 
-	const handleOpenSidebar = () => {}
+	const handleOpenSidebar = () => {
+		console.log("open sidebar")
+		setSidebarOpen(true)
+	}
 	
 	return (
 		<HeaderStyles.Box>
