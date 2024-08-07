@@ -15,11 +15,12 @@ import {
 	Typography,
 } from '@mui/material';
 import { RoleSelector, SignupFormContainer } from './SignupPageStyles'
-import { LocalStorageKeys, USER_TYPES, UserType } from '../../utils/Constants'
+import { LocalStorageKeys, USER_TYPES } from '../../utils/Constants'
 import { Link, useNavigate } from 'react-router-dom'
 import { ApiError, SignupUser } from '../../utils/ApiClient';
 import { toast } from 'react-toastify';
 import { CommonUtils } from '../../utils/CommonUtils';
+import { UserType } from '../../utils/Types';
 
 
 const SignUp = () => {

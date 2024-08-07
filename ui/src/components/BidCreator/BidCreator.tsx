@@ -3,18 +3,20 @@ import { BidCreatorContainer, BidItemsContainer, SetTimer } from "./BidCreatorSt
 import { useEffect, useState } from "react"
 import dayjs, { Dayjs } from "dayjs"
 import { DateTimePicker } from "@mui/x-date-pickers"
-import { IBidItem } from "../../utils/Constants"
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import { toast } from "react-toastify"
+import { CreateBid } from "../../utils/ApiClient"
+import { IBidItem } from "../../utils/Types"
 
 const BidCreator: React.FC = () => {
 	const [title, setTitle] = useState<string>("")
-	const [startTime, setStartTime] = useState<Dayjs>(
-		dayjs('2014-08-18T21:11:54'),
+	const [startTime, setStartTime] = useState<string>(
+		dayjs('2014-08-18T21:11:54').format('YYYY-MM-DD HH:mm:ss'),
 	);
-	const [endTime, setEndTime] = useState<Dayjs>(
-		dayjs('2014-08-18T21:11:54'),
+	const [endTime, setEndTime] = useState<string>(
+		dayjs('2014-08-18T21:11:54').format('YYYY-MM-DD HH:mm:ss'),
 	);
 	const [currentBidItem, setCurrentBidItem] = useState<IBidItem>({
 		title: "",
@@ -66,7 +68,22 @@ const BidCreator: React.FC = () => {
 		})
 	}
 
-	const handleSubmit = () => {}
+	const handleBidSubmit = async () => {
+		try {
+			const result = await CreateBid({
+				title,
+				startTime,
+				endTime,
+				bidItems: bidItems.splice(1),	
+			})
+			console.log("result", result)
+			if (result.success) {
+				toast.success("Bid created successfully")
+			}
+		} catch (error) {
+			toast.error("Something went wrong! Please try again")
+		}
+	}
 
 	return (
 		<BidCreatorContainer>
@@ -143,12 +160,12 @@ const BidCreator: React.FC = () => {
 				<DateTimePicker
 					label="Start Time"
 					className="start-time-picker"
-					value={startTime}
+					value={dayjs(startTime)}
 					onChange={(newValue: Dayjs | null) => {
 						if (!newValue) {
 							return
 						}
-						setStartTime(newValue)
+						setStartTime(newValue.format('YYYY-MM-DD HH:mm:ss'))
 					}}
 					slotProps={{
 						textField: {
@@ -159,12 +176,12 @@ const BidCreator: React.FC = () => {
 				<DateTimePicker
 					label="End Time"
 					className="end-time-picker"
-					value={endTime}
+					value={dayjs(endTime)}
 					onChange={(newValue: Dayjs | null) => {
 						if (!newValue) {
 							return
 						}
-						setEndTime(newValue)
+						setEndTime(newValue.format('YYYY-MM-DD HH:mm:ss'))
 					}}
 					slotProps={{
 						textField: {
@@ -175,7 +192,7 @@ const BidCreator: React.FC = () => {
 			</SetTimer>
 			<Button
 				className="submit-btn"
-				onClick={handleSubmit}
+				onClick={handleBidSubmit}
 				variant="contained"
 				color="primary"
 				disabled={submitDisabled}

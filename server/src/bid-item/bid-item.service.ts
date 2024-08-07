@@ -20,7 +20,10 @@ export class BidItemService {
 				}
 			});
 
-			return {newBid};
+			return {
+				success: true,
+				newBid
+			};
 		} catch (error) {
 			return this.prisma.errorHandler(error);
 		}
