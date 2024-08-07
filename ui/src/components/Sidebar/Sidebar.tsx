@@ -15,8 +15,9 @@ const Sidebar: React.FC = () => {
 	const { sidebarOpen, setSidebarOpen } = useContext(SidebarContext) as ISideBarContext
 
 	const drawerItems = user.role === USER_TYPES.BID_CREATOR ? [
-		{text: "Create Bid", link: AppRoutes.CREATE_BID},
+		{text: "Create New Bid", link: AppRoutes.CREATE_BID},
 		{text: "View Bids Leaderboard", link: AppRoutes.BIDS_LEADERBOARD},
+		{text: "Show All Bids", link: AppRoutes.ALL_BIDS},
 	]: [
 		{text: "Create Bid", link: "/create-bid"},
 		{text: "View Bids Leaderboard", link: "/bids-leaderboard"},
