@@ -75,12 +75,12 @@ function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key,
 ): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
+	a: { [key in Key]: number | string },
+	b: { [key in Key]: number | string },
 ) => number {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
+	return order === 'desc'
+	? (a, b) => descendingComparator(a, b, orderBy)
+	: (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 // Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
@@ -146,12 +146,12 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface EnhancedTableProps {
-  numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
+	numSelected: number;
+	onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+	onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	order: Order;
+	orderBy: string;
+	rowCount: number;
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
@@ -201,10 +201,15 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
+  selectedItems: any[]
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected } = props;
+  const { numSelected, selectedItems } = props;
+
+  const handleDeleteBids = () => {
+	console.log(selectedItems)
+  }
 
   return (
     <Toolbar
@@ -239,7 +244,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       {numSelected > 0 && (
         <Tooltip title="Delete">
           <IconButton>
-            <DeleteIcon />
+            <DeleteIcon/>
           </IconButton>
         </Tooltip>
       )}
@@ -263,7 +268,7 @@ export default function ListAddBidsPage() {
 				console.log(result)
 				setBids(() => {
 					const newRows = result.bids.map((b: BidData, i: number) => createData(
-						i, 
+						i + 1, 
 						b.title, 
 						CommonUtils.parseDate(b.startTime), 
 						CommonUtils.parseTime(b.startTime), 
@@ -344,7 +349,7 @@ export default function ListAddBidsPage() {
 	return (
 		<Box sx={{ width: '100%' }}>
 		<Paper sx={{ width: '100%', mb: 2 }}>
-			<EnhancedTableToolbar numSelected={selected.length} />
+			<EnhancedTableToolbar numSelected={selected.length} selectedItems={selected} />
 			<TableContainer>
 			<Table
 				sx={{ minWidth: 750 }}

@@ -20,6 +20,11 @@ export class BidItemController {
 		return this.bidItemService.getAllBidsByUser(userId);
 	}
 
+	@Delete('delete-bulk')
+	deleteBidsInBulk (@Body() ids: Array<string>) {
+		return this.bidItemService.deleteBidsInBulk(ids);
+	} 
+
 	@Delete('delete/:id')
 	deleteBid (@Param('id') id: string) {
 		console.log("here in delete bid", id);

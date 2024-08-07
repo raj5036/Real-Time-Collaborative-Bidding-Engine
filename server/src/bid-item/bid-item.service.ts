@@ -45,6 +45,25 @@ export class BidItemService {
 		}
 	}
 
+	async deleteBidsInBulk (ids: Array<string>) {
+		try {
+			const bids = await this.prisma.bid.deleteMany({
+				where: {
+					id: {
+						in: ids
+					}
+				}
+			});
+			
+			return {
+				success: true,
+				bids
+			};
+		} catch (error) {
+			return this.prisma.errorHandler(error);
+		}
+	}
+
 	async deleteBid (id: string) {
 		try {
 			const bid = await this.prisma.bid.delete({
