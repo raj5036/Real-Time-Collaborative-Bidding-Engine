@@ -15,10 +15,7 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { GetAllBidsByUser } from '../../utils/ApiClient';
 import { toast } from 'react-toastify';
@@ -239,16 +236,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           Created Bids
         </Typography>
       )}
-      {numSelected > 0 ? (
+      {numSelected > 0 && (
         <Tooltip title="Delete">
           <IconButton>
             <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
           </IconButton>
         </Tooltip>
       )}
@@ -263,7 +254,6 @@ export default function ListAddBidsPage() {
 	const [orderBy, setOrderBy] = useState<keyof Data>('title');
 	const [selected, setSelected] = useState<readonly number[]>([]);
 	const [page, setPage] = useState(0);
-	const [dense, setDense] = useState(false);
 	const [rowsPerPage, setRowsPerPage] = useState(5);
 
 	useEffect(() => {
@@ -336,10 +326,6 @@ export default function ListAddBidsPage() {
 		setPage(0);
 	};
 
-	const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setDense(event.target.checked);
-	};
-
 	const isSelected = (id: number) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -363,7 +349,6 @@ export default function ListAddBidsPage() {
 			<Table
 				sx={{ minWidth: 750 }}
 				aria-labelledby="tableTitle"
-				size={dense ? 'small' : 'medium'}
 			>
 				<EnhancedTableHead
 				numSelected={selected.length}
@@ -415,12 +400,8 @@ export default function ListAddBidsPage() {
 					);
 				})}
 				{emptyRows > 0 && (
-					<TableRow
-					style={{
-						height: (dense ? 33 : 53) * emptyRows,
-					}}
-					>
-					<TableCell colSpan={6} />
+					<TableRow>
+						<TableCell colSpan={6} />
 					</TableRow>
 				)}
 				</TableBody>
@@ -436,10 +417,6 @@ export default function ListAddBidsPage() {
 			onRowsPerPageChange={handleChangeRowsPerPage}
 			/>
 		</Paper>
-		<FormControlLabel
-			control={<Switch checked={dense} onChange={handleChangeDense} />}
-			label="Dense padding"
-		/>
 		</Box>
 	);
 }
