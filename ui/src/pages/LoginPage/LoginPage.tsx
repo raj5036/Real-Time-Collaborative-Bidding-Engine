@@ -1,4 +1,4 @@
-import {useContext, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { 
 	Avatar, 
@@ -25,9 +25,18 @@ import { IUserContext } from '../../context/UserContext/Types';
 export default function Login() {
 	const [email, setEmail] = useState<string>("")
 	const [password, setPassword] = useState<string>("")
+  const [loginDisabled, setLoginDisabled] = useState<boolean>(true)
 
   const { setUser } = useContext(UserContext) as IUserContext
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (email && password) {
+      setLoginDisabled(false)
+    } else {
+      setLoginDisabled(true)
+    }
+  }, [email, password])
 
 	const handleSubmit = async () => {
     try {
@@ -91,6 +100,7 @@ export default function Login() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={loginDisabled}
               onClick={handleSubmit}
             >
               Sign In
