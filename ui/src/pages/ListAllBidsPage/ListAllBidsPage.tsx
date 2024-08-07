@@ -22,46 +22,46 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
 interface Data {
-  id: number;
-  calories: number;
-  carbs: number;
-  fat: number;
-  name: string;
-  protein: number;
+	id: number,
+	title: string,
+	startDate: string,
+	startTime: string,
+	endDate: string,
+	endTime: string
+
 }
 
 function createData(
-  id: number,
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
+	id: number,
+	title: string,
+	startDate: string,
+	startTime: string,
+	endDate: string,
+	endTime: string
 ): Data {
   return {
     id,
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
+    title,
+	startDate,
+	startTime,
+	endTime,
+	endDate,
   };
 }
 
 const rows = [
-  createData(1, 'Cupcake', 305, 3.7, 67, 4.3),
-  createData(2, 'Donut', 452, 25.0, 51, 4.9),
-  createData(3, 'Eclair', 262, 16.0, 24, 6.0),
-  createData(4, 'Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData(5, 'Gingerbread', 356, 16.0, 49, 3.9),
-  createData(6, 'Honeycomb', 408, 3.2, 87, 6.5),
-  createData(7, 'Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData(8, 'Jelly Bean', 375, 0.0, 94, 0.0),
-  createData(9, 'KitKat', 518, 26.0, 65, 7.0),
-  createData(10, 'Lollipop', 392, 0.2, 98, 0.0),
-  createData(11, 'Marshmallow', 318, 0, 81, 2.0),
-  createData(12, 'Nougat', 360, 19.0, 9, 37.0),
-  createData(13, 'Oreo', 437, 18.0, 63, 4.0),
+  createData(1, 'Cupcake', '305', '3.7', '67', '4.3'),
+  createData(2, 'Cupcake', '305', '3.7', '67', '4.3'),
+  createData(3, 'Cupcake', '305', '3.7', '67', '4.3'),
+  createData(4, 'Cupcake', '305', '3.7', '67', '4.3'),
+  createData(5, 'Cupcake', '305', '3.7', '67', '4.3'),
+  createData(6, 'Cupcake', '305', '3.7', '67', '4.3'),
+  createData(7, 'Cupcake', '305', '3.7', '67', '4.3'),
+  createData(8, 'Cupcake', '305', '3.7', '67', '4.3'),
+  createData(9, 'Cupcake', '305', '3.7', '67', '4.3'),
+  createData(10, 'Cupcake', '305', '3.7', '67', '4.3'),
+  createData(11, 'Cupcake', '305', '3.7', '67', '4.3'),
+  createData(12, 'Cupcake', '305', '3.7', '67', '4.3'),
 ];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -114,34 +114,40 @@ interface HeadCell {
 const headCells: readonly HeadCell[] = [
   {
     id: 'id',
+    numeric: true,
+    disablePadding: false,
+    label: 'ID',
+  },
+  {
+	id: 'title',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: 'Title',
   },
   {
-    id: 'calories',
-    numeric: true,
+    id: 'startDate',
+    numeric: false,
     disablePadding: false,
     label: 'Start Date',
   },
   {
-    id: 'fat',
-    numeric: true,
+    id: 'startTime',
+    numeric: false,
     disablePadding: false,
     label: 'Start Time',
   },
   {
-    id: 'carbs',
-    numeric: true,
+    id: 'endDate',
+    numeric: false,
     disablePadding: false,
-    label: 'End Date',
+    label: 'EndDate',
   },
   {
-    id: 'protein',
-    numeric: true,
-    disablePadding: false,
-    label: 'End Time',
-  },
+	id: 'endTime',
+	numeric: false,
+	disablePadding: false,
+	label: 'EndTime',
+  }
 ];
 
 interface EnhancedTableProps {
@@ -170,15 +176,12 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
           />
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            // align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -256,7 +259,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 }
 export default function ListAddBidsPage() {
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
+  const [orderBy, setOrderBy] = React.useState<keyof Data>('title');
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -374,14 +377,15 @@ export default function ListAddBidsPage() {
                       component="th"
                       id={labelId}
                       scope="row"
-                      padding="none"
+                    //   padding="none"
                     >
-                      {row.name}
+                      {row.id}
                     </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.protein}</TableCell>
+                    <TableCell align="left">{row.title}</TableCell>
+                    <TableCell align="left">{row.startDate}</TableCell>
+                    <TableCell align="left">{row.startTime}</TableCell>
+                    <TableCell align="left">{row.endDate}</TableCell>
+                    <TableCell align="left">{row.endTime}</TableCell>
                   </TableRow>
                 );
               })}
