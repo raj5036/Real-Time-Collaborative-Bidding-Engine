@@ -45,6 +45,9 @@ export class PrismaService extends PrismaClient {
 			}
 		} 
 		else if (error instanceof PrismaClientValidationError) {
+			console.error("PrismaClientValidationError:", error.message);
+			// You can log other details here if needed
+			console.error(error);
 			return {error};
 		}
 		else {

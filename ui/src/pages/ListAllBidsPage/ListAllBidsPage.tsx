@@ -17,12 +17,13 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
-import { GetAllBidsByUser } from '../../utils/ApiClient';
+import { deleteBidsBulk, GetAllBidsByUser } from '../../utils/ApiClient';
 import { toast } from 'react-toastify';
 import { IBidItem } from '../../utils/Types';
 import { CommonUtils } from '../../utils/CommonUtils';
 
 interface Data {
+	dbObjectId: string,
 	id: number,
 	title: string,
 	startDate: string,
@@ -33,6 +34,7 @@ interface Data {
 }
 
 function createData(
+	dbObjectId: string,
 	id: number,
 	title: string,
 	startDate: string,
@@ -41,6 +43,7 @@ function createData(
 	endTime: string
 ): Data {
   return {
+	dbObjectId,
     id,
     title,
 	startDate,
@@ -51,6 +54,7 @@ function createData(
 }
 
 type BidData = {
+	id: string,
 	title: string,
 	startDate: string,
 	startTime: string,
@@ -200,15 +204,27 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 }
 
 interface EnhancedTableToolbarProps {
-  numSelected: number;
-  selectedItems: any[]
+  selectedItems: readonly number[],
+  rows: Data[]
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected, selectedItems } = props;
+  const { selectedItems, rows } = props;
 
-  const handleDeleteBids = () => {
-	console.log(selectedItems)
+  const handleDeleteBids = async () => {
+	console.log(selectedItems, rows)
+	const deleteIds = rows.filter((row) => selectedItems.includes(row.id))
+								.map(row => row.dbObjectId)
+
+	try {
+		const result = await deleteBidsBulk(deleteIds)
+		console.log(result)
+		if (result.success) {
+			toast.success(result.message)
+		}
+	} catch (error) {
+		console.log(error)
+	}
   }
 
   return (
@@ -216,20 +232,20 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
+        ...(selectedItems.length > 0 && {
           bgcolor: (theme) =>
             alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
         }),
       }}
     >
-      {numSelected > 0 ? (
+      {selectedItems.length > 0 ? (
         <Typography
           sx={{ flex: '1 1 100%' }}
           color="inherit"
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {selectedItems.length} selected
         </Typography>
       ) : (
         <Typography
@@ -241,9 +257,9 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           Created Bids
         </Typography>
       )}
-      {numSelected > 0 && (
+      {selectedItems.length > 0 && (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton onClick={handleDeleteBids}>
             <DeleteIcon/>
           </IconButton>
         </Tooltip>
@@ -268,6 +284,7 @@ export default function ListAddBidsPage() {
 				console.log(result)
 				setBids(() => {
 					const newRows = result.bids.map((b: BidData, i: number) => createData(
+						b.id,
 						i + 1, 
 						b.title, 
 						CommonUtils.parseDate(b.startTime), 
@@ -349,7 +366,7 @@ export default function ListAddBidsPage() {
 	return (
 		<Box sx={{ width: '100%' }}>
 		<Paper sx={{ width: '100%', mb: 2 }}>
-			<EnhancedTableToolbar numSelected={selected.length} selectedItems={selected} />
+			<EnhancedTableToolbar selectedItems={selected} rows={rows}/>
 			<TableContainer>
 			<Table
 				sx={{ minWidth: 750 }}

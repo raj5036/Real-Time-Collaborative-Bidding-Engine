@@ -45,7 +45,8 @@ export class BidItemService {
 		}
 	}
 
-	async deleteBidsInBulk (ids: Array<string>) {
+	async deleteBidsInBulk (ids: string[]) {
+		console.log("ids in service", ids);
 		try {
 			const bids = await this.prisma.bid.deleteMany({
 				where: {
@@ -57,6 +58,7 @@ export class BidItemService {
 			
 			return {
 				success: true,
+				message: "Bids deleted successfully",
 				bids
 			};
 		} catch (error) {

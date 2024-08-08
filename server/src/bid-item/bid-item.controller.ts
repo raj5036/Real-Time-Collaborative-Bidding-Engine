@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { BidItemService } from './bid-item.service';
-import { CreateBidDTO } from './dto';
+import { CreateBidDTO, DeleteBulkDTO } from './dto';
 import { JWTGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 import { BidCreatorGuard } from 'src/user/guard';
@@ -21,7 +21,7 @@ export class BidItemController {
 	}
 
 	@Delete('delete-bulk')
-	deleteBidsInBulk (@Body() ids: Array<string>) {
+	deleteBidsInBulk (@Body() { ids }: DeleteBulkDTO) {
 		return this.bidItemService.deleteBidsInBulk(ids);
 	} 
 

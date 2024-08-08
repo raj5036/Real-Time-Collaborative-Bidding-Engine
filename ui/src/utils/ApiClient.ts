@@ -56,6 +56,18 @@ export const GetAllBidsByUser = () => {
 		})
 }
 
+export const deleteBidsBulk = (ids: Array<string>) => {
+	return Promise.resolve(
+		axios.delete(`${Config.SERVER_URL_TEST}/api/bid-item/delete-bulk`, {
+			data: { ids },
+		})
+	)
+		.then(res => res.data)
+		.catch(error => {
+			throw error
+		})
+}
+
 export const deleteBid = (bidId: string) => {
 	return Promise.resolve(
 		axios.delete(`${Config.SERVER_URL_TEST}/api/bid-item/delete/${bidId}`)
