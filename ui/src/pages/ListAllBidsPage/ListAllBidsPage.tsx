@@ -284,26 +284,7 @@ export default function ListAddBidsPage() {
 
 	useEffect(() => {
 		(async () => {
-			const result = await GetAllBidsByUser()
-			if (result.success) {
-				console.log(result)
-				setBids(() => {
-					const newRows = result.bids.map((b: BidData, i: number) => createData(
-						b.id,
-						i + 1, 
-						b.title, 
-						CommonUtils.parseDate(b.startTime), 
-						CommonUtils.parseTime(b.startTime), 
-						CommonUtils.parseDate(b.endTime), 
-						CommonUtils.parseTime(b.endTime)
-					))
-					setRows(newRows)
-					console.log(bids)
-					return result
-				})
-			} else {
-				toast.error(API_ERROR_MESSAGES.INTERNAL_SERVER_ERROR)
-			}
+			await fetchRowData()
 		})()
 	}, [])
 
