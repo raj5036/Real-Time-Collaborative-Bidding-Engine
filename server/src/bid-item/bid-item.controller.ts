@@ -17,7 +17,9 @@ export class BidItemController {
 	@Post('create')
 	async createBid (@Body() dto: CreateBidDTO, @GetUser('id') userId: string) {
 		const response = await this.bidItemService.createBid(dto, userId);
-		this.bidItemGateway.server.emit("BidCreated", response);
+		if (response.success) {
+			this.bidItemGateway.server.emit("BidCreated", response);
+		}
 		return response;
 	}
 

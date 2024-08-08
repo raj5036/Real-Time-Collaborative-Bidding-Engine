@@ -1,14 +1,33 @@
-import React from "react";
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Badge } from "@mui/material";
+import React, { useEffect, useState } from "react"
+import { Badge } from "@mui/material"
+import { CustomNotificationsIcon } from "./NotificationStyles"
+import socket, { SocketEvents } from "../../utils/SocketClient"
 
 
 const Notification: React.FC = () => {
-	return (<React.Fragment>
-		<Badge badgeContent={4} color="primary">
-			<NotificationsIcon color="action"/>
-		</Badge>
-	</React.Fragment>)
+	const [bidsCreateCount, setBidsCreateCount] = useState<number>(1)
+
+	useEffect(() => {
+		socket.on(SocketEvents.BID_CREATED, (response) => {
+			console.log("response in notification", response)
+		})
+
+		return () => {
+			socket.off(SocketEvents.BID_CREATED)
+		}
+	}, [])
+
+	const handleIconClick = () => {
+		console.log("handleIconClick called")
+	}
+	
+	return (
+		<React.Fragment>
+			<Badge badgeContent={bidsCreateCount} color="primary">
+				<CustomNotificationsIcon color="action" onClick={handleIconClick}/>
+			</Badge>
+		</React.Fragment>
+	)
 }
 
 export default Notification

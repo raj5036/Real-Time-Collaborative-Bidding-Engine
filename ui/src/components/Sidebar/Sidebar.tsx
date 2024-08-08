@@ -19,7 +19,6 @@ const Sidebar: React.FC = () => {
 		{text: "View Bids Leaderboard", link: AppRoutes.BIDS_LEADERBOARD},
 		{text: "Show All Bids", link: AppRoutes.ALL_BIDS},
 	]: [
-		{text: "Create Bid", link: "/create-bid"},
 		{text: "View Bids Leaderboard", link: "/bids-leaderboard"},
 	]
 
