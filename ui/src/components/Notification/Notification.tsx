@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Badge } from "@mui/material"
 import { CustomNotificationsIcon } from "./NotificationStyles"
 import socket, { SocketEvents } from "../../utils/SocketClient"
@@ -33,6 +33,7 @@ const Notification: React.FC = () => {
 	])
 	const [popperOpen, setPopperOpen] = useState<boolean>(false)
 	const [anchorEl, setAnchorEl] = useState(document.body)
+	const notificationIconRef = useRef<HTMLElement>(null)
 
 	useEffect(() => {
 		socket.on(SocketEvents.BID_CREATED, (response) => {
@@ -47,21 +48,32 @@ const Notification: React.FC = () => {
 
 	const handleIconClick = (e: any) => {
 		console.log("handleIconClick called", e)
-		setAnchorEl(() => {
-			setPopperOpen(!popperOpen)
-			return e.currentTarget
-		})
+		setPopperOpen(!popperOpen)
+		// setPopperOpen(prevState => {
+		// 	setAnchorEl(e.currentTarget)
+		// 	return !prevState
+		// })
+	}
+
+	const handleAcceptNewBid = (bid: IBid) => {
+		console.log("handleAcceptNewBid called", bid)
+		setPopperOpen(false)
 	}
 	
 	return (
 		<React.Fragment>
 			<Badge badgeContent={newBids.length} color="primary">
-				<CustomNotificationsIcon color="action" onClick={e => handleIconClick(e)}/>
+				<CustomNotificationsIcon 
+					color="action" 
+					ref={notificationIconRef}
+					onClick={e => handleIconClick(e)} 
+				/>
 			</Badge>
 			<NotificationPopper 
 				open={popperOpen} 
-				anchorEl={anchorEl}
+				anchorEl={notificationIconRef.current as HTMLElement}
 				newBids={newBids}
+				handleAcceptNewBid={handleAcceptNewBid}
 			/>
 		</React.Fragment>
 	)

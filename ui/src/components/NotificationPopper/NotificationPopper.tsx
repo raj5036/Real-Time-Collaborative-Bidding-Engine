@@ -3,19 +3,17 @@ import React, { useState } from "react";
 import { IBid } from "../../utils/Types";
 import { CommonUtils } from "../../utils/CommonUtils";
 import { PopperPaperWrapper } from "./NotificationPopperStyles";
-import { useNavigate } from "react-router-dom";
-import AppRoutes from "../../routes/routes";
 
 type ComponentProps = {
 	open: boolean,
 	anchorEl: HTMLElement,
 	newBids: IBid[],
+	handleAcceptNewBid: (bid: IBid) => void
 }
 
-const NotificationPopper: React.FC<ComponentProps> = ({ open, anchorEl, newBids }) => {
+const NotificationPopper: React.FC<ComponentProps> = ({ open, anchorEl, newBids, handleAcceptNewBid }) => {
 	const [showAcceptButton, setShowAcceptButton] = useState<any>({})
 
-	const navigate = useNavigate()
 
 	const handleListMouseEnter = (index: number) => () => {
 		setShowAcceptButton((prevState: any) => {
@@ -26,11 +24,6 @@ const NotificationPopper: React.FC<ComponentProps> = ({ open, anchorEl, newBids 
 		setShowAcceptButton((prevState: any) => {
 			return {...prevState, [index]: false}
 		})
-	}
-
-	const handleBidAccept = (bid: IBid) => () => {
-		console.log(bid)
-		navigate(AppRoutes.USER_CURRENT_BIDS)
 	}
 
 	return (
@@ -76,7 +69,7 @@ const NotificationPopper: React.FC<ComponentProps> = ({ open, anchorEl, newBids 
 											variant="contained"
 											size="small"
 											color="success"
-											onClick={handleBidAccept(bid)}
+											onClick={() => handleAcceptNewBid(bid)}
 										>Accept</Button>}
 									</Stack>
 								</ListItem>
