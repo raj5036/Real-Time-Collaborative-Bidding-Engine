@@ -316,6 +316,7 @@ export default function ListAddBidsPage() {
 
 	const refreshData = async () => {
 		await fetchRowData()
+		setSelected([])
 	}
 
 	const handleRequestSort = (
