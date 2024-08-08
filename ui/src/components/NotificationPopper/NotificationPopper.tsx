@@ -37,7 +37,10 @@ const NotificationPopper: React.FC<ComponentProps> = ({ open, anchorEl, newBids,
 		{({ TransitionProps }) => (
 			<Fade {...TransitionProps} timeout={350}>
 				<PopperPaperWrapper>
-					<Typography className="popper-title">New Bids created for You!</Typography>
+					{newBids.length 
+						? <Typography className="popper-title non-empty">New Bids created for You!</Typography>
+						: <Typography className="popper-title">No New Bids</Typography>
+					}
 					<List className="popper-list">
 						{newBids.map((bid, index) => (
 							<Box 

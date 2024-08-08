@@ -4,9 +4,15 @@ import { styled } from "@mui/material/styles";
 export const PopperPaperWrapper = styled(Paper)(({ theme }) => `
 	& .popper-title {
 		padding: ${theme.spacing(1)} ${theme.spacing(2)};
+		font-weight: bold;
+		min-width: ${theme.spacing(20)};
+	}
+
+	& .empty {}
+
+	& .non-empty {
 		color: ${theme.palette.text.primary};
 		background-color: ${theme.palette.bgColor.secondary};
-		font-weight: bold;
 	}
 
 	& .popper-list {

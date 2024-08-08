@@ -4,35 +4,36 @@ import { CustomNotificationsIcon } from "./NotificationStyles"
 import socket, { SocketEvents } from "../../utils/SocketClient"
 import { IBid } from "../../utils/Types"
 import NotificationPopper from "../NotificationPopper/NotificationPopper"
+import { useNavigate } from "react-router-dom"
+import AppRoutes from "../../routes/routes"
 
 
 const Notification: React.FC = () => {
 	const [newBids, setNewBids] = useState<IBid[]>([
-		{
-			title: "test1",
-			startTime: "2014-08-18 21:11:54",
-			endTime: "2014-08-18 21:11:54",
-			bidItems: [
-				{
-					title: "item 1",
-					price: 0
-				}
-			]
-		},
-		{
-			title: "test2",
-			startTime: "2014-08-18 21:11:54",
-			endTime: "2014-08-18 21:11:54",
-			bidItems: [
-				{
-					title: "item 1",
-					price: 0
-				}
-			]
-		}
+		// {
+		// 	title: "test1",
+		// 	startTime: "2014-08-18 21:11:54",
+		// 	endTime: "2014-08-18 21:11:54",
+		// 	bidItems: [
+		// 		{
+		// 			title: "item 1",
+		// 			price: 0
+		// 		}
+		// 	]
+		// },
+		// {
+		// 	title: "test2",
+		// 	startTime: "2014-08-18 21:11:54",
+		// 	endTime: "2014-08-18 21:11:54",
+		// 	bidItems: [
+		// 		{
+		// 			title: "item 1",
+		// 			price: 0
+		// 		}
+		// 	]
+		// }
 	])
 	const [popperOpen, setPopperOpen] = useState<boolean>(false)
-	const [anchorEl, setAnchorEl] = useState(document.body)
 	const notificationIconRef = useRef<HTMLElement>(null)
 
 	useEffect(() => {
@@ -46,18 +47,19 @@ const Notification: React.FC = () => {
 		}
 	}, [])
 
-	const handleIconClick = (e: any) => {
-		console.log("handleIconClick called", e)
+	const navigate = useNavigate()
+
+	const handleIconClick = () => {
 		setPopperOpen(!popperOpen)
-		// setPopperOpen(prevState => {
-		// 	setAnchorEl(e.currentTarget)
-		// 	return !prevState
-		// })
 	}
 
 	const handleAcceptNewBid = (bid: IBid) => {
 		console.log("handleAcceptNewBid called", bid)
-		setPopperOpen(false)
+		setNewBids((prevBids: IBid[]) => {
+			setPopperOpen(false)
+			return prevBids.filter((prevBid: IBid) => prevBid.id !== bid.id)
+		})
+		navigate(AppRoutes.USER_CURRENT_BIDS)
 	}
 	
 	return (
@@ -66,7 +68,7 @@ const Notification: React.FC = () => {
 				<CustomNotificationsIcon 
 					color="action" 
 					ref={notificationIconRef}
-					onClick={e => handleIconClick(e)} 
+					onClick={handleIconClick} 
 				/>
 			</Badge>
 			<NotificationPopper 
