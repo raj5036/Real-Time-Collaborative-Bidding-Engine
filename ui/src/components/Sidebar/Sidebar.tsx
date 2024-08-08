@@ -17,9 +17,10 @@ const Sidebar: React.FC = () => {
 	const drawerItems = user.role === USER_TYPES.BID_CREATOR ? [
 		{text: "Create New Bid", link: AppRoutes.CREATE_BID},
 		{text: "View Bids Leaderboard", link: AppRoutes.BIDS_LEADERBOARD},
-		{text: "Show All Bids", link: AppRoutes.ALL_BIDS},
+		{text: "Bids Created By Me", link: AppRoutes.ALL_BIDS},
 	]: [
-		{text: "View Bids Leaderboard", link: "/bids-leaderboard"},
+		{text: "View Bids Leaderboard", link: AppRoutes.BIDS_LEADERBOARD},
+		{text: "My Bids", link: AppRoutes.USER_CURRENT_BIDS},
 	]
 
 	const toggleDrawerOpen = () => {

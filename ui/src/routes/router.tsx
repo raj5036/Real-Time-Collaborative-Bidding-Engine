@@ -8,6 +8,7 @@ import CreateBidsPage from "../pages/CreateBidsPage/CreateBidsPage";
 import BidsLeaderBoardPage from "../pages/BidsLeaderBoardPage/BidsLeaderBoard";
 import BiddingPage from "../pages/BiddingPage/BiddingPage";
 import ListAllBidsPage from "../pages/ListAllBidsPage/ListAllBidsPage";
+import UsersCurrentBidsPage from "../pages/UsersCurrentBidsPage/UsersCurrentBidsPage";
 
 const router = createBrowserRouter([
 	{
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
 			{path: AppRoutes.BIDS_LEADERBOARD, element: <BidsLeaderBoardPage />},
 			{path: AppRoutes.ALL_BIDS, element: <ListAllBidsPage />},
 			{path: AppRoutes.BIDDING_PAGE, element: <BiddingPage />},
+			{path: AppRoutes.USER_CURRENT_BIDS, element: <UsersCurrentBidsPage />},
 		]
 	}
 ]);
