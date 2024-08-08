@@ -63,6 +63,7 @@ const NotificationPopper: React.FC<ComponentProps> = ({ open, anchorEl, newBids 
 											Hurry up!
 										</Typography>
 										{showAcceptButton[index] && <Button
+											className="accept-btn"
 											variant="contained"
 											size="small"
 											color="success"

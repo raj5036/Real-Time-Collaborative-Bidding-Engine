@@ -5,6 +5,7 @@ export const PopperPaperWrapper = styled(Paper)(({ theme }) => `
 	& .popper-title {
 		padding: ${theme.spacing(1)} ${theme.spacing(2)};
 		color: ${theme.palette.text.primary};
+		background-color: ${theme.palette.bgColor.secondary};
 		font-weight: bold;
 	}
 
@@ -16,6 +17,10 @@ export const PopperPaperWrapper = styled(Paper)(({ theme }) => `
 			cursor: pointer;
 			&:hover {
 				background-color: ${theme.palette.bgColor.primary};
+			}
+
+			& .accept-btn {
+				margin-top: ${theme.spacing(1.4)};
 			}
 		}
 	}
