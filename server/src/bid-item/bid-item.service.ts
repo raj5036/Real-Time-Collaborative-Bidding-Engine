@@ -16,7 +16,7 @@ export class BidItemService {
 					startTime,
 					endTime,
 					bidItems,
-					userId: userId,
+					bidCreatorId: userId
 				}
 			});
 
@@ -34,7 +34,7 @@ export class BidItemService {
 		try {
 			const bids = await this.prisma.bid.findMany({
 				where: {
-					userId
+					bidCreatorId: userId
 				}
 			});
 			return {
@@ -76,6 +76,15 @@ export class BidItemService {
 			});
 			return bid;
 		} catch(error) {
+			return this.prisma.errorHandler(error);
+		}
+	}
+
+	async deleteAllBids () {
+		try {
+			const bids = await this.prisma.bid.deleteMany({});
+			return bids;
+		} catch (error) {
 			return this.prisma.errorHandler(error);
 		}
 	}

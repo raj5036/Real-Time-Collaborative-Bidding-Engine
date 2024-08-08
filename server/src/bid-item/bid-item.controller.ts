@@ -38,4 +38,9 @@ export class BidItemController {
 		console.log("here in delete bid", id);
 		return this.bidItemService.deleteBid(id);
 	}
+
+	@Delete('delete-all')
+	deleteAllBids () {
+		return this.bidItemService.deleteAllBids();
+	}
 }
