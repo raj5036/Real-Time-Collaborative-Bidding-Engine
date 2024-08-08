@@ -55,7 +55,11 @@ const SignUp = () => {
 				setUser(result.user)
 				CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_TOKEN, result.token)
 				CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_DETAILS, JSON.stringify(result.user))
-				navigate(AppRoutes.CREATE_BID)
+				if (result.user.role === USER_TYPES.BID_CREATOR) {
+					navigate(AppRoutes.CREATE_BID)
+				} else {
+					navigate(AppRoutes.BIDS_LEADERBOARD)
+				}
 			}
 		} catch (error) {
 			console.error(error)
