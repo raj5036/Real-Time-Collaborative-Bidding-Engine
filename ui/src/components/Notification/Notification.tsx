@@ -6,6 +6,9 @@ import { IBid } from "../../utils/Types"
 import NotificationPopper from "../NotificationPopper/NotificationPopper"
 import { useNavigate } from "react-router-dom"
 import AppRoutes from "../../routes/routes"
+import { AcceptBidRequest } from "../../utils/ApiClient"
+import { toast } from "react-toastify"
+import { API_ERROR_MESSAGES } from "../../utils/Constants"
 
 
 const Notification: React.FC = () => {
@@ -53,13 +56,25 @@ const Notification: React.FC = () => {
 		setPopperOpen(!popperOpen)
 	}
 
-	const handleAcceptNewBid = (bid: IBid) => {
+	const handleAcceptNewBid = async (bid: IBid) => {
 		console.log("handleAcceptNewBid called", bid)
-		setNewBids((prevBids: IBid[]) => {
-			setPopperOpen(false)
-			return prevBids.filter((prevBid: IBid) => prevBid.id !== bid.id)
-		})
-		navigate(AppRoutes.USER_CURRENT_BIDS)
+		try {
+			const result = await AcceptBidRequest(bid.id)
+			if (result.success) {
+				toast.success(result.message)
+			} else {
+				toast.error(result.message || API_ERROR_MESSAGES.INTERNAL_SERVER_ERROR)
+				return
+			}
+		} catch (error) {
+			console.error(error)
+		} finally {
+			setNewBids((prevBids: IBid[]) => {
+				setPopperOpen(false)
+				return prevBids.filter((prevBid: IBid) => prevBid.id !== bid.id)
+			})
+			navigate(AppRoutes.USER_CURRENT_BIDS)
+		}
 	}
 	
 	return (

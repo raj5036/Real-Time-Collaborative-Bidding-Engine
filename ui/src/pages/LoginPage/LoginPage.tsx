@@ -54,7 +54,7 @@ export default function Login() {
       if (result.user.role === USER_TYPES.BID_CREATOR) {
         navigate(AppRoutes.CREATE_BID)
       } else {
-        navigate(AppRoutes.BIDDING_PAGE)
+        navigate(AppRoutes.BIDS_LEADERBOARD)
       }
     } catch (error) {
       console.error(error)

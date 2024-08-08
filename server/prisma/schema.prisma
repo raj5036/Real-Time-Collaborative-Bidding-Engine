@@ -57,7 +57,7 @@ model UserActiveBid {
   bidId String @db.ObjectId
   bid Bid @relation(fields: [bidId], references: [id])
 
-  bidAmout Int
+  bidAmount Int @default(0)
 
   @@index([userId, bidId], name: "user_bid_idx")
   @@index([bidId, userId], name: "bid_user_idx")

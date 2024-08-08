@@ -77,3 +77,15 @@ export const deleteBid = (bidId: string) => {
 			throw error
 		})
 }
+
+export const AcceptBidRequest = (bidId: any) => {
+	return Promise.resolve(
+		axios.post(`${Config.SERVER_URL_TEST}/api/user/accept-bid-request`, {
+			bidId,
+		})
+	)
+		.then(res => res.data)
+		.catch(error => {
+			throw error
+		})
+}
