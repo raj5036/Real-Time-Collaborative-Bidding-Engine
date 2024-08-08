@@ -8,16 +8,17 @@ import { UserContext } from '../../context/UserContext/UserContext';
 import { IUser, IUserContext } from '../../context/UserContext/Types';
 import { Link } from 'react-router-dom';
 import { CommonUtils } from '../../utils/CommonUtils';
-import { LocalStorageKeys } from '../../utils/Constants';
+import { LocalStorageKeys, USER_TYPES } from '../../utils/Constants';
 import { toast } from 'react-toastify';
 import MenuIcon from '@mui/icons-material/Menu';
 import SidebarContext from '../../context/SidebarContext/SidebarContext';
 import { ISideBarContext } from '../../context/SidebarContext/Types';
 import AppRoutes from '../../routes/routes';
+import Notification from '../Notification/Notification';
 
 const Header = () => {
 	const theme = useTheme()
-	const { setUser } = useContext(UserContext) as IUserContext
+	const { user, setUser } = useContext(UserContext) as IUserContext
 	const { setSidebarOpen } = useContext(SidebarContext) as ISideBarContext
 
 	const handleLogout = () => {
@@ -28,7 +29,6 @@ const Header = () => {
 	}
 
 	const handleOpenSidebar = () => {
-		console.log("open sidebar")
 		setSidebarOpen(true)
 	}
 	
@@ -48,6 +48,7 @@ const Header = () => {
 				</HeaderStyles.AppName>
 			</HeaderStyles.AppNameContainer>
 			<Box className="header-right">
+				{user.role === USER_TYPES.BIDDER && <Notification />}
 				<ToggleColorMode />
 				<Button
 					variant='contained'

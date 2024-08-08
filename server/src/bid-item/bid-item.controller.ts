@@ -1,3 +1,4 @@
+import { BidItemGateway } from './bid-item.gateway';
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { BidItemService } from './bid-item.service';
 import { CreateBidDTO, DeleteBulkDTO } from './dto';
@@ -8,11 +9,16 @@ import { BidCreatorGuard } from 'src/user/guard';
 @UseGuards(JWTGuard, BidCreatorGuard)
 @Controller('bid-item')
 export class BidItemController {
-	constructor (private bidItemService: BidItemService) {}
+	constructor (
+		private readonly bidItemService: BidItemService,
+		private readonly bidItemGateway: BidItemGateway
+	) {}
 
 	@Post('create')
-	createBid (@Body() dto: CreateBidDTO, @GetUser('id') userId: string) {
-		return this.bidItemService.createBid(dto, userId);
+	async createBid (@Body() dto: CreateBidDTO, @GetUser('id') userId: string) {
+		const response = await this.bidItemService.createBid(dto, userId);
+		this.bidItemGateway.server.emit("BidCreated", response);
+		return response;
 	}
 
 	@Get('get-all-by-user')

@@ -19,6 +19,7 @@ export const HeaderStyles = {
 
 			'& .header-right': {
 				display: 'flex',
+				alignItems: 'center',
 				marginRight: theme.spacing(3),
 
 				'& .logout-button': {
