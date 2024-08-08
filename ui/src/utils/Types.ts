@@ -15,3 +15,5 @@ export type IBidItem = {
 	description?: string,
 	price: number,
 }
+
+export type IBidStatus = "active" | "expired" | "closed"

@@ -248,7 +248,14 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     </Toolbar>
   );
 }
-export default function CustomTable() {
+
+type CustomTableProps = {
+	headCells: any[]
+	rows: any[]
+}
+
+const CustomTable: React.FC<CustomTableProps> = () => {
+
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
   const [selected, setSelected] = React.useState<readonly number[]>([]);
@@ -408,3 +415,5 @@ export default function CustomTable() {
     </Box>
   );
 }
+
+export default CustomTable
