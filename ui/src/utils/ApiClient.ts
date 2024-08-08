@@ -89,3 +89,13 @@ export const AcceptBidRequest = (bidId: any) => {
 			throw error
 		})
 }
+
+export const GetCurrentAcceptedBids = () => {
+	return Promise.resolve(
+		axios.get(`${Config.SERVER_URL_TEST}/api/user/accepted-bids`)
+	)
+		.then(res => res.data)
+		.catch(error => {
+			throw error
+		})
+}
