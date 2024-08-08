@@ -1,9 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { GetCurrentAcceptedBids } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { API_ERROR_MESSAGES } from "../../utils/Constants";
+import { Typography } from "@mui/material";
+import { PageContainer } from "./UsersCurrentBidsPageStyles";
+import { IBid } from "../../utils/Types";
+import CustomTable from "../../commonComponents/CustomTable/CustomTable";
 
 const UsersCurrentBidsPage: React.FC = () => {
+	const [bids, setBids] = useState<IBid[]>([])
+
 	useEffect(() => {
 		fetchAcceptedBids()
 	}, [])
@@ -13,6 +19,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 			const result = await GetCurrentAcceptedBids()
 			if (result.success) {
 				console.log(result)
+				setBids(result.bids)
 			}
 		} catch (err) {
 			console.log(err)
@@ -20,9 +27,11 @@ const UsersCurrentBidsPage: React.FC = () => {
 		}
 	}
 	return (
-		<React.Fragment>
-			Users Current Bids Page
-		</React.Fragment>
+		<PageContainer>
+			<Typography variant="h5">Your Current Ongoing Bids</Typography>
+			{!bids.length && <Typography variant="body1">You have not accepted any bids so far {":("}</Typography>}
+			<CustomTable />
+		</PageContainer>
 	)
 }
 
