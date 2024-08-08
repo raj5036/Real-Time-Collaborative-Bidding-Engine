@@ -21,6 +21,7 @@ import { deleteBidsBulk, GetAllBidsByUser } from '../../utils/ApiClient';
 import { toast } from 'react-toastify';
 import { IBidItem } from '../../utils/Types';
 import { CommonUtils } from '../../utils/CommonUtils';
+import { API_ERROR_MESSAGES } from '../../utils/Constants';
 
 interface Data {
 	dbObjectId: string,
@@ -205,11 +206,12 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 interface EnhancedTableToolbarProps {
   selectedItems: readonly number[],
-  rows: Data[]
+  rows: Data[],
+  refreshData: () => void
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { selectedItems, rows } = props;
+  const { selectedItems, rows, refreshData } = props;
 
   const handleDeleteBids = async () => {
 	console.log(selectedItems, rows)
@@ -221,6 +223,9 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 		console.log(result)
 		if (result.success) {
 			toast.success(result.message)
+			refreshData()
+		} else {
+			toast.error(result.message || "Something went wrong, please try again")
 		}
 	} catch (error) {
 		console.log(error)
@@ -297,10 +302,40 @@ export default function ListAddBidsPage() {
 					return result
 				})
 			} else {
-				toast.error("Something went wrong! Please refresh the Page")
+				toast.error(API_ERROR_MESSAGES.INTERNAL_SERVER_ERROR)
 			}
 		})()
 	}, [])
+
+	const fetchRowData = async () => {
+		try {
+			const result = await GetAllBidsByUser()
+			if (result.success) {
+				setBids(() => {
+					const newRows = result.bids.map((b: BidData, i: number) => createData(
+						b.id,
+						i + 1, 
+						b.title, 
+						CommonUtils.parseDate(b.startTime), 
+						CommonUtils.parseTime(b.startTime), 
+						CommonUtils.parseDate(b.endTime), 
+						CommonUtils.parseTime(b.endTime)
+					))
+					setRows(newRows)
+					console.log(bids)
+					return result
+				})
+			} else {
+				toast.error(API_ERROR_MESSAGES.INTERNAL_SERVER_ERROR)
+			}
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	const refreshData = async () => {
+		await fetchRowData()
+	}
 
 	const handleRequestSort = (
 		event: React.MouseEvent<unknown>,
@@ -325,16 +360,16 @@ export default function ListAddBidsPage() {
 		let newSelected: readonly number[] = [];
 
 		if (selectedIndex === -1) {
-		newSelected = newSelected.concat(selected, id);
+			newSelected = newSelected.concat(selected, id);
 		} else if (selectedIndex === 0) {
-		newSelected = newSelected.concat(selected.slice(1));
+			newSelected = newSelected.concat(selected.slice(1));
 		} else if (selectedIndex === selected.length - 1) {
-		newSelected = newSelected.concat(selected.slice(0, -1));
+			newSelected = newSelected.concat(selected.slice(0, -1));
 		} else if (selectedIndex > 0) {
-		newSelected = newSelected.concat(
-			selected.slice(0, selectedIndex),
-			selected.slice(selectedIndex + 1),
-		);
+			newSelected = newSelected.concat(
+				selected.slice(0, selectedIndex),
+				selected.slice(selectedIndex + 1),
+			);
 		}
 		setSelected(newSelected);
 	};
@@ -366,7 +401,7 @@ export default function ListAddBidsPage() {
 	return (
 		<Box sx={{ width: '100%' }}>
 		<Paper sx={{ width: '100%', mb: 2 }}>
-			<EnhancedTableToolbar selectedItems={selected} rows={rows}/>
+			<EnhancedTableToolbar selectedItems={selected} rows={rows} refreshData={refreshData}/>
 			<TableContainer>
 			<Table
 				sx={{ minWidth: 750 }}

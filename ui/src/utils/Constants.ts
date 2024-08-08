@@ -8,3 +8,7 @@ export const LocalStorageKeys = {
 	USER_DETAILS: "user_details"
 }
 
+export const API_ERROR_MESSAGES = {
+	INTERNAL_SERVER_ERROR: "Something went wrong! Please try again"
+}
+

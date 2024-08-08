@@ -22,6 +22,7 @@ export class BidItemService {
 
 			return {
 				success: true,
+				message: "Bid created successfully",
 				newBid
 			};
 		} catch (error) {

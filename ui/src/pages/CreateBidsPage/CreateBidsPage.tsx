@@ -9,6 +9,9 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { toast } from "react-toastify"
 import { CreateBid } from "../../utils/ApiClient"
 import { IBidItem } from "../../utils/Types"
+import { API_ERROR_MESSAGES } from "../../utils/Constants"
+import { useNavigate } from "react-router-dom"
+import AppRoutes from "../../routes/routes"
 
 const CreateBidsPage: React.FC = () => {
 	const [title, setTitle] = useState<string>("")
@@ -47,6 +50,8 @@ const CreateBidsPage: React.FC = () => {
 		}
 	}, [currentBidItem])
 
+	const navigate = useNavigate()
+
 	const handleAddBidItem = () => {
 		setBidItems(prevBidItems => {
 			const temp = currentBidItem
@@ -78,10 +83,11 @@ const CreateBidsPage: React.FC = () => {
 			})
 			console.log("result", result)
 			if (result.success) {
-				toast.success("Bid created successfully")
+				toast.success(result.message)
+				navigate(AppRoutes.ALL_BIDS)
 			}
 		} catch (error) {
-			toast.error("Something went wrong! Please try again")
+			toast.error(API_ERROR_MESSAGES.INTERNAL_SERVER_ERROR)
 		}
 	}
 
