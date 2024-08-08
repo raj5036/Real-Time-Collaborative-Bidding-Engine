@@ -1,4 +1,5 @@
 import {
+	useContext,
 	useState
 } from 'react'
 
@@ -22,6 +23,8 @@ import { toast } from 'react-toastify';
 import { CommonUtils } from '../../utils/CommonUtils';
 import { UserType } from '../../utils/Types';
 import AppRoutes from '../../routes/routes';
+import { UserContext } from '../../context/UserContext/UserContext';
+import { IUserContext } from '../../context/UserContext/Types';
 
 
 const SignUp = () => {
@@ -30,6 +33,8 @@ const SignUp = () => {
 	const [email, setEmail] = useState<string>("")
 	const [password, setPassword] = useState<string>("")
 	const [role, setRole] = useState<UserType>("")
+
+	const { setUser } = useContext(UserContext) as IUserContext
 
 	const navigate = useNavigate()
 
@@ -47,9 +52,10 @@ const SignUp = () => {
 				}
 			} else {
 				toast.success("Signup Successful")
+				setUser(result.user)
 				CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_TOKEN, result.token)
 				CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_DETAILS, JSON.stringify(result.user))
-				navigate(AppRoutes.DASHBOARD)
+				navigate(AppRoutes.CREATE_BID)
 			}
 		} catch (error) {
 			console.error(error)

@@ -13,6 +13,7 @@ import AppRoutes from "../../routes/routes"
 const Sidebar: React.FC = () => {
 	const { user } = useContext(UserContext) as IUserContext
 	const { sidebarOpen, setSidebarOpen } = useContext(SidebarContext) as ISideBarContext
+	console.log("user in sidebar", user)
 
 	const drawerItems = user.role === USER_TYPES.BID_CREATOR ? [
 		{text: "Create New Bid", link: AppRoutes.CREATE_BID},
