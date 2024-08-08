@@ -1,7 +1,8 @@
-import { Box, Divider, Fade, List, ListItem, Paper, Popper, Stack, Typography } from "@mui/material";
-import React from "react";
+import { Box, Button, capitalize, Divider, Fade, List, ListItem, Popper, Stack, Typography } from "@mui/material";
+import React, { useState } from "react";
 import { IBid } from "../../utils/Types";
 import { CommonUtils } from "../../utils/CommonUtils";
+import { PopperPaperWrapper } from "./NotificationPopperStyles";
 
 type ComponentProps = {
 	open: boolean,
@@ -10,6 +11,19 @@ type ComponentProps = {
 }
 
 const NotificationPopper: React.FC<ComponentProps> = ({ open, anchorEl, newBids }) => {
+	const [showAcceptButton, setShowAcceptButton] = useState<any>({})
+
+	const handleListMouseEnter = (index: number) => () => {
+		setShowAcceptButton((prevState: any) => {
+			return {...prevState, [index]: true}
+		})
+	}
+	const handleListMouseLeave = (index: number) => () => {
+		setShowAcceptButton((prevState: any) => {
+			return {...prevState, [index]: false}
+		})
+	}
+
 	return (
 		<Popper
 			sx={{ zIndex: 1200 }}
@@ -20,30 +34,46 @@ const NotificationPopper: React.FC<ComponentProps> = ({ open, anchorEl, newBids 
       >
 		{({ TransitionProps }) => (
 			<Fade {...TransitionProps} timeout={350}>
-				<Paper>
-					<Typography sx={{ p: 2 }}>New Bids created for You!</Typography>
-					<List>
+				<PopperPaperWrapper>
+					<Typography className="popper-title">New Bids created for You!</Typography>
+					<List className="popper-list">
 						{newBids.map((bid, index) => (
-							<React.Fragment key={bid.title + index + "parent"}>
+							<Box 
+								key={bid.title + index + "parent"} 
+								className="popper-list-item"
+								onMouseEnter={handleListMouseEnter(index)}
+								onMouseLeave={handleListMouseLeave(index)}
+							>
 								<ListItem key={bid.title + index + "list-item"}>
-									<Stack direction={"column"} spacing={1}>
-										<Box>
-											<Typography variant="body1">Your bid for </Typography>
-											<Typography variant="body2" className="bid-title">{bid.title}</Typography>
-										</Box>
-										<Typography variant="caption" className="bid-title">
+									<Stack direction={"column"}>
+										<Stack direction={"row"} spacing={1} alignItems={"center"}>
+											<Typography variant="body1">Start your bid for </Typography>
+											<Typography 
+												variant="body2" 
+												fontWeight={700} 
+												className="bid-title"
+											>
+												{capitalize(bid.title)}
+											</Typography>
+										</Stack>
+										<Typography variant="caption">
 											Bid end on 
 											{" " + CommonUtils.parseDate(bid.endTime) + " "} 
 											at {" " + CommonUtils.parseTime(bid.endTime)}, 
 											Hurry up!
 										</Typography>
+										{showAcceptButton[index] && <Button
+											variant="contained"
+											size="small"
+											color="success"
+										>Accept</Button>}
 									</Stack>
 								</ListItem>
 								{index !== newBids.length - 1 && <Divider key={bid.title + index + "divider"}/>}
-							</React.Fragment>
+							</Box>
 						))}
 					</List>
-				</Paper>
+				</PopperPaperWrapper>
 			</Fade>
         )}
       </Popper>
