@@ -86,7 +86,11 @@ const UsersCurrentBidsPage: React.FC = () => {
 
 	useEffect(() => {
 		fetchAcceptedBids()
+	}, [])
+
+	useEffect(() => {
 		if (bids.length) {
+			console.log("Here in bids", bids)
 			createRowData()
 		}
 	}, [bids])

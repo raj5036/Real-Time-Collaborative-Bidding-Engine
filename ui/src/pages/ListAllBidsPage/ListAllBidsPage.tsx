@@ -390,12 +390,12 @@ export default function ListAddBidsPage() {
 				aria-labelledby="tableTitle"
 			>
 				<EnhancedTableHead
-				numSelected={selected.length}
-				order={order}
-				orderBy={orderBy}
-				onSelectAllClick={handleSelectAllClick}
-				onRequestSort={handleRequestSort}
-				rowCount={rows.length}
+					numSelected={selected.length}
+					order={order}
+					orderBy={orderBy}
+					onSelectAllClick={handleSelectAllClick}
+					onRequestSort={handleRequestSort}
+					rowCount={rows.length}
 				/>
 				<TableBody>
 				{visibleRows.map((row, index) => {
