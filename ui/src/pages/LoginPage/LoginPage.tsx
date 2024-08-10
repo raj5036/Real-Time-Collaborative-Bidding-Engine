@@ -12,7 +12,7 @@ import {
 	Typography 
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { LoginUser } from '../../utils/ApiClient';
+import { GetCurrentAcceptedBids, LoginUser } from '../../utils/ApiClient';
 import { LoginController } from './LoginPageStyles';
 import { CommonUtils } from '../../utils/CommonUtils';
 import { LocalStorageKeys, USER_TYPES } from '../../utils/Constants';
@@ -20,6 +20,8 @@ import { toast } from 'react-toastify';
 import { UserContext } from '../../context/UserContext/UserContext';
 import { IUserContext } from '../../context/UserContext/Types';
 import AppRoutes from '../../routes/routes';
+import BidderActiveBidsContext from '../../context/BidderActiveBids/BidderActiveBidsContext';
+import { IBidderActiveBidsContextType } from '../../context/BidderActiveBids/Types';
 
 
 
@@ -29,6 +31,7 @@ export default function Login() {
   const [loginDisabled, setLoginDisabled] = useState<boolean>(true)
 
   const { setUser } = useContext(UserContext) as IUserContext
+  const bidderActiveBids = useContext(BidderActiveBidsContext) as IBidderActiveBidsContextType
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -38,6 +41,15 @@ export default function Login() {
       setLoginDisabled(true)
     }
   }, [email, password])
+
+  const setBidderActiveBids = async () => {
+    try {
+      const result = await GetCurrentAcceptedBids()
+      console.log(result)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
 	const handleSubmit = async () => {
     try {
@@ -53,7 +65,8 @@ export default function Login() {
       toast.success("Login Successful")
       if (result.user.role === USER_TYPES.BID_CREATOR) {
         navigate(AppRoutes.CREATE_BID)
-      } else {
+      } else { // BIDDER
+        setBidderActiveBids()
         navigate(AppRoutes.BIDS_LEADERBOARD)
       }
     } catch (error) {

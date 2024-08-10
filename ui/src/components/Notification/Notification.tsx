@@ -14,30 +14,7 @@ import { IBidderActiveBidsContextType } from "../../context/BidderActiveBids/Typ
 
 
 const Notification: React.FC = () => {
-	const [newBids, setNewBids] = useState<IBid[]>([
-		// {
-		// 	title: "test1",
-		// 	startTime: "2014-08-18 21:11:54",
-		// 	endTime: "2014-08-18 21:11:54",
-		// 	bidItems: [
-		// 		{
-		// 			title: "item 1",
-		// 			price: 0
-		// 		}
-		// 	]
-		// },
-		// {
-		// 	title: "test2",
-		// 	startTime: "2014-08-18 21:11:54",
-		// 	endTime: "2014-08-18 21:11:54",
-		// 	bidItems: [
-		// 		{
-		// 			title: "item 1",
-		// 			price: 0
-		// 		}
-		// 	]
-		// }
-	])
+	const [newBids, setNewBids] = useState<IBid[]>([])
 	const [popperOpen, setPopperOpen] = useState<boolean>(false)
 	const notificationIconRef = useRef<HTMLElement>(null)
 
@@ -65,6 +42,17 @@ const Notification: React.FC = () => {
 			const result = await AcceptBidRequest(bid.id)
 			if (result.success) {
 				toast.success(result.message)
+				bidderActiveBids.setActiveBids([
+					...bidderActiveBids.activeBids,
+					{ 
+						bid, 
+						bidStatus: "active", 
+						winnerUserId: "",
+						winnerName: "",
+						currentBidPrice: 0,
+						highestBidPrice: 0
+					}
+				])
 			} else {
 				toast.error(result.message || API_ERROR_MESSAGES.INTERNAL_SERVER_ERROR)
 				return

@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { DeleteActiveBidsByBidders, GetCurrentAcceptedBids } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { API_ERROR_MESSAGES } from "../../utils/Constants";
 import { Alert, Snackbar, Typography } from "@mui/material";
 import { PageContainer, TableWrapper } from "./UsersCurrentBidsPageStyles";
-import { IBid, IBidStatus } from "../../utils/Types";
+import { IActiveBid, IActiveBidListRowData, IBid } from "../../utils/Types";
 import CustomTable from "../../commonComponents/CustomTable/CustomTable";
 import { CommonUtils } from "../../utils/CommonUtils";
+import BidderActiveBidsContext from "../../context/BidderActiveBids/BidderActiveBidsContext";
+import { IBidderActiveBidsContextType } from "../../context/BidderActiveBids/Types";
 
 const headCells = [
 	{
@@ -51,43 +53,39 @@ const headCells = [
 	},
 	{
 		id: 'basePrice',
-		numeric: false,
+		numeric: true,
 		label: 'Base Price',
 	},
 	{
 		id: 'highestBidPrice',
-		numeric: false,
+		numeric: true,
 		label: 'Highest Bid Price',
 	},
 	{
 		id: 'yourBid',
-		numeric: false,
+		numeric: true,
 		label: 'Your Bid amount',
 	}
 ]
 
-type RowData = {
-	id: string
-	bidTitle: string
-	startDate: string
-	startTime: string
-	endDate: string
-	endTime: string
-	bidItems: string
-	bidStatus: IBidStatus
-	basePrice: string
-	highestBidPrice: string
-	yourBid: string
-}
 
 const UsersCurrentBidsPage: React.FC = () => {
 	const [bids, setBids] = useState<IBid[]>([])
-	const [tableRows, setTableRows] = useState<RowData[]>([])
+	const [tableRows, setTableRows] = useState<IActiveBidListRowData[]>([])
 	const [showDeleteSnackbar, setShowDeleteSnackbar] = useState<boolean>(false)
-
+	const bidderActiveBids = useContext(BidderActiveBidsContext) as IBidderActiveBidsContextType
+	
 	useEffect(() => {
 		fetchAcceptedBids()
 	}, [])
+
+	useEffect(() => {
+		console.log("useEffect in UsersCurrentBidsPage")
+		const rows = CommonUtils.getTableRowsForActiveBidsByBidder(bidderActiveBids.activeBids)
+
+		setTableRows(rows)
+	}, [bidderActiveBids.activeBids])
+	
 
 	const fetchAcceptedBids = async () => {
 		try {
@@ -95,7 +93,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 			if (result.success) {
 				console.log(result)
 				setBids(() => {
-					const rows: RowData[] = createRowData(result.bids)
+					const rows: IActiveBidListRowData[] = createRowData(result.bids)
 					setTableRows(rows)
 					return result.bids
 				})
@@ -108,7 +106,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 
 	const createRowData = (bidsData: IBid[]) => {
 		const rows = bidsData.map((bid, index) => {
-			const rowData: RowData = {
+			const rowData: IActiveBidListRowData = {
 				id: bid.id || index.toString(),
 				bidTitle: bid.title,
 				startDate: CommonUtils.parseDate(bid.startTime),
@@ -117,9 +115,9 @@ const UsersCurrentBidsPage: React.FC = () => {
 				endTime: CommonUtils.parseTime(bid.endTime),
 				bidItems: bid.bidItems.length.toString(),
 				bidStatus: 'closed',
-				basePrice: '30',
-				highestBidPrice: '2',
-				yourBid: 'ok'
+				basePrice: 30,
+				highestBidPrice: 2,
+				yourBid: 123
 			}
 
 			return rowData
