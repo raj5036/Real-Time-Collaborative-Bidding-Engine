@@ -119,31 +119,36 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 }
 
 interface EnhancedTableToolbarProps {
-  numSelected: number;
+  selectedItems: readonly number[];
+  handleRowsDelete: (selectedItems: readonly number[]) => void;
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected } = props;
+  const { selectedItems, handleRowsDelete } = props;
+  
+  const handleDelete = () => {
+    handleRowsDelete(selectedItems);
+  }
 
   return (
     <Toolbar
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
+        ...(selectedItems.length > 0 && {
           bgcolor: (theme) =>
             alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
         }),
       }}
     >
-      {numSelected > 0 ? (
+      {selectedItems.length > 0 ? (
         <Typography
           sx={{ flex: '1 1 100%' }}
           color="inherit"
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {selectedItems.length} selected
         </Typography>
       ) : (
         <Typography
@@ -155,9 +160,9 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           Nutrition
         </Typography>
       )}
-      {numSelected > 0 ? (
+      {selectedItems.length > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -175,9 +180,10 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 type CustomTableProps = {
 	headCells: any[]
 	rows: any[]
+  handleRowsDelete: any
 }
 
-const CustomTable: React.FC<CustomTableProps> = ({headCells, rows}) => {
+const CustomTable: React.FC<CustomTableProps> = ({headCells, rows, handleRowsDelete}) => {
 
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<any>('calories');
@@ -251,7 +257,7 @@ const CustomTable: React.FC<CustomTableProps> = ({headCells, rows}) => {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar selectedItems={selected} handleRowsDelete={handleRowsDelete}/>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

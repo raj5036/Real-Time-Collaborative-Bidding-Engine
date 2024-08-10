@@ -130,12 +130,21 @@ const UsersCurrentBidsPage: React.FC = () => {
 		return rows
 	}
 
+	const handleActiveBidsDelete = (deleteIds: number[]) => {
+		console.log("here in delete bid", deleteIds)
+	}
+
 	return (
 		<PageContainer>
 			<Typography variant="h5">Your Current Ongoing Bids</Typography>
 			{!bids.length && <Typography variant="body1">You have not accepted any bids so far {":("}</Typography>}
 			<TableWrapper>
-				{tableRows.length && <CustomTable headCells={headCells} rows={tableRows}/>}
+				{tableRows.length && 
+					<CustomTable 
+						headCells={headCells} 
+						rows={tableRows} 
+						handleRowsDelete={handleActiveBidsDelete} 
+					/>}
 			</TableWrapper>
 		</PageContainer>
 	)
