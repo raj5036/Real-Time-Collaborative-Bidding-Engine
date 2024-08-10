@@ -87,41 +87,42 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
   return stabilizedThis.map((el) => el[0]);
 }
 
-interface HeadCell {
-  id: keyof Data;
-  label: string;
-  numeric: boolean;
-}
+// interface HeadCell {
+//   id: keyof Data;
+//   label: string;
+//   numeric: boolean;
+// }
 
-const headCells: readonly HeadCell[] = [
-  {
-    id: 'name',
-    numeric: false,
-    label: 'Dessert (100g serving)',
-  },
-  {
-    id: 'calories',
-    numeric: true,
-    label: 'Calories',
-  },
-  {
-    id: 'fat',
-    numeric: true,
-    label: 'Fat (g)',
-  },
-  {
-    id: 'carbs',
-    numeric: true,
-    label: 'Carbs (g)',
-  },
-  {
-    id: 'protein',
-    numeric: true,
-    label: 'Protein (g)',
-  },
-];
+// const headCells: readonly HeadCell[] = [
+//   {
+//     id: 'name',
+//     numeric: false,
+//     label: 'Dessert (100g serving)',
+//   },
+//   {
+//     id: 'calories',
+//     numeric: true,
+//     label: 'Calories',
+//   },
+//   {
+//     id: 'fat',
+//     numeric: true,
+//     label: 'Fat (g)',
+//   },
+//   {
+//     id: 'carbs',
+//     numeric: true,
+//     label: 'Carbs (g)',
+//   },
+//   {
+//     id: 'protein',
+//     numeric: true,
+//     label: 'Protein (g)',
+//   },
+// ];
 
 interface EnhancedTableProps {
+  headCells: any[];
   numSelected: number;
   onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -131,7 +132,7 @@ interface EnhancedTableProps {
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
+  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headCells } =
     props;
   const createSortHandler =
     (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
@@ -237,7 +238,7 @@ type CustomTableProps = {
 	rows: any[]
 }
 
-const CustomTable: React.FC<CustomTableProps> = ({rows}) => {
+const CustomTable: React.FC<CustomTableProps> = ({headCells, rows}) => {
 
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
@@ -303,11 +304,12 @@ const CustomTable: React.FC<CustomTableProps> = ({rows}) => {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const visibleRows = React.useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
+    () =>{
+      console.log("rows here", rows)
+      return stableSort(rows, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
-      ),
+    )},
     [order, orderBy, page, rowsPerPage],
   );
 
@@ -328,6 +330,7 @@ const CustomTable: React.FC<CustomTableProps> = ({rows}) => {
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
+              headCells={headCells}
             />
             <TableBody>
               {visibleRows.map((row, index) => {

@@ -91,7 +91,9 @@ const UsersCurrentBidsPage: React.FC = () => {
 	useEffect(() => {
 		if (bids.length) {
 			console.log("Here in bids", bids)
-			createRowData()
+			const tableRows: RowData[] = createRowData()
+			console.log("Here in tableRows", tableRows)
+			setTableRows(tableRows)
 		}
 	}, [bids])
 
@@ -127,7 +129,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 			return rowData
 		})
 
-		setTableRows(prevState => [...prevState, ...rows])
+		return rows
 	}
 
 	return (
@@ -135,7 +137,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 			<Typography variant="h5">Your Current Ongoing Bids</Typography>
 			{!bids.length && <Typography variant="body1">You have not accepted any bids so far {":("}</Typography>}
 			<TableWrapper>
-				<CustomTable rows={tableRows} headCells={headCells}/>
+				<CustomTable headCells={headCells} rows={tableRows}/>
 			</TableWrapper>
 		</PageContainer>
 	)
