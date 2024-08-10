@@ -209,7 +209,7 @@ const CustomTable: React.FC<CustomTableProps> = ({headCells, rows, handleRowsDel
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
+  const handleClick = (event: React.MouseEvent<unknown>, id: any) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected: readonly number[] = [];
 
@@ -238,7 +238,7 @@ const CustomTable: React.FC<CustomTableProps> = ({headCells, rows, handleRowsDel
   };
 
 
-  const isSelected = (id: number) => selected.indexOf(id) !== -1;
+  const isSelected = (id: any) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -275,17 +275,17 @@ const CustomTable: React.FC<CustomTableProps> = ({headCells, rows, handleRowsDel
             />
             <TableBody>
               {visibleRows.map((row, index: number) => {
-                const isItemSelected = isSelected(Number(row.id));
+                const isItemSelected = isSelected(row.id);
                 const rowKeys = Object.keys(row)
 
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, Number(row.id))}
+                    onClick={(event) => handleClick(event, row.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={Number(row.id) + index}
+                    key={row.id}
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
@@ -295,8 +295,9 @@ const CustomTable: React.FC<CustomTableProps> = ({headCells, rows, handleRowsDel
                         checked={isItemSelected}
                       />
                     </TableCell>
+                    <CustomTableCell align="center">{index + 1}</CustomTableCell>
                     {rowKeys.map((key: string) => {
-                      return <CustomTableCell key={key} align="center">{row[key]}</CustomTableCell>
+                      return key !== 'id' && <CustomTableCell key={key} align="center">{row[key]}</CustomTableCell>
                     })}
                   </TableRow>
                 );

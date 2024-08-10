@@ -67,7 +67,7 @@ const headCells = [
 ]
 
 type RowData = {
-	id: number
+	id: string
 	bidTitle: string
 	startDate: string
 	startTime: string
@@ -111,7 +111,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 	const createRowData = () => {
 		const rows = bids.map((bid, index) => {
 			const rowData: RowData = {
-				id: index + 1,
+				id: bid.id || index.toString(),
 				bidTitle: bid.title,
 				startDate: CommonUtils.parseDate(bid.startTime),
 				startTime: CommonUtils.parseTime(bid.startTime),
