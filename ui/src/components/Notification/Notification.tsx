@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import { Badge } from "@mui/material"
 import { CustomNotificationsIcon } from "./NotificationStyles"
 import socket, { SocketEvents } from "../../utils/SocketClient"
@@ -9,6 +9,8 @@ import AppRoutes from "../../routes/routes"
 import { AcceptBidRequest } from "../../utils/ApiClient"
 import { toast } from "react-toastify"
 import { API_ERROR_MESSAGES } from "../../utils/Constants"
+import BidderActiveBidsContext from "../../context/BidderActiveBids/BidderActiveBidsContext"
+import { IBidderActiveBidsContextType } from "../../context/BidderActiveBids/Types"
 
 
 const Notification: React.FC = () => {
@@ -50,6 +52,7 @@ const Notification: React.FC = () => {
 		}
 	}, [])
 
+	const bidderActiveBids = useContext(BidderActiveBidsContext) as IBidderActiveBidsContextType
 	const navigate = useNavigate()
 
 	const handleIconClick = () => {

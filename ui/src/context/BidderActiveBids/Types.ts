@@ -1,6 +1,6 @@
-import { IBid } from "../../utils/Types"
+import { ActiveBid } from "../../utils/Types"
 
 export type IBidderActiveBidsContextType = {
-	activeBids: IBid[];
-	setActiveBids: React.Dispatch<React.SetStateAction<IBid[]>>;
+	activeBids: ActiveBid[];
+	setActiveBids: React.Dispatch<React.SetStateAction<ActiveBid[]>>;
 }

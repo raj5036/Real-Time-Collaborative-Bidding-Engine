@@ -1,9 +1,9 @@
 import { PropsWithChildren, useState } from "react";
 import BidderActiveBidsContext from "./BidderActiveBidsContext";
-import { IBid } from "../../utils/Types";
+import { ActiveBid } from "../../utils/Types";
 
 const BidderActiveBidsContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
-	const [activeBids, setActiveBids] = useState<IBid[]>([] as IBid[])
+	const [activeBids, setActiveBids] = useState<ActiveBid[]>([] as ActiveBid[])
 	
 	return (
 		<BidderActiveBidsContext.Provider value={{activeBids, setActiveBids}}>

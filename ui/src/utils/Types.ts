@@ -17,3 +17,12 @@ export type IBidItem = {
 }
 
 export type IBidStatus = "active" | "expired" | "closed"
+
+export type ActiveBid = {
+	bid: IBid,
+	bidStatus: IBidStatus
+	highestBidPrice: number
+	currentBidPrice: number
+	winnerUserId: string
+	winnerName: string
+}
