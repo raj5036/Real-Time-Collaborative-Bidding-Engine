@@ -89,20 +89,16 @@ const UsersCurrentBidsPage: React.FC = () => {
 		fetchAcceptedBids()
 	}, [])
 
-	useEffect(() => {
-		if (bids.length) {
-			console.log("bids updated", bids)
-			const tableRows: RowData[] = createRowData()
-			setTableRows(tableRows)
-		}
-	}, [bids])
-
 	const fetchAcceptedBids = async () => {
 		try {
 			const result = await GetCurrentAcceptedBids()
 			if (result.success) {
 				console.log(result)
-				setBids(result.bids)
+				setBids(() => {
+					const rows: RowData[] = createRowData(result.bids)
+					setTableRows(rows)
+					return result.bids
+				})
 			}
 		} catch (err) {
 			console.log(err)
@@ -110,8 +106,8 @@ const UsersCurrentBidsPage: React.FC = () => {
 		}
 	}
 
-	const createRowData = () => {
-		const rows = bids.map((bid, index) => {
+	const createRowData = (bidsData: IBid[]) => {
+		const rows = bidsData.map((bid, index) => {
 			const rowData: RowData = {
 				id: bid.id || index.toString(),
 				bidTitle: bid.title,
