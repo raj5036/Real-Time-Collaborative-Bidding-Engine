@@ -119,6 +119,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 }
 
 interface EnhancedTableToolbarProps {
+  tableTitle: String;
   selectedItems: readonly number[];
   handleRowsDelete: (selectedItems: readonly number[]) => void;
 }
@@ -157,7 +158,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           id="tableTitle"
           component="div"
         >
-          Nutrition
+          {props.tableTitle}
         </Typography>
       )}
       {selectedItems.length > 0 ? (
@@ -178,12 +179,13 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 }
 
 type CustomTableProps = {
+  tableTitle: String
 	headCells: any[]
 	rows: any[]
   handleRowsDelete: any
 }
 
-const CustomTable: React.FC<CustomTableProps> = ({headCells, rows, handleRowsDelete}) => {
+const CustomTable: React.FC<CustomTableProps> = ({tableTitle, headCells, rows, handleRowsDelete}) => {
 
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<any>('calories');
@@ -257,7 +259,11 @@ const CustomTable: React.FC<CustomTableProps> = ({headCells, rows, handleRowsDel
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar selectedItems={selected} handleRowsDelete={handleRowsDelete}/>
+        <EnhancedTableToolbar 
+          tableTitle={tableTitle}
+          selectedItems={selected} 
+          handleRowsDelete={handleRowsDelete}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

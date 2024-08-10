@@ -91,6 +91,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 
 	useEffect(() => {
 		if (bids.length) {
+			console.log("bids updated", bids)
 			const tableRows: RowData[] = createRowData()
 			setTableRows(tableRows)
 		}
@@ -149,11 +150,11 @@ const UsersCurrentBidsPage: React.FC = () => {
 
 	return (
 		<PageContainer>
-			<Typography variant="h5">Your Current Ongoing Bids</Typography>
 			{!bids.length && <Typography variant="body1">You have not accepted any bids so far {":("}</Typography>}
 			<TableWrapper>
 				{tableRows.length > 0 && 
 					<CustomTable 
+						tableTitle={"Your Current Ongoing Bids"}
 						headCells={headCells} 
 						rows={tableRows} 
 						handleRowsDelete={handleActiveBidsDelete} 
