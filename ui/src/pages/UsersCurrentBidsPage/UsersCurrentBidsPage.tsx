@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { GetCurrentAcceptedBids } from "../../utils/ApiClient";
+import { DeleteActiveBidsByBidders, GetCurrentAcceptedBids } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { API_ERROR_MESSAGES } from "../../utils/Constants";
 import { Typography } from "@mui/material";
@@ -130,8 +130,17 @@ const UsersCurrentBidsPage: React.FC = () => {
 		return rows
 	}
 
-	const handleActiveBidsDelete = (deleteIds: number[]) => {
+	const handleActiveBidsDelete = async (deleteIds: Array<string>) => {
 		console.log("here in delete bid", deleteIds)
+		try {
+			const result = await DeleteActiveBidsByBidders(deleteIds)
+			if (result.success) {
+				toast.success(result.message)
+				fetchAcceptedBids()
+			}
+		} catch(error) {
+			console.log(error)
+		}
 	}
 
 	return (
@@ -139,7 +148,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 			<Typography variant="h5">Your Current Ongoing Bids</Typography>
 			{!bids.length && <Typography variant="body1">You have not accepted any bids so far {":("}</Typography>}
 			<TableWrapper>
-				{tableRows.length && 
+				{tableRows.length > 0 && 
 					<CustomTable 
 						headCells={headCells} 
 						rows={tableRows} 

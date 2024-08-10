@@ -99,3 +99,15 @@ export const GetCurrentAcceptedBids = () => {
 			throw error
 		})
 }
+
+export const DeleteActiveBidsByBidders = (deleteIds: Array<string>) => {
+	return Promise.resolve(
+		axios.delete(`${Config.SERVER_URL_TEST}/api/bidder/delete-active-bids`, {
+			data: { deleteIds },
+		})
+	)
+		.then(res => res.data)
+		.catch(error => {
+			throw error
+		})
+}
