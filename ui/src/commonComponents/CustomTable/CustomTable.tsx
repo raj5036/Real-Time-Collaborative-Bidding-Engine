@@ -18,6 +18,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import { CustomTableCell } from './CustomTableStyles';
  
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -80,7 +81,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        <TableCell padding="none">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -94,8 +95,8 @@ function EnhancedTableHead(props: EnhancedTableProps) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={'none'}
+            align="center"
+            padding="normal"
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -267,9 +268,8 @@ const CustomTable: React.FC<CustomTableProps> = ({headCells, rows}) => {
               headCells={headCells}
             />
             <TableBody>
-              {visibleRows.map((row, index) => {
+              {visibleRows.map((row, index: number) => {
                 const isItemSelected = isSelected(Number(row.id));
-                const labelId = `enhanced-table-checkbox-${index}`;
                 const rowKeys = Object.keys(row)
 
                 return (
@@ -279,34 +279,19 @@ const CustomTable: React.FC<CustomTableProps> = ({headCells, rows}) => {
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.id}
+                    key={Number(row.id) + index}
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell padding="checkbox">
+                    <TableCell padding="none">
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
                       />
                     </TableCell>
                     {rowKeys.map((key: string) => {
-                      return <TableCell key={key} align="right">{row[key]}</TableCell>
+                      return <CustomTableCell key={key} align="center">{row[key]}</CustomTableCell>
                     })}
-                    {/* <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.id}
-                    </TableCell>
-                    <TableCell align="right">{row.calories}</TableCell>
-                    <TableCell align="right">{row.fat}</TableCell>
-                    <TableCell align="right">{row.carbs}</TableCell>
-                    <TableCell align="right">{row.protein}</TableCell> */}
                   </TableRow>
                 );
               })}
