@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { DeleteActiveBidsByBidders, GetCurrentAcceptedBids } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { API_ERROR_MESSAGES } from "../../utils/Constants";
-import { Typography } from "@mui/material";
+import { Alert, Snackbar, Typography } from "@mui/material";
 import { PageContainer, TableWrapper } from "./UsersCurrentBidsPageStyles";
 import { IBid, IBidStatus } from "../../utils/Types";
 import CustomTable from "../../commonComponents/CustomTable/CustomTable";
@@ -83,6 +83,7 @@ type RowData = {
 const UsersCurrentBidsPage: React.FC = () => {
 	const [bids, setBids] = useState<IBid[]>([])
 	const [tableRows, setTableRows] = useState<RowData[]>([])
+	const [showDeleteSnackbar, setShowDeleteSnackbar] = useState<boolean>(false)
 
 	useEffect(() => {
 		fetchAcceptedBids()
@@ -131,16 +132,19 @@ const UsersCurrentBidsPage: React.FC = () => {
 	}
 
 	const handleActiveBidsDelete = async (deleteIds: Array<string>) => {
-		console.log("here in delete bid", deleteIds)
 		try {
 			const result = await DeleteActiveBidsByBidders(deleteIds)
 			if (result.success) {
-				toast.success(result.message)
+				setShowDeleteSnackbar(true)
 				fetchAcceptedBids()
 			}
 		} catch(error) {
 			console.log(error)
 		}
+	}
+
+	const handleSnackbarClose = () => {
+		setShowDeleteSnackbar(false)
 	}
 
 	return (
@@ -155,6 +159,16 @@ const UsersCurrentBidsPage: React.FC = () => {
 						handleRowsDelete={handleActiveBidsDelete} 
 					/>}
 			</TableWrapper>
+			<Snackbar open={showDeleteSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose}>
+				<Alert
+					onClose={handleSnackbarClose}
+					severity="success"
+					variant="filled"
+					sx={{ width: '100%' }}
+				>
+					Active bids deleted successfully
+				</Alert>
+			</Snackbar>
 		</PageContainer>
 	)
 }
