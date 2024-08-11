@@ -51,32 +51,40 @@ const headCells = [
 	{
 		id: 'basePrice',
 		numeric: true,
-		label: 'Base Price',
+		label: 'Base Price (INR)',
 	},
 	{
 		id: 'highestBidPrice',
 		numeric: true,
-		label: 'Highest Bid Price',
+		label: 'Highest Bid Price  (INR)',
 	},
 	{
 		id: 'yourBid',
 		numeric: false,
-		label: 'Your Bid amount',
+		label: 'Your Bid amount (INR)',
 	}
 ]
 
+type BidAmount = {
+	bidId: string,
+	bidAmount: number
+}
 
 const UsersCurrentBidsPage: React.FC = () => {
 	const [bids, setBids] = useState<IBid[]>([])
 	const [tableRows, setTableRows] = useState<IActiveBidListRowData[]>([])
 	const [showDeleteSnackbar, setShowDeleteSnackbar] = useState<boolean>(false)
+	const [bidAmounts, setBidAmounts] = useState<Array<BidAmount>>([])
 	
 	useEffect(() => {
 		(async ()=> {
 			const bids: IBid[] = await fetchAcceptedBids()
 			const bidIds = bids.map(bid => bid.id)
 			console.log("bidIds", bidIds)
-			console.log(await fetchBidAmounts(bidIds))
+			const result = await fetchBidAmounts(bidIds)
+			setBidAmounts(result.bidAmounts)
+			const rows: IActiveBidListRowData[] = createRowData(bids)
+			setTableRows(rows)
 		})()
 	}, [])
 	
@@ -86,11 +94,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 			const result = await GetCurrentAcceptedBids()
 			if (result.success) {
 				console.log(result)
-				setBids(() => {
-					const rows: IActiveBidListRowData[] = createRowData(result.bids)
-					setTableRows(rows)
-					return result.bids
-				})
+				setBids(result.bids)
 				return result.bids
 			}
 		} catch (err) {
@@ -104,10 +108,15 @@ const UsersCurrentBidsPage: React.FC = () => {
 			const result = await GetBidAmountsByBidder(bidIds)
 			if (result.success) {
 				console.log(result)
+				return result.bidAmounts
 			}
 		} catch(error) {
 			console.log(error)
 		}
+	}
+
+	const getCurrentBidAmount = (bidId: string): number => {
+		return bidAmounts.find(bid => bid.bidId === bidId)?.bidAmount || 0
 	}
 
 	const createRowData = (bidsData: IBid[]) => {
@@ -125,10 +134,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 				>{capitalize(bid.status)}</Typography>),
 				basePrice: 30,
 				highestBidPrice: bid.highestBidPrice || 0,
-				yourBid: (<TextField
-					size="small"
-					value={"bid.yourBid"}
-				/>)
+				yourBid: getCurrentBidAmount(bid.id)
 			}
 
 			return rowData
