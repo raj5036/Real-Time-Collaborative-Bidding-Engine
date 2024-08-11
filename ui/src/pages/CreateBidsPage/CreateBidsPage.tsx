@@ -82,7 +82,8 @@ const CreateBidsPage: React.FC = () => {
 				startTime: CommonUtils.parseTime(startTime),
 				endDate: CommonUtils.parseDate(endTime),
 				endTime: CommonUtils.parseTime(endTime),
-				bidItems: bidItems.slice(1),	
+				bidItems: bidItems.slice(1),
+				status: "active"	
 			})
 			console.log("result", result)
 			if (result.success) {

@@ -425,7 +425,6 @@ export default function ListAddBidsPage() {
 							component="th"
 							id={labelId}
 							scope="row"
-							//   padding="none"
 						>
 						{row.id}
 						</TableCell>
