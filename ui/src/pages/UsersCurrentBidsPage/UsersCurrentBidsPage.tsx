@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { DeleteActiveBidsByBidders, GetCurrentAcceptedBids } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { API_ERROR_MESSAGES } from "../../utils/Constants";
-import { Alert, capitalize, Snackbar, Typography } from "@mui/material";
+import { Alert, capitalize, Snackbar, TextField, Typography } from "@mui/material";
 import { PageContainer, TableWrapper } from "./UsersCurrentBidsPageStyles";
 import { IActiveBidListRowData, IBid } from "../../utils/Types";
 import CustomTable from "../../commonComponents/CustomTable/CustomTable";
@@ -60,7 +60,7 @@ const headCells = [
 	},
 	{
 		id: 'yourBid',
-		numeric: true,
+		numeric: false,
 		label: 'Your Bid amount',
 	}
 ]
@@ -108,7 +108,10 @@ const UsersCurrentBidsPage: React.FC = () => {
 				>{capitalize(bid.status)}</Typography>),
 				basePrice: 30,
 				highestBidPrice: bid.highestBidPrice || 0,
-				yourBid: 123
+				yourBid: (<TextField
+					size="small"
+					value={"bid.yourBid"}
+				/>)
 			}
 
 			return rowData

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { DeleteActiveBidsDTO } from './dto';
 import { UserActiveBid } from '@prisma/client';
+import { GetBidAmountDTO } from './dto/get-bid-amount.dto';
 
 @Injectable()
 export class BidderService {
@@ -26,6 +27,32 @@ export class BidderService {
 				success: true,
 				message: "Bids fetched successfully",
 				bids
+			}
+		} catch (error) {
+			return this.prisma.errorHandler(error);
+		}
+	}
+
+	async getBidAmount (userId: string, dto: GetBidAmountDTO) {
+		try {
+			const { bidIds } = dto
+			const bidAmounts = await this.prisma.userActiveBid.findMany({
+				where: {
+					userId,
+					bidId: {
+						in: bidIds
+					}
+				},
+				select: {
+					bidId: true,
+					bidAmount: true
+				}
+			})
+
+			return {
+				success: true,
+				message: 'Bid amounts fetched successfully',
+				bidAmounts
 			}
 		} catch (error) {
 			return this.prisma.errorHandler(error);

@@ -51,5 +51,5 @@ export type IActiveBidListRowData = {
 	bidStatus: any
 	basePrice: number
 	highestBidPrice: number
-	yourBid: number
+	yourBid: any
 }
