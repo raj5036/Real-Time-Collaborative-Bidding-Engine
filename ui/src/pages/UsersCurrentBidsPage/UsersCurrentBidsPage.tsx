@@ -91,11 +91,14 @@ const UsersCurrentBidsPage: React.FC = () => {
 				console.log("bidIds", bidIds)
 				const result = await fetchBidAmounts(bidIds)
 				setBidAmounts(result.bidAmounts)
-				const rows: IActiveBidListRowData[] = createRowData(bids)
-				setTableRows(rows)
 			}
 		})()
 	}, [])
+	
+	useEffect(() => {
+		const rows: IActiveBidListRowData[] = createRowData(bids)
+		setTableRows(rows)
+	}, [bidAmounts])
 	
 
 	const fetchAcceptedBids = async () => {
@@ -126,6 +129,8 @@ const UsersCurrentBidsPage: React.FC = () => {
 	}
 
 	const getCurrentBidAmount = (bidId: string): number => {
+		console.log("bidAmounts in getCurrentBidAmount", bidAmounts)
+		if (!bidAmounts || !bidAmounts.length) return 0
 		return bidAmounts.find(bid => bid.bidId === bidId)?.bidAmount || 0
 	}
 
