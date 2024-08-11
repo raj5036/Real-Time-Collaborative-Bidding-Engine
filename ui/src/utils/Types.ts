@@ -19,6 +19,7 @@ export type IBid = {
 	endDate: string,
 	endTime: string,
 	bidItems: IBidItem[],
+	status: IBidStatus
 }
 
 export type IBidItem = {

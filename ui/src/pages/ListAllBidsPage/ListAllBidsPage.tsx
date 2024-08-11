@@ -17,11 +17,11 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { visuallyHidden } from '@mui/utils';
-import { deleteBidsBulk, GetAllBidsByUser } from '../../utils/ApiClient';
+import { deleteBidsBulk, GetAllBidsByUser } from '../../utils/ApiClient'
 import { toast } from 'react-toastify';
-import { IBidItem } from '../../utils/Types';
-import { CommonUtils } from '../../utils/CommonUtils';
-import { API_ERROR_MESSAGES } from '../../utils/Constants';
+import { IBid, IBidStatus } from '../../utils/Types'
+import { API_ERROR_MESSAGES } from '../../utils/Constants'
+import { capitalize } from '@mui/material';
 
 interface Data {
 	dbObjectId: string,
@@ -31,7 +31,7 @@ interface Data {
 	startTime: string,
 	endDate: string,
 	endTime: string
-
+	status: IBidStatus
 }
 
 function createData(
@@ -41,7 +41,8 @@ function createData(
 	startDate: string,
 	startTime: string,
 	endDate: string,
-	endTime: string
+	endTime: string,
+	status: IBidStatus,
 ): Data {
   return {
 	dbObjectId,
@@ -51,17 +52,8 @@ function createData(
 	startTime,
 	endTime,
 	endDate,
+	status
   };
-}
-
-type BidData = {
-	id: string,
-	title: string,
-	startDate: string,
-	startTime: string,
-	endDate: string,
-	endTime: string,
-	bidItems: IBidItem[]
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -147,6 +139,12 @@ const headCells: readonly HeadCell[] = [
 	numeric: false,
 	disablePadding: false,
 	label: 'EndTime',
+  },
+  {
+	id: 'status',
+	numeric: false,
+	disablePadding: false,
+	label: 'Status',
   }
 ];
 
@@ -274,7 +272,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
 }
 export default function ListAddBidsPage() {
 
-	const [bids, setBids] = useState<BidData[]>([])
+	const [bids, setBids] = useState<IBid[]>([])
 	const [rows, setRows] = useState<Data[]>([])
 	const [order, setOrder] = useState<Order>('asc');
 	const [orderBy, setOrderBy] = useState<keyof Data>('title');
@@ -293,14 +291,15 @@ export default function ListAddBidsPage() {
 			const result = await GetAllBidsByUser()
 			if (result.success) {
 				setBids(() => {
-					const newRows = result.bids.map((b: BidData, i: number) => createData(
-						b.id,
+					const newRows = result.bids.map((b: IBid, i: number) => createData(
+						(b.id || i).toString(),
 						i + 1, 
 						b.title, 
-						CommonUtils.parseDate(b.startTime), 
-						CommonUtils.parseTime(b.startTime), 
-						CommonUtils.parseDate(b.endTime), 
-						CommonUtils.parseTime(b.endTime)
+						b.startDate, 
+						b.startTime, 
+						b.startDate, 
+						b.endTime,
+						b.status
 					))
 					setRows(newRows)
 					console.log(bids)
@@ -423,10 +422,10 @@ export default function ListAddBidsPage() {
 						/>
 						</TableCell>
 						<TableCell
-						component="th"
-						id={labelId}
-						scope="row"
-						//   padding="none"
+							component="th"
+							id={labelId}
+							scope="row"
+							//   padding="none"
 						>
 						{row.id}
 						</TableCell>
@@ -435,6 +434,11 @@ export default function ListAddBidsPage() {
 						<TableCell align="left">{row.startTime}</TableCell>
 						<TableCell align="left">{row.endDate}</TableCell>
 						<TableCell align="left">{row.endTime}</TableCell>
+						<TableCell align="left">
+							<Typography color={row.status === "active" ? "success.main" : "error.main"}>
+								{capitalize(row.status)}
+							</Typography>
+						</TableCell>
 					</TableRow>
 					);
 				})}
