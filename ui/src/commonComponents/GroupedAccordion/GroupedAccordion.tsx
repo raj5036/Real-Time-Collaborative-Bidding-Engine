@@ -71,7 +71,6 @@ const GroupedAccordion: React.FC<ComponentProps> = ({ items }) => {
 					<Typography variant="body2">
 						{item.description}
 					</Typography>
-					<Divider/>
 					<Typography variant="body1" fontWeight="bold">
 						Base Price :
 					</Typography>

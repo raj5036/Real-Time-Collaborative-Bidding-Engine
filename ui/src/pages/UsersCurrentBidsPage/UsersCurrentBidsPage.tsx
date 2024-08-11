@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { DeleteActiveBidsByBidders, GetBidAmountsByBidder, GetCurrentAcceptedBids } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { API_ERROR_MESSAGES } from "../../utils/Constants";
-import { Alert, capitalize, CircularProgress, Snackbar, Stack, Tooltip, Typography } from "@mui/material";
+import { Alert, Box, Button, capitalize, CircularProgress, Snackbar, Stack, TextField, Tooltip, Typography } from "@mui/material";
 import { ModalContainer, PageContainer, TableWrapper } from "./UsersCurrentBidsPageStyles";
 import { IActiveBidListRowData, IBid } from "../../utils/Types";
 import CustomTable from "../../commonComponents/CustomTable/CustomTable";
@@ -187,6 +187,12 @@ const UsersCurrentBidsPage: React.FC = () => {
 		setShowDeleteSnackbar(false)
 	}
 
+	const handleModalClose = () => {
+		setEditModalOpen(false)
+	}
+
+	const onEditBidClick = () => {}
+
 	return (
 		<PageContainer>
 			{!bids.length && <Typography variant="body1">You have not accepted any bids so far {":("}</Typography>}
@@ -209,14 +215,30 @@ const UsersCurrentBidsPage: React.FC = () => {
 					Active bids deleted successfully
 				</Alert>
 			</Snackbar>
-			<AppModal open={editModalOpen} handleClose={() => setEditModalOpen(false)}>
+			<AppModal open={editModalOpen} handleClose={handleModalClose}>
 				{editBid.title 
 					? (	<ModalContainer>
-							<Typography variant="h5" className="modal-title">
+							<Typography variant="h5" className="modal-header">
 								Edit Bid Amount for <span className="bid-title">{editBid?.title}</span>
 							</Typography>
-							<Typography variant="body1" className="bid-items">Items to bid on:</Typography>
+							<Typography variant="body1" className="bid-items-header" fontWeight={"bold"}>Items to bid on:</Typography>
 							<GroupedAccordion items={editBid.bidItems}/>
+							<Box className="bid-amount-container">
+								<Typography variant="body1" className="bid-amount-header" fontWeight={"bold"}>Edit your Bid Amount:</Typography>
+								<TextField
+									id="bid-amount"
+									type="number"
+									variant="outlined"
+								/>
+							</Box>
+							<Stack 
+								direction={"row"} justifyContent={"flex-end"} alignItems={"center"} spacing={2} className="buttons"
+							>
+								<Button 
+									className="cancel" color="error" variant="outlined" onClick={handleModalClose}
+								>Cancel</Button>
+								<Button color="success" variant="contained" onClick={onEditBidClick}>Edit</Button>
+							</Stack>
 						</ModalContainer>
 					)
 					: <CircularProgress color="info"/>
