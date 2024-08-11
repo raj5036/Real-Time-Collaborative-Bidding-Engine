@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { DeleteActiveBidsDTO } from './dto';
+import { DeleteActiveBidsDTO, EditBidAmountDTO } from './dto';
 import { UserActiveBid } from '@prisma/client';
 import { GetBidAmountDTO } from './dto/get-bid-amount.dto';
 
@@ -53,6 +53,31 @@ export class BidderService {
 				success: true,
 				message: 'Bid amounts fetched successfully',
 				bidAmounts
+			}
+		} catch (error) {
+			return this.prisma.errorHandler(error);
+		}
+	}
+
+	async editBidAmount (userId: string, dto: EditBidAmountDTO) {
+		try {
+			const { bidId, amount } = dto
+			const result = await this.prisma.userActiveBid.updateMany({
+				where: {
+					AND: [
+						{ userId },
+						{ bidId }
+					]
+				},
+				data: {
+					bidAmount: amount
+				}
+			})
+
+			return {
+				success: true,
+				message: 'Bid amount updated successfully',
+				result
 			}
 		} catch (error) {
 			return this.prisma.errorHandler(error);
