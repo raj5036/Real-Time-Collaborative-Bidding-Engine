@@ -12,6 +12,7 @@ import { IBidItem } from "../../utils/Types"
 import { API_ERROR_MESSAGES } from "../../utils/Constants"
 import { useNavigate } from "react-router-dom"
 import AppRoutes from "../../routes/routes"
+import { CommonUtils } from "../../utils/CommonUtils"
 
 const CreateBidsPage: React.FC = () => {
 	const [title, setTitle] = useState<string>("")
@@ -77,8 +78,10 @@ const CreateBidsPage: React.FC = () => {
 		try {
 			const result = await CreateBid({
 				title,
-				startTime,
-				endTime,
+				startDate: CommonUtils.parseDate(startTime),
+				startTime: CommonUtils.parseTime(startTime),
+				endDate: CommonUtils.parseDate(endTime),
+				endTime: CommonUtils.parseTime(endTime),
 				bidItems: bidItems.slice(1),	
 			})
 			console.log("result", result)

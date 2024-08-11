@@ -22,12 +22,15 @@ export class BidItemService {
 				}
 			});
 
+			console.log("newBid", newBid);
+
 			return {
 				success: true,
 				message: "Bid created successfully",
 				newBid
 			};
 		} catch (error) {
+			console.log("error triggered", error);
 			return this.prisma.errorHandler(error);
 		}
 	}

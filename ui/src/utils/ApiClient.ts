@@ -36,9 +36,9 @@ export const LoginUser = (user: {email: string, password: string}) => {
 		})
 }
 
-export const CreateBid = (bidDetails: IBid) => {
+export const CreateBid = (bid: IBid) => {
 	return Promise.resolve(
-		axios.post(`${Config.SERVER_URL_TEST}/api/bid-item/create`, bidDetails)
+		axios.post(`${Config.SERVER_URL_TEST}/api/bid-item/create`, bid)
 	)
 		.then(res => res.data)
 		.catch(error => {
