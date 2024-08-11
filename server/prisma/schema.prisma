@@ -45,9 +45,11 @@ model Bid {
   endTime         String
   bidItems        BidItem[]
 
-  winnerUserId String @db.ObjectId
-  winnerName String
-  highestBidPrice String
+  winnerUserId String @db.ObjectId @default("")
+  winnerName String @default("")
+  highestBidPrice String @default("")
+
+  status String @default("active")
   
   @@map("bids")
 }
