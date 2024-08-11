@@ -49,7 +49,7 @@ model Bid {
 
   winnerUserId String? @db.ObjectId
   winnerName String? @default("")
-  highestBidPrice String? @default("")
+  highestBidPrice Int? @default(0)
 
   status String @default("active")
   

@@ -20,6 +20,7 @@ export type IBid = {
 	endTime: string,
 	bidItems: IBidItem[],
 	status: IBidStatus
+	highestBidPrice?: number
 }
 
 export type IBidItem = {
@@ -47,7 +48,7 @@ export type IActiveBidListRowData = {
 	endDate: string
 	endTime: string
 	bidItems: string
-	bidStatus: IBidStatus
+	bidStatus: any
 	basePrice: number
 	highestBidPrice: number
 	yourBid: number

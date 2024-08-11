@@ -1,14 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DeleteActiveBidsByBidders, GetCurrentAcceptedBids } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { API_ERROR_MESSAGES } from "../../utils/Constants";
-import { Alert, Snackbar, Typography } from "@mui/material";
+import { Alert, capitalize, Snackbar, Typography } from "@mui/material";
 import { PageContainer, TableWrapper } from "./UsersCurrentBidsPageStyles";
-import { IActiveBid, IActiveBidListRowData, IBid } from "../../utils/Types";
+import { IActiveBidListRowData, IBid } from "../../utils/Types";
 import CustomTable from "../../commonComponents/CustomTable/CustomTable";
-import { CommonUtils } from "../../utils/CommonUtils";
-import BidderActiveBidsContext from "../../context/BidderActiveBids/BidderActiveBidsContext";
-import { IBidderActiveBidsContextType } from "../../context/BidderActiveBids/Types";
 
 const headCells = [
 	{
@@ -73,18 +70,10 @@ const UsersCurrentBidsPage: React.FC = () => {
 	const [bids, setBids] = useState<IBid[]>([])
 	const [tableRows, setTableRows] = useState<IActiveBidListRowData[]>([])
 	const [showDeleteSnackbar, setShowDeleteSnackbar] = useState<boolean>(false)
-	const bidderActiveBids = useContext(BidderActiveBidsContext) as IBidderActiveBidsContextType
 	
 	useEffect(() => {
 		fetchAcceptedBids()
 	}, [])
-
-	useEffect(() => {
-		console.log("useEffect in UsersCurrentBidsPage")
-		const rows = CommonUtils.getTableRowsForActiveBidsByBidder(bidderActiveBids.activeBids)
-
-		setTableRows(rows)
-	}, [bidderActiveBids.activeBids])
 	
 
 	const fetchAcceptedBids = async () => {
@@ -109,14 +98,16 @@ const UsersCurrentBidsPage: React.FC = () => {
 			const rowData: IActiveBidListRowData = {
 				id: bid.id || index.toString(),
 				bidTitle: bid.title,
-				startDate: CommonUtils.parseDate(bid.startTime),
-				startTime: CommonUtils.parseTime(bid.startTime),
-				endDate: CommonUtils.parseDate(bid.endTime),
-				endTime: CommonUtils.parseTime(bid.endTime),
+				startDate: bid.startDate,
+				startTime: bid.startTime,
+				endDate: bid.endDate,
+				endTime: bid.endTime,
 				bidItems: bid.bidItems.length.toString(),
-				bidStatus: 'closed',
+				bidStatus: (<Typography
+					color={bid.status === "active" ? "success.main" : "error.main"}
+				>{capitalize(bid.status)}</Typography>),
 				basePrice: 30,
-				highestBidPrice: 2,
+				highestBidPrice: bid.highestBidPrice || 0,
 				yourBid: 123
 			}
 
