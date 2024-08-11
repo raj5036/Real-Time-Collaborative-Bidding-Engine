@@ -122,3 +122,16 @@ export const DeleteActiveBidsByBidders = (deleteIds: Array<string>) => {
 			throw error
 		})
 }
+
+export const UpdateBidAmount = (bidId: string, amount: number) => {
+	return Promise.resolve(
+		axios.patch(`${Config.SERVER_URL_TEST}/api/bidder/edit-bid-amount`, {
+			bidId,
+			amount,
+		})
+	)
+		.then(res => res.data)
+		.catch(error => {
+			throw error
+		})
+}

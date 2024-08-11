@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { DeleteActiveBidsByBidders, GetBidAmountsByBidder, GetCurrentAcceptedBids } from "../../utils/ApiClient";
+import { DeleteActiveBidsByBidders, GetBidAmountsByBidder, GetCurrentAcceptedBids, UpdateBidAmount } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { API_ERROR_MESSAGES } from "../../utils/Constants";
 import { Alert, Box, Button, capitalize, CircularProgress, Snackbar, Stack, TextField, Tooltip, Typography } from "@mui/material";
@@ -84,17 +84,21 @@ const UsersCurrentBidsPage: React.FC = () => {
 	
 	useEffect(() => {
 		(async ()=> {
-			const bids: IBid[] = await fetchAcceptedBids()
-			if (bids.length) {
-				const bidIds = bids.map(bid => bid.id)
-				console.log("bidIds", bidIds)
-				const result = await fetchBidAmounts(bidIds)
-				const rows: IActiveBidListRowData[] = createRowData(bids, result)
-				setTableRows(rows)
-			}
+			await fetchRowData()
 		})()
 	}, [])
-	
+
+	const fetchRowData = async () => {
+		console.log("inside fetchRowData")
+		const bids: IBid[] = await fetchAcceptedBids()
+		if (bids.length) {
+			const bidIds = bids.map(bid => bid.id)
+			console.log("bidIds", bidIds)
+			const result = await fetchBidAmounts(bidIds)
+			const rows: IActiveBidListRowData[] = createRowData(bids, result)
+			setTableRows(rows)
+		}
+	} 
 
 	const fetchAcceptedBids = async () => {
 		try {
@@ -195,7 +199,20 @@ const UsersCurrentBidsPage: React.FC = () => {
 		setEditModalOpen(false)
 	}
 
-	const onEditBidClick = () => {}
+	const onEditBidClick = async () => {
+		try {
+			const result = await UpdateBidAmount(editBid.id, currentBidAmount)
+			if (result.success) {
+				toast.success("Bid amount updated successfully")
+				await fetchRowData()
+			}
+		} catch (error) {
+			console.log(error)
+			toast.error(API_ERROR_MESSAGES.INTERNAL_SERVER_ERROR)
+		} finally {
+			setEditModalOpen(false)
+		}
+	}
 
 	return (
 		<PageContainer>
