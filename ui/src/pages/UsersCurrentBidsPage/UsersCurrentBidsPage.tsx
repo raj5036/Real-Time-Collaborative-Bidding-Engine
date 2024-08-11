@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { DeleteActiveBidsByBidders, GetBidAmountsByBidder, GetCurrentAcceptedBids } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { API_ERROR_MESSAGES } from "../../utils/Constants";
-import { Alert, capitalize, Snackbar, TextField, Typography } from "@mui/material";
+import { Alert, capitalize, Snackbar, Stack, Tooltip, Typography } from "@mui/material";
 import { PageContainer, TableWrapper } from "./UsersCurrentBidsPageStyles";
 import { IActiveBidListRowData, IBid } from "../../utils/Types";
 import CustomTable from "../../commonComponents/CustomTable/CustomTable";
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 const headCells = [
 	{
@@ -119,6 +120,10 @@ const UsersCurrentBidsPage: React.FC = () => {
 		return bidAmounts.find(bid => bid.bidId === bidId)?.bidAmount || 0
 	}
 
+	const handleEditBidAmount = (bidId: string) => () => {
+		// TODO: Implement edit bid amount
+	}
+
 	const createRowData = (bidsData: IBid[]) => {
 		const rows = bidsData.map((bid, index) => {
 			const rowData: IActiveBidListRowData = {
@@ -134,7 +139,22 @@ const UsersCurrentBidsPage: React.FC = () => {
 				>{capitalize(bid.status)}</Typography>),
 				basePrice: 30,
 				highestBidPrice: bid.highestBidPrice || 0,
-				yourBid: getCurrentBidAmount(bid.id)
+				yourBid: (
+					<Tooltip title={
+						`Your Bid current is: ${getCurrentBidAmount(bid.id)} INR, Click to edit`
+					}>
+						<Stack 
+							direction="row"
+							spacing={2}
+							justifyContent="center" 
+							alignItems="center"
+							onClick={handleEditBidAmount(bid.id)}
+						>
+							<Typography>{getCurrentBidAmount(bid.id)}</Typography>
+							<BorderColorIcon color="action"/>
+						</Stack>
+					</Tooltip>
+				)
 			}
 
 			return rowData
