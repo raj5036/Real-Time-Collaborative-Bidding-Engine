@@ -80,7 +80,8 @@ const UsersCurrentBidsPage: React.FC = () => {
 	const [showDeleteSnackbar, setShowDeleteSnackbar] = useState<boolean>(false)
 	const [bidAmounts, setBidAmounts] = useState<Array<BidAmount>>([])
 	const [editModalOpen, setEditModalOpen] = useState<boolean>(false)
-	const [editBid, setEditBid] = useState<IBid>({} as IBid)
+	const [editBid, setEditBid] = useState<any>({})
+	const [currentBidAmount, setCurrentBidAmount] = useState<number>(0)
 	
 	useEffect(() => {
 		(async ()=> {
@@ -111,6 +112,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 		}
 	}
 
+	// Fetch the current bid amount for each bid by this bidder
 	const fetchBidAmounts = async (bidIds: Array<string>) => {
 		try {
 			const result = await GetBidAmountsByBidder(bidIds)
@@ -128,6 +130,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 	}
 
 	const handleEditBidAmount = (bid: IBid) => () => {
+		setCurrentBidAmount(getCurrentBidAmount(bid.id))
 		setEditBid(bid)
 		setEditModalOpen(true)
 	}
@@ -229,10 +232,16 @@ const UsersCurrentBidsPage: React.FC = () => {
 									id="bid-amount"
 									type="number"
 									variant="outlined"
+									value={currentBidAmount || 0}
+									onChange={(e) => setCurrentBidAmount(parseInt(e.target.value))}
 								/>
 							</Box>
 							<Stack 
-								direction={"row"} justifyContent={"flex-end"} alignItems={"center"} spacing={2} className="buttons"
+								direction={"row"} 
+								justifyContent={"flex-end"} 
+								alignItems={"center"} 
+								spacing={2} 
+								className="buttons"
 							>
 								<Button 
 									className="cancel" color="error" variant="outlined" onClick={handleModalClose}
