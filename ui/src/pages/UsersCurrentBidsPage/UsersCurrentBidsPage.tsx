@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { DeleteActiveBidsByBidders, GetBidAmountsByBidder, GetCurrentAcceptedBids } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { API_ERROR_MESSAGES } from "../../utils/Constants";
-import { Alert, capitalize, Snackbar, Stack, Tooltip, Typography } from "@mui/material";
-import { PageContainer, TableWrapper } from "./UsersCurrentBidsPageStyles";
+import { Alert, capitalize, CircularProgress, Snackbar, Stack, Tooltip, Typography } from "@mui/material";
+import { ModalContainer, PageContainer, TableWrapper } from "./UsersCurrentBidsPageStyles";
 import { IActiveBidListRowData, IBid } from "../../utils/Types";
 import CustomTable from "../../commonComponents/CustomTable/CustomTable";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import AppModal from "../../commonComponents/Modal/AppModal";
+import GroupedAccordion from "../../commonComponents/GroupedAccordion/GroupedAccordion";
 
 const headCells = [
 	{
@@ -78,16 +79,19 @@ const UsersCurrentBidsPage: React.FC = () => {
 	const [showDeleteSnackbar, setShowDeleteSnackbar] = useState<boolean>(false)
 	const [bidAmounts, setBidAmounts] = useState<Array<BidAmount>>([])
 	const [editModalOpen, setEditModalOpen] = useState<boolean>(false)
+	const [editBid, setEditBid] = useState<IBid>({} as IBid)
 	
 	useEffect(() => {
 		(async ()=> {
 			const bids: IBid[] = await fetchAcceptedBids()
-			const bidIds = bids.map(bid => bid.id)
-			console.log("bidIds", bidIds)
-			const result = await fetchBidAmounts(bidIds)
-			setBidAmounts(result.bidAmounts)
-			const rows: IActiveBidListRowData[] = createRowData(bids)
-			setTableRows(rows)
+			if (bids.length) {
+				const bidIds = bids.map(bid => bid.id)
+				console.log("bidIds", bidIds)
+				const result = await fetchBidAmounts(bidIds)
+				setBidAmounts(result.bidAmounts)
+				const rows: IActiveBidListRowData[] = createRowData(bids)
+				setTableRows(rows)
+			}
 		})()
 	}, [])
 	
@@ -122,7 +126,8 @@ const UsersCurrentBidsPage: React.FC = () => {
 		return bidAmounts.find(bid => bid.bidId === bidId)?.bidAmount || 0
 	}
 
-	const handleEditBidAmount = (bidId: string) => () => {
+	const handleEditBidAmount = (bid: IBid) => () => {
+		setEditBid(bid)
 		setEditModalOpen(true)
 	}
 
@@ -150,7 +155,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 							spacing={2}
 							justifyContent="center" 
 							alignItems="center"
-							onClick={handleEditBidAmount(bid.id)}
+							onClick={handleEditBidAmount(bid)}
 						>
 							<Typography>{getCurrentBidAmount(bid.id)}</Typography>
 							<BorderColorIcon color="action"/>
@@ -203,7 +208,19 @@ const UsersCurrentBidsPage: React.FC = () => {
 					Active bids deleted successfully
 				</Alert>
 			</Snackbar>
-			<AppModal open={editModalOpen} handleClose={() => setEditModalOpen(false)}/>
+			<AppModal open={editModalOpen} handleClose={() => setEditModalOpen(false)}>
+				{editBid.title 
+					? (	<ModalContainer>
+							<Typography variant="h5" className="modal-title">
+								Edit Bid Amount for <span className="bid-title">{editBid?.title}</span>
+							</Typography>
+							<Typography variant="body1" className="bid-items">Items to bid on:</Typography>
+							<GroupedAccordion />
+						</ModalContainer>
+					)
+					: <CircularProgress color="info"/>
+				}
+			</AppModal>
 		</PageContainer>
 	)
 }

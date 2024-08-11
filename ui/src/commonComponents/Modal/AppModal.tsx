@@ -1,9 +1,10 @@
-import { Backdrop, Box, Fade, Modal, Typography } from "@mui/material";
+import { Backdrop, Box, Fade, Modal } from "@mui/material";
 import React from "react";
 
 type ComponentProps = {
 	open: boolean,
-	handleClose: () => void
+	handleClose: () => void,
+	children: React.ReactNode
 }
 
 const style = {
@@ -13,12 +14,12 @@ const style = {
 	transform: 'translate(-50%, -50%)',
 	width: 400,
 	bgcolor: 'background.paper',
-	border: '2px solid #000',
+	border: '1px solid #000',
 	boxShadow: 24,
 	p: 4,
 };
 
-export const AppModal: React.FC<ComponentProps> = ({ open, handleClose }) => {
+export const AppModal: React.FC<ComponentProps> = ({ open, handleClose, children }) => {
 	return (
 		<React.Fragment>
 			 <Modal
@@ -35,12 +36,9 @@ export const AppModal: React.FC<ComponentProps> = ({ open, handleClose }) => {
 				}}
 			>
 				<Fade in={open}>
-				<Box sx={style}>
-					<Typography id="transition-modal-title" variant="h6" component="h2">
-						Text in a modal
-					</Typography>
-					
-				</Box>
+					<Box sx={style}>
+						{children}
+					</Box>
 				</Fade>
 		</Modal>
 		</React.Fragment>
