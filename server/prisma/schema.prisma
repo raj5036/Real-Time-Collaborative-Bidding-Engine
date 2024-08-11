@@ -41,7 +41,9 @@ model Bid {
   currentBidders  UserActiveBid[]
 
   title           String
+  startDate       String
   startTime       String
+  endDate         String
   endTime         String
   bidItems        BidItem[]
 

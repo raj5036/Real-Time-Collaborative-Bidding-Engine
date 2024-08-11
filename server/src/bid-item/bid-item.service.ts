@@ -9,11 +9,13 @@ export class BidItemService {
 	async createBid (bid: CreateBidDTO, userId: string) {
 		try {
 			console.log("userId in service", userId);
-			const { title,  startTime, endTime, bidItems} = bid;
+			const { title, startDate,  startTime, endDate, endTime, bidItems} = bid;
 			const newBid = await this.prisma.bid.create({
 				data: {
 					title,
+					startDate,
 					startTime,
+					endDate,
 					endTime,
 					bidItems,
 					bidCreatorId: userId
