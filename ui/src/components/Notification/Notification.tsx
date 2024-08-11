@@ -1,21 +1,20 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
-import { Badge } from "@mui/material"
+import { Alert, Badge, Snackbar } from "@mui/material"
 import { CustomNotificationsIcon } from "./NotificationStyles"
 import socket, { SocketEvents } from "../../utils/SocketClient"
 import { IBid } from "../../utils/Types"
 import NotificationPopper from "../NotificationPopper/NotificationPopper"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import AppRoutes from "../../routes/routes"
 import { AcceptBidRequest } from "../../utils/ApiClient"
 import { toast } from "react-toastify"
 import { API_ERROR_MESSAGES } from "../../utils/Constants"
-import BidderActiveBidsContext from "../../context/BidderActiveBids/BidderActiveBidsContext"
-import { IBidderActiveBidsContextType } from "../../context/BidderActiveBids/Types"
 
 
 const Notification: React.FC = () => {
 	const [newBids, setNewBids] = useState<IBid[]>([])
 	const [popperOpen, setPopperOpen] = useState<boolean>(false)
+	const [showRefreshSnackbar, setShowRefreshSnackbar] = useState<boolean>(false)
 	const notificationIconRef = useRef<HTMLElement>(null)
 
 	useEffect(() => {
@@ -28,9 +27,9 @@ const Notification: React.FC = () => {
 			socket.off(SocketEvents.BID_CREATED)
 		}
 	}, [])
-
-	const bidderActiveBids = useContext(BidderActiveBidsContext) as IBidderActiveBidsContextType
+	
 	const navigate = useNavigate()
+	const location = useLocation()
 
 	const handleIconClick = () => {
 		setPopperOpen(!popperOpen)
@@ -41,18 +40,7 @@ const Notification: React.FC = () => {
 		try {
 			const result = await AcceptBidRequest(bid.id)
 			if (result.success) {
-				toast.success(result.message)
-				bidderActiveBids.setActiveBids([
-					...bidderActiveBids.activeBids,
-					{ 
-						bid, 
-						bidStatus: "active", 
-						winnerUserId: "",
-						winnerName: "",
-						currentBidPrice: 0,
-						highestBidPrice: 0
-					}
-				])
+				setShowRefreshSnackbar(true)
 			} else {
 				toast.error(result.message || API_ERROR_MESSAGES.INTERNAL_SERVER_ERROR)
 				return
@@ -66,6 +54,10 @@ const Notification: React.FC = () => {
 			})
 			navigate(AppRoutes.USER_CURRENT_BIDS)
 		}
+	}
+
+	const handleSnackbarClose = () => {
+		setShowRefreshSnackbar(false)
 	}
 	
 	return (
@@ -83,6 +75,17 @@ const Notification: React.FC = () => {
 				newBids={newBids}
 				handleAcceptNewBid={handleAcceptNewBid}
 			/>
+			{location.pathname === AppRoutes.USER_CURRENT_BIDS &&	
+				<Snackbar open={showRefreshSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose}>
+					<Alert
+						onClose={handleSnackbarClose}
+						severity="success"
+						variant="filled"
+						sx={{ width: '100%' }}
+					>
+						Please refresh the page to see new changes
+					</Alert>
+			</Snackbar>}
 		</React.Fragment>
 	)
 }
