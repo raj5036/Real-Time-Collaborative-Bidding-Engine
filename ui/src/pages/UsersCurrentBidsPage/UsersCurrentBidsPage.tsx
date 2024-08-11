@@ -9,6 +9,7 @@ import CustomTable from "../../commonComponents/CustomTable/CustomTable";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import AppModal from "../../commonComponents/Modal/AppModal";
 import GroupedAccordion from "../../commonComponents/GroupedAccordion/GroupedAccordion";
+import { CommonUtils } from "../../utils/CommonUtils";
 
 const headCells = [
 	{
@@ -144,7 +145,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 				bidStatus: (<Typography
 					color={bid.status === "active" ? "success.main" : "error.main"}
 				>{capitalize(bid.status)}</Typography>),
-				basePrice: 30,
+				basePrice: CommonUtils.getBidBasePrice(bid),
 				highestBidPrice: bid.highestBidPrice || 0,
 				yourBid: (
 					<Tooltip title={
@@ -215,7 +216,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 								Edit Bid Amount for <span className="bid-title">{editBid?.title}</span>
 							</Typography>
 							<Typography variant="body1" className="bid-items">Items to bid on:</Typography>
-							<GroupedAccordion />
+							<GroupedAccordion items={editBid.bidItems}/>
 						</ModalContainer>
 					)
 					: <CircularProgress color="info"/>
