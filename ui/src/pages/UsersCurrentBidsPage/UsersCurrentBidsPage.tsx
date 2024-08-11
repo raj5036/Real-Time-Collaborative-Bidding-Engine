@@ -78,7 +78,6 @@ const UsersCurrentBidsPage: React.FC = () => {
 	const [bids, setBids] = useState<IBid[]>([])
 	const [tableRows, setTableRows] = useState<IActiveBidListRowData[]>([])
 	const [showDeleteSnackbar, setShowDeleteSnackbar] = useState<boolean>(false)
-	const [bidAmounts, setBidAmounts] = useState<Array<BidAmount>>([])
 	const [editModalOpen, setEditModalOpen] = useState<boolean>(false)
 	const [editBid, setEditBid] = useState<any>({})
 	const [currentBidAmount, setCurrentBidAmount] = useState<number>(0)
@@ -90,15 +89,11 @@ const UsersCurrentBidsPage: React.FC = () => {
 				const bidIds = bids.map(bid => bid.id)
 				console.log("bidIds", bidIds)
 				const result = await fetchBidAmounts(bidIds)
-				setBidAmounts(result.bidAmounts)
+				const rows: IActiveBidListRowData[] = createRowData(bids, result)
+				setTableRows(rows)
 			}
 		})()
 	}, [])
-	
-	useEffect(() => {
-		const rows: IActiveBidListRowData[] = createRowData(bids)
-		setTableRows(rows)
-	}, [bidAmounts])
 	
 
 	const fetchAcceptedBids = async () => {
@@ -128,19 +123,20 @@ const UsersCurrentBidsPage: React.FC = () => {
 		}
 	}
 
-	const getCurrentBidAmount = (bidId: string): number => {
+	const getCurrentBidAmount = (bidAmounts: Array<BidAmount>, bidId: string): number => {
 		console.log("bidAmounts in getCurrentBidAmount", bidAmounts)
 		if (!bidAmounts || !bidAmounts.length) return 0
 		return bidAmounts.find(bid => bid.bidId === bidId)?.bidAmount || 0
 	}
 
-	const handleEditBidAmount = (bid: IBid) => () => {
-		setCurrentBidAmount(getCurrentBidAmount(bid.id))
+	const handleEditBidAmount = (bid: IBid, bidAmounts: Array<BidAmount>) => () => {
+		setCurrentBidAmount(getCurrentBidAmount(bidAmounts, bid.id))
 		setEditBid(bid)
 		setEditModalOpen(true)
 	}
 
-	const createRowData = (bidsData: IBid[]) => {
+	const createRowData = (bidsData: IBid[], bidAmounts: Array<BidAmount>) => {
+		console.log("bidAmounts in createRowData", bidAmounts)
 		const rows = bidsData.map((bid, index) => {
 			const rowData: IActiveBidListRowData = {
 				id: bid.id || index.toString(),
@@ -157,16 +153,16 @@ const UsersCurrentBidsPage: React.FC = () => {
 				highestBidPrice: bid.highestBidPrice || 0,
 				yourBid: (
 					<Tooltip title={
-						`Your Bid current is: ${getCurrentBidAmount(bid.id)} INR, Click to edit`
+						`Your Bid current is: ${getCurrentBidAmount(bidAmounts, bid.id)} INR, Click to edit`
 					}>
 						<Stack 
 							direction="row"
 							spacing={2}
 							justifyContent="center" 
 							alignItems="center"
-							onClick={handleEditBidAmount(bid)}
+							onClick={handleEditBidAmount(bid, bidAmounts)}
 						>
-							<Typography>{getCurrentBidAmount(bid.id)}</Typography>
+							<Typography>{getCurrentBidAmount(bidAmounts, bid.id)}</Typography>
 							<BorderColorIcon color="action"/>
 						</Stack>
 					</Tooltip>
