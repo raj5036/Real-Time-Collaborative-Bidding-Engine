@@ -22,6 +22,7 @@ import { IUserContext } from '../../context/UserContext/Types';
 import AppRoutes from '../../routes/routes';
 import BidderActiveBidsContext from '../../context/BidderActiveBids/BidderActiveBidsContext';
 import { IBidderActiveBidsContextType } from '../../context/BidderActiveBids/Types';
+import { IBid } from '../../utils/Types';
 
 
 
@@ -46,6 +47,9 @@ export default function Login() {
     try {
       const result = await GetCurrentAcceptedBids()
       console.log(result)
+      // bidderActiveBids.setActiveBids(() => {
+      //   const bids: IBid[] = result.bids
+      // })
     } catch (error) {
       console.log(error)
     }

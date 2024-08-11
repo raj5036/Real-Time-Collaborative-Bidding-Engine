@@ -4,8 +4,13 @@ export const USER_TYPES = {
 }
 
 export const LocalStorageKeys = {
+	USER: "user",
 	USER_TOKEN: "user_token",
 	USER_DETAILS: "user_details"
+}
+
+export const SESSION_STORAGE_KEYS = {
+	USER: "user",
 }
 
 export const API_ERROR_MESSAGES = {

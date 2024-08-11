@@ -1,5 +1,14 @@
 import { USER_TYPES } from "./Constants"
 
+export type IUser = {
+	id: string,
+	email: string,
+	firstname: string,
+	lastname: string,
+	role: UserType,
+	bids: IBid[]
+}
+
 export type UserType = typeof USER_TYPES[keyof typeof USER_TYPES]
 
 export type IBid = {

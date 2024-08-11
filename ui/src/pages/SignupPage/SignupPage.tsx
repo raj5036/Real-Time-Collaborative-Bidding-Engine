@@ -1,5 +1,6 @@
 import {
 	useContext,
+	useEffect,
 	useState
 } from 'react'
 
@@ -33,6 +34,15 @@ const SignUp = () => {
 	const [email, setEmail] = useState<string>("")
 	const [password, setPassword] = useState<string>("")
 	const [role, setRole] = useState<UserType>("")
+	const [btnDisabled, setBtnDisabled] = useState<boolean>(true)
+	
+	useEffect(() => {
+		if (firstname && lastname && email && password && role) {
+			setBtnDisabled(false)
+		} else {
+			setBtnDisabled(true)
+		}
+	}, [firstname, lastname, email, password, role])
 
 	const { setUser } = useContext(UserContext) as IUserContext
 
@@ -150,6 +160,7 @@ const SignUp = () => {
 					fullWidth
 					variant="contained"
 					sx={{ mt: 3, mb: 2 }}
+					disabled={btnDisabled}
 					onClick={handleSubmit}
 				>
 					Sign Up

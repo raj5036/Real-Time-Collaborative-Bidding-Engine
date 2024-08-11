@@ -7,6 +7,11 @@ export const SignupFormContainer = styled(Box)(({ theme }) => {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+
+		& .MuiButtonBase-root:disabled {
+  			cursor: not-allowed;
+  			pointer-events: auto;
+		}
 	`
 })
 
