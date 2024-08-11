@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
 import { JWTGuard } from 'src/auth/guard';
 import { BidderGuard } from './guard';
 import { BidderService } from './bidder.service';
@@ -17,8 +17,8 @@ export class BidderController {
 	}
 
 	// This api returns the bid amount of provided bidIds of the user
-	@Get("get-bid-amount-by-ids")
-	getBidAmount (@GetUser('id') userId: string, @Body()dto: GetBidAmountDTO) {
+	@Post("get-bid-amount-by-ids")
+	getBidAmount (@GetUser('id') userId: string, @Body() dto: GetBidAmountDTO) {
 		return this.bidderService.getBidAmount(userId, dto)
 	}
 

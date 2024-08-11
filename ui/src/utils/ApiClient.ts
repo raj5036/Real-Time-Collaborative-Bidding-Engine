@@ -101,6 +101,16 @@ export const GetCurrentAcceptedBids = () => {
 		})
 }
 
+export const GetBidAmountsByBidder = (bidIds: Array<string>) => {
+	return Promise.resolve(
+		axios.post(`${Config.SERVER_URL_TEST}/api/bidder/get-bid-amount-by-ids`, {bidIds})
+	)
+		.then(res => res.data)
+		.catch(error => {
+			throw error
+		})
+}
+
 export const DeleteActiveBidsByBidders = (deleteIds: Array<string>) => {
 	return Promise.resolve(
 		axios.delete(`${Config.SERVER_URL_TEST}/api/bidder/delete-active-bids`, {

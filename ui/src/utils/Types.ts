@@ -12,7 +12,7 @@ export type IUser = {
 export type UserType = typeof USER_TYPES[keyof typeof USER_TYPES]
 
 export type IBid = {
-	id?: string,
+	id: string,
 	title: string,
 	startDate: string,
 	startTime: string,

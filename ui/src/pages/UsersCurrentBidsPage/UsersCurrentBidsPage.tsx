@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { DeleteActiveBidsByBidders, GetCurrentAcceptedBids } from "../../utils/ApiClient";
+import { DeleteActiveBidsByBidders, GetBidAmountsByBidder, GetCurrentAcceptedBids } from "../../utils/ApiClient";
 import { toast } from "react-toastify";
 import { API_ERROR_MESSAGES } from "../../utils/Constants";
 import { Alert, capitalize, Snackbar, TextField, Typography } from "@mui/material";
@@ -72,7 +72,12 @@ const UsersCurrentBidsPage: React.FC = () => {
 	const [showDeleteSnackbar, setShowDeleteSnackbar] = useState<boolean>(false)
 	
 	useEffect(() => {
-		fetchAcceptedBids()
+		(async ()=> {
+			const bids: IBid[] = await fetchAcceptedBids()
+			const bidIds = bids.map(bid => bid.id)
+			console.log("bidIds", bidIds)
+			console.log(await fetchBidAmounts(bidIds))
+		})()
 	}, [])
 	
 
@@ -86,10 +91,22 @@ const UsersCurrentBidsPage: React.FC = () => {
 					setTableRows(rows)
 					return result.bids
 				})
+				return result.bids
 			}
 		} catch (err) {
 			console.log(err)
 			toast.error(API_ERROR_MESSAGES.INTERNAL_SERVER_ERROR)
+		}
+	}
+
+	const fetchBidAmounts = async (bidIds: Array<string>) => {
+		try {
+			const result = await GetBidAmountsByBidder(bidIds)
+			if (result.success) {
+				console.log(result)
+			}
+		} catch(error) {
+			console.log(error)
 		}
 	}
 
