@@ -7,6 +7,7 @@ import { PageContainer, TableWrapper } from "./UsersCurrentBidsPageStyles";
 import { IActiveBidListRowData, IBid } from "../../utils/Types";
 import CustomTable from "../../commonComponents/CustomTable/CustomTable";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import AppModal from "../../commonComponents/Modal/AppModal";
 
 const headCells = [
 	{
@@ -76,6 +77,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 	const [tableRows, setTableRows] = useState<IActiveBidListRowData[]>([])
 	const [showDeleteSnackbar, setShowDeleteSnackbar] = useState<boolean>(false)
 	const [bidAmounts, setBidAmounts] = useState<Array<BidAmount>>([])
+	const [editModalOpen, setEditModalOpen] = useState<boolean>(false)
 	
 	useEffect(() => {
 		(async ()=> {
@@ -121,7 +123,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 	}
 
 	const handleEditBidAmount = (bidId: string) => () => {
-		// TODO: Implement edit bid amount
+		setEditModalOpen(true)
 	}
 
 	const createRowData = (bidsData: IBid[]) => {
@@ -201,6 +203,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 					Active bids deleted successfully
 				</Alert>
 			</Snackbar>
+			<AppModal open={editModalOpen} handleClose={() => setEditModalOpen(false)}/>
 		</PageContainer>
 	)
 }
