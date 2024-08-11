@@ -17,7 +17,7 @@ import {
 	Typography,
 } from '@mui/material';
 import { RoleSelector, SignupFormContainer } from './SignupPageStyles'
-import { LocalStorageKeys, USER_TYPES } from '../../utils/Constants'
+import { SESSION_STORAGE_KEYS, USER_TYPES } from '../../utils/Constants'
 import { Link, useNavigate } from 'react-router-dom'
 import { ApiError, SignupUser } from '../../utils/ApiClient';
 import { toast } from 'react-toastify';
@@ -63,8 +63,7 @@ const SignUp = () => {
 			} else {
 				toast.success("Signup Successful")
 				setUser(result.user)
-				CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_TOKEN, result.token)
-				CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_DETAILS, JSON.stringify(result.user))
+				CommonUtils.setItemInSessionStorage(SESSION_STORAGE_KEYS.USER_TOKEN, result.token)
 				if (result.user.role === USER_TYPES.BID_CREATOR) {
 					navigate(AppRoutes.CREATE_BID)
 				} else {

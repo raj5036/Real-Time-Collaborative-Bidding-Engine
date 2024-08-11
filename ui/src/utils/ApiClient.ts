@@ -1,7 +1,8 @@
 import axios from "axios"
 import { Config } from "../config/config"
-import { LocalStorageKeys } from "./Constants"
+import { SESSION_STORAGE_KEYS } from "./Constants"
 import { IBid } from "./Types"
+import { CommonUtils } from "./CommonUtils"
 
 export const ApiError = {
 	CONFLICT: "Data already exists",
@@ -9,7 +10,7 @@ export const ApiError = {
 
 axios.interceptors.request.use(
 	async (config) => {
-		const token = localStorage.getItem(LocalStorageKeys.USER_TOKEN)
+		const token = CommonUtils.getItemFromSessionStorage(SESSION_STORAGE_KEYS.USER_TOKEN)
 		if (token) {
 			config.headers.Authorization = `Bearer ${token}`
 		}
@@ -92,7 +93,7 @@ export const AcceptBidRequest = (bidId: any) => {
 
 export const GetCurrentAcceptedBids = () => {
 	return Promise.resolve(
-		axios.get(`${Config.SERVER_URL_TEST}/api/user/accepted-bids`)
+		axios.get(`${Config.SERVER_URL_TEST}/api/bidder/get-active-bids`)
 	)
 		.then(res => res.data)
 		.catch(error => {

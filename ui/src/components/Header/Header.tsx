@@ -5,7 +5,7 @@ import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import { useTheme } from '@mui/material/styles';
 import { useContext } from 'react';
 import { UserContext } from '../../context/UserContext/UserContext';
-import { IUser, IUserContext } from '../../context/UserContext/Types';
+import { IUserContext } from '../../context/UserContext/Types';
 import { Link } from 'react-router-dom';
 import { CommonUtils } from '../../utils/CommonUtils';
 import { LocalStorageKeys, USER_TYPES } from '../../utils/Constants';
@@ -15,6 +15,7 @@ import SidebarContext from '../../context/SidebarContext/SidebarContext';
 import { ISideBarContext } from '../../context/SidebarContext/Types';
 import AppRoutes from '../../routes/routes';
 import Notification from '../Notification/Notification';
+import { IUser } from '../../utils/Types';
 
 const Header = () => {
 	const theme = useTheme()
@@ -24,7 +25,6 @@ const Header = () => {
 	const handleLogout = () => {
 		setUser({} as IUser)
 		CommonUtils.removeItemFromLocalStorage(LocalStorageKeys.USER_TOKEN)
-		CommonUtils.removeItemFromLocalStorage(LocalStorageKeys.USER_DETAILS)
 		toast.success("Logout Successful")
 	}
 

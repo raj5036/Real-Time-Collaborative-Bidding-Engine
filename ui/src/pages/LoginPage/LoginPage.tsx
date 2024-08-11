@@ -15,16 +15,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { GetCurrentAcceptedBids, LoginUser } from '../../utils/ApiClient';
 import { LoginController } from './LoginPageStyles';
 import { CommonUtils } from '../../utils/CommonUtils';
-import { LocalStorageKeys, USER_TYPES } from '../../utils/Constants';
+import { SESSION_STORAGE_KEYS, USER_TYPES } from '../../utils/Constants';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../context/UserContext/UserContext';
 import { IUserContext } from '../../context/UserContext/Types';
 import AppRoutes from '../../routes/routes';
-import BidderActiveBidsContext from '../../context/BidderActiveBids/BidderActiveBidsContext';
-import { IBidderActiveBidsContextType } from '../../context/BidderActiveBids/Types';
-import { IBid } from '../../utils/Types';
-
-
 
 export default function Login() {
 	const [email, setEmail] = useState<string>("")
@@ -32,7 +27,6 @@ export default function Login() {
   const [loginDisabled, setLoginDisabled] = useState<boolean>(true)
 
   const { setUser } = useContext(UserContext) as IUserContext
-  const bidderActiveBids = useContext(BidderActiveBidsContext) as IBidderActiveBidsContextType
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -63,8 +57,7 @@ export default function Login() {
         toast.error(result.error.message)
         return
       }
-      CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_TOKEN, result.token)
-      CommonUtils.setItemInLocalStorage(LocalStorageKeys.USER_DETAILS, JSON.stringify(result.user))
+      CommonUtils.setItemInSessionStorage(SESSION_STORAGE_KEYS.USER_TOKEN, result.token)
       setUser(result.user)
       toast.success("Login Successful")
       if (result.user.role === USER_TYPES.BID_CREATOR) {

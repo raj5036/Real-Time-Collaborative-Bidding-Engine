@@ -36,7 +36,6 @@ const Notification: React.FC = () => {
 	}
 
 	const handleAcceptNewBid = async (bid: IBid) => {
-		console.log("handleAcceptNewBid called", bid)
 		try {
 			const result = await AcceptBidRequest(bid.id)
 			if (result.success) {
