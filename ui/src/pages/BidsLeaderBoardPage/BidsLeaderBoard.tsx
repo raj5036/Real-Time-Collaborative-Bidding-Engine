@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import socket, { SocketEvents } from "../../utils/SocketClient";
 import { GetAllActiveBids } from "../../utils/ApiClient";
 import { IBid, ILeaderBoardRowData } from "../../utils/Types";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { PageContainer } from "./BidsLeaderBoardPageStyles";
 import { CommonUtils } from "../../utils/CommonUtils";
+import CustomTable from "../../commonComponents/CustomTable/CustomTable";
 
 const headCells = [
 	{
@@ -40,18 +41,19 @@ const headCells = [
 ]
 const BidsLeaderBoardPage: React.FC = () => {
 	const [activeBids, setActiveBids] = useState<IBid[]>([])
+	const [tableRows, setTableRows] = useState<ILeaderBoardRowData[]>([])
 
 	useEffect(() => {
 		(async () => {
 			const bids = await fetchActiveBids()
 			console.log("bids in useEffect", bids)
-			createRowData(bids)
+			const rows = createRowData(bids)
+			setTableRows(rows)
 		})()
+
 		socket.on(SocketEvents.BID_UPDATED, (response) => {
 			console.log("Bid has been updated", response)
 		})
-
-		// fetchActiveBids()
 
 		return () => {
 			socket.off(SocketEvents.BID_UPDATED)
@@ -79,17 +81,28 @@ const BidsLeaderBoardPage: React.FC = () => {
 				basePrice: CommonUtils.getBidBasePrice(bid),
 				highestBidAmount: 100,
 				currentTopBidder: "Raj",
-				seeDetailedLeaderboard: bid.id
+				seeDetailedLeaderboard: (<Button 
+					variant="contained"
+					onClick={handleViewDetails(bid.id)}	
+				>View Details</Button>)
 			}
 
 			return row
 		})
 	}
 
+	const handleViewDetails = (bidId: string) => () => {
+		console.log(bidId)
+	}
+
 	return (
 		<PageContainer>
-			<Typography variant="h3">See LeaderBoards</Typography>
-			{activeBids.length}
+			{activeBids.length > 0 && (<CustomTable
+				headCells={headCells}
+				rows={tableRows}
+				tableTitle={"See Leaderboards"}
+				handleRowsDelete={() => {}}
+			/>)}
 		</PageContainer>
 	)
 }
