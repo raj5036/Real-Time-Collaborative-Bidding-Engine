@@ -51,6 +51,32 @@ export class BidItemService {
 		}
 	}
 
+	async getBidById (bidId: string) {
+		try {
+			const bid = await this.prisma.bid.findUnique({
+				where: {
+					id: bidId
+				}
+			});
+			return {
+				success: true,
+				message: "Bid fetched successfully",
+				bid
+			};
+		} catch (error) {
+			return this.prisma.errorHandler(error);
+		}
+	}
+
+	async getAllActiveBids () {
+		try {
+			const response = await this.prisma.userActiveBid.findMany();
+			return response;
+		} catch (error) {
+			return this.prisma.errorHandler(error);
+		}
+	}
+
 	async deleteBidsInBulk (ids: string[]) {
 		console.log("ids in service", ids);
 		try {

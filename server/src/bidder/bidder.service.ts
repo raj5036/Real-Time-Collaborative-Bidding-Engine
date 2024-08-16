@@ -1,12 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { DeleteActiveBidsDTO, EditBidAmountDTO } from './dto';
+import { AcceptBidRequestDTO, DeleteActiveBidsDTO, EditBidAmountDTO } from './dto';
 import { UserActiveBid } from '@prisma/client';
 import { GetBidAmountDTO } from './dto/get-bid-amount.dto';
 
 @Injectable()
 export class BidderService {
 	constructor (private readonly prisma: PrismaService) {}
+
+	async acceptBidRequest (userId: string, dto: AcceptBidRequestDTO) {
+		console.log("here in accept bid request", userId)
+		try {
+			const response = await this.prisma.userActiveBid.create({
+				data: {
+					userId,
+					bidId: dto.bidId,
+				}
+			})
+
+			return {
+				success: true,
+				message: "Bid request accepted successfully",
+				response
+			}
+		} catch (error) {
+			return this.prisma.errorHandler(error);
+		}
+	}
 
 	async getAllAcceptedBids (userId: string) {
 		try {

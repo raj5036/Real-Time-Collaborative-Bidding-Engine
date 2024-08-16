@@ -81,7 +81,7 @@ export const deleteBid = (bidId: string) => {
 
 export const AcceptBidRequest = (bidId: any) => {
 	return Promise.resolve(
-		axios.post(`${Config.SERVER_URL_TEST}/api/user/accept-bid-request`, {
+		axios.post(`${Config.SERVER_URL_TEST}/api/bidder/accept-bid-request`, {
 			bidId,
 		})
 	)

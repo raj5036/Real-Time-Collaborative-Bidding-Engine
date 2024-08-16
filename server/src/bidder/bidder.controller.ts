@@ -3,7 +3,7 @@ import { Body, Controller, Delete, Get, Patch, Post, UseGuards } from '@nestjs/c
 import { JWTGuard } from 'src/auth/guard';
 import { BidderGuard } from './guard';
 import { BidderService } from './bidder.service';
-import { DeleteActiveBidsDTO, EditBidAmountDTO } from './dto';
+import { AcceptBidRequestDTO, DeleteActiveBidsDTO, EditBidAmountDTO } from './dto';
 import { GetUser } from 'src/auth/decorator';
 import { GetBidAmountDTO } from './dto/get-bid-amount.dto';
 
@@ -14,6 +14,11 @@ export class BidderController {
 		private readonly bidderService: BidderService,
 		private readonly bidderGateway: BidderGateway
 	) {}
+
+	@Post('accept-bid-request')
+	acceptBidRequest (@GetUser('id') userId: string, @Body() dto: AcceptBidRequestDTO) {
+		return this.bidderService.acceptBidRequest(userId, dto)
+	}
 
 	@Get("get-active-bids")
 	getAllAcceptedBids (@GetUser('id') userId: string) {

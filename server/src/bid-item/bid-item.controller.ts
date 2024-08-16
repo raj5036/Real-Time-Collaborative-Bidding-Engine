@@ -6,7 +6,7 @@ import { JWTGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 import { BidCreatorGuard } from 'src/user/guard';
 
-@UseGuards(JWTGuard, BidCreatorGuard)
+@UseGuards(JWTGuard)
 @Controller('bid-item')
 export class BidItemController {
 	constructor (
@@ -14,6 +14,7 @@ export class BidItemController {
 		private readonly bidItemGateway: BidItemGateway
 	) {}
 
+	@UseGuards(BidCreatorGuard)
 	@Post('create')
 	async createBid (@Body() dto: CreateBidDTO, @GetUser('id') userId: string) {
 		const response = await this.bidItemService.createBid(dto, userId);
@@ -28,17 +29,25 @@ export class BidItemController {
 		return this.bidItemService.getAllBidsByUser(userId);
 	}
 
+	@Get('get-all-active-bids')
+	getAllActiveBids () {
+		return this.bidItemService.getAllActiveBids();
+	}
+
+	@UseGuards(BidCreatorGuard)
 	@Delete('delete-bulk')
 	deleteBidsInBulk (@Body() { ids }: DeleteBulkDTO) {
 		return this.bidItemService.deleteBidsInBulk(ids);
 	} 
 
+	@UseGuards(BidCreatorGuard)
 	@Delete('delete/:id')
 	deleteBid (@Param('id') id: string) {
 		console.log("here in delete bid", id);
 		return this.bidItemService.deleteBid(id);
 	}
 
+	@UseGuards(BidCreatorGuard)
 	@Delete('delete-all')
 	deleteAllBids () {
 		return this.bidItemService.deleteAllBids();
