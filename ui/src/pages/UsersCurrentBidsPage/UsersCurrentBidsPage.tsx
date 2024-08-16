@@ -224,6 +224,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 						rows={tableRows} 
 						handleRowsDelete={handleActiveBidsDelete} 
 						selectRowsEnabled={true}
+						showDeleteButton={true}
 					/>}
 			</TableWrapper>
 			<Snackbar open={showDeleteSnackbar} autoHideDuration={6000} onClose={handleSnackbarClose}>

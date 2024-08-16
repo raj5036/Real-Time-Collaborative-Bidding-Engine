@@ -123,10 +123,11 @@ interface EnhancedTableToolbarProps {
   tableTitle: String;
   selectedItems: readonly number[];
   handleRowsDelete: (selectedItems: readonly number[]) => void;
+  showDeleteButton: boolean;
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { selectedItems, handleRowsDelete } = props;
+  const { selectedItems, handleRowsDelete, showDeleteButton } = props;
   
   const handleDelete = () => {
     handleRowsDelete(selectedItems);
@@ -162,7 +163,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           {props.tableTitle}
         </Typography>
       )}
-      {selectedItems.length > 0 ? (
+      {showDeleteButton && (selectedItems.length > 0 ? (
         <Tooltip title="Delete">
           <IconButton onClick={handleDelete}>
             <DeleteIcon />
@@ -174,7 +175,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
             <FilterListIcon />
           </IconButton>
         </Tooltip>
-      )}
+      ))}
     </Toolbar>
   );
 }
@@ -185,7 +186,7 @@ type CustomTableProps = {
 	rows: any[]
   handleRowsDelete: any
   selectRowsEnabled: boolean
-  showDeleteButton?: boolean
+  showDeleteButton: boolean
 }
 
 const CustomTable: React.FC<CustomTableProps> = ({
@@ -276,6 +277,7 @@ const CustomTable: React.FC<CustomTableProps> = ({
           tableTitle={tableTitle}
           selectedItems={selected} 
           handleRowsDelete={handleRowsDelete}
+          showDeleteButton={showDeleteButton}
         />
         <TableContainer>
           <Table
