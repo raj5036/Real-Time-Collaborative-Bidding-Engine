@@ -3,10 +3,9 @@ import { DeleteActiveBidsByBidders, GetBidAmountsByBidder, GetCurrentAcceptedBid
 import { toast } from "react-toastify";
 import { API_ERROR_MESSAGES } from "../../utils/Constants";
 import { Alert, Box, Button, capitalize, CircularProgress, Snackbar, Stack, TextField, Tooltip, Typography } from "@mui/material";
-import { ModalContainer, PageContainer, TableWrapper } from "./UsersCurrentBidsPageStyles";
+import { EditBidIcon, ModalContainer, PageContainer, TableWrapper } from "./UsersCurrentBidsPageStyles";
 import { IActiveBidListRowData, IBid } from "../../utils/Types";
 import CustomTable from "../../commonComponents/CustomTable/CustomTable";
-import BorderColorIcon from '@mui/icons-material/BorderColor';
 import AppModal from "../../commonComponents/Modal/AppModal";
 import GroupedAccordion from "../../commonComponents/GroupedAccordion/GroupedAccordion";
 import { CommonUtils } from "../../utils/CommonUtils";
@@ -167,7 +166,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 							onClick={handleEditBidAmount(bid, bidAmounts)}
 						>
 							<Typography>{getCurrentBidAmount(bidAmounts, bid.id)}</Typography>
-							<BorderColorIcon color="action"/>
+							<EditBidIcon color="action"/>
 						</Stack>
 					</Tooltip>
 				)

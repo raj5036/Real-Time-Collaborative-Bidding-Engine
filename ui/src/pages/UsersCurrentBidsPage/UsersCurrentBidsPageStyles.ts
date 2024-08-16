@@ -1,3 +1,4 @@
+import BorderColorIcon from '@mui/icons-material/BorderColor'
 import { Box } from "@mui/material"
 import { styled } from "@mui/material/styles"
 
@@ -41,5 +42,11 @@ export const ModalContainer = styled(Box)(({ theme }) => `
 			height: ${theme.spacing(5)};
 			width: ${theme.spacing(10)};
 		}
+	}
+`)
+
+export const EditBidIcon = styled(BorderColorIcon)(({ theme }) => `
+	:hover {
+		color: ${theme.palette.primary.dark};
 	}
 `)
