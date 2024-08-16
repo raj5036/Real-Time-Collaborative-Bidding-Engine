@@ -30,5 +30,4 @@ https://oyugoobonyo.medium.com/uploading-files-in-nestjs-eeec53883696
 https://www.geeksforgeeks.org/what-is-web-socket-and-how-it-is-different-from-the-http/
 
 TODO: 
-1. Handle Login / Signup button disability
-2. Add this DOC in .gitignore
+1. Make create & end initial to current date on UI.

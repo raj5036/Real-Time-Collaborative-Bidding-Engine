@@ -11,17 +11,45 @@ export class BidderService {
 	async acceptBidRequest (userId: string, dto: AcceptBidRequestDTO) {
 		console.log("here in accept bid request", userId)
 		try {
-			const response = await this.prisma.userActiveBid.create({
+			const acceptResponse = await this.prisma.userActiveBid.create({
 				data: {
 					userId,
 					bidId: dto.bidId,
 				}
 			})
 
+			//Put bid inside bidder's active bids
+			await this.prisma.user.update({
+				where: {
+					id: userId
+				},
+				data: {
+					activeBids: {
+						connect: {
+							id: dto.bidId
+						}
+					}
+				}
+			})
+
+			// Put Bidder inside the bid's currentBidders
+			await this.prisma.bid.update({
+				where: {
+					id: dto.bidId
+				},
+				data: {
+					currentBidders: {
+						connect: {
+							id: userId
+						}
+					}
+				}
+			})
+
 			return {
 				success: true,
 				message: "Bid request accepted successfully",
-				response
+				acceptResponse
 			}
 		} catch (error) {
 			return this.prisma.errorHandler(error);
