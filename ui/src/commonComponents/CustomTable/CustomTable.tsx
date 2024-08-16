@@ -193,6 +193,10 @@ const CustomTable: React.FC<CustomTableProps> = ({tableTitle, headCells, rows, h
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  React.useEffect(() => {
+    console.log("rows changed", rows)
+  }, [rows])
+
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: any,
@@ -253,7 +257,7 @@ const CustomTable: React.FC<CustomTableProps> = ({tableTitle, headCells, rows, h
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
     )},
-    [order, orderBy, page, rowsPerPage],
+    [order, orderBy, page, rowsPerPage, rows],
   );
 
   return (

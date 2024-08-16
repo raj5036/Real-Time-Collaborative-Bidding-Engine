@@ -10,7 +10,6 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import AppModal from "../../commonComponents/Modal/AppModal";
 import GroupedAccordion from "../../commonComponents/GroupedAccordion/GroupedAccordion";
 import { CommonUtils } from "../../utils/CommonUtils";
-import { useNavigate } from "react-router-dom";
 
 const headCells = [
 	{
@@ -82,8 +81,6 @@ const UsersCurrentBidsPage: React.FC = () => {
 	const [editModalOpen, setEditModalOpen] = useState<boolean>(false)
 	const [editBid, setEditBid] = useState<any>({})
 	const [currentBidAmount, setCurrentBidAmount] = useState<number>(0)
-
-	const navigate = useNavigate()
 	
 	useEffect(() => {
 		(async ()=> {
@@ -213,7 +210,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 			console.log(error)
 			toast.error(API_ERROR_MESSAGES.INTERNAL_SERVER_ERROR)
 		} finally {
-			navigate(0)
+			setEditModalOpen(false)
 		}
 	}
 
