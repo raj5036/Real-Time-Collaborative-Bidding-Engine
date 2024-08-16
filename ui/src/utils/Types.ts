@@ -13,6 +13,7 @@ export type UserType = typeof USER_TYPES[keyof typeof USER_TYPES]
 
 export type IBid = {
 	id: string,
+	bidCreatorId: string,
 	title: string,
 	startDate: string,
 	startTime: string,
@@ -52,4 +53,13 @@ export type IActiveBidListRowData = {
 	basePrice: number
 	highestBidPrice: number
 	yourBid: any
+}
+
+export type ILeaderBoardRowData = {
+	id: number
+	bidTitle: string
+	basePrice: number
+	highestBidAmount: number
+	currentTopBidder: string
+	seeDetailedLeaderboard: any
 }
