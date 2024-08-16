@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import socket, { SocketEvents } from "../../utils/SocketClient";
 import { GetAllActiveBids } from "../../utils/ApiClient";
 import { IBid, ILeaderBoardRowData } from "../../utils/Types";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { PageContainer } from "./BidsLeaderBoardPageStyles";
 import { CommonUtils } from "../../utils/CommonUtils";
 import CustomTable from "../../commonComponents/CustomTable/CustomTable";

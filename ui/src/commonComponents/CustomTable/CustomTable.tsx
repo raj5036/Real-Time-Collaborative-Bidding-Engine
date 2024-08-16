@@ -226,6 +226,9 @@ const CustomTable: React.FC<CustomTableProps> = ({
   };
 
   const handleClick = (event: React.MouseEvent<unknown>, id: any) => {
+    if (!selectRowsEnabled) {
+      return
+    }
     const selectedIndex = selected.indexOf(id);
     let newSelected: readonly number[] = [];
 
