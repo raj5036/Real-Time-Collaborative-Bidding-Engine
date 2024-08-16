@@ -3,14 +3,10 @@ import { BidItemService } from "./bid-item.service";
 import { Body } from "@nestjs/common";
 import { CreateBidDTO } from "./dto";
 import { GetUser } from "src/auth/decorator";
+import { SOCKET_GATEWAY_CORS_POLICY } from "src/utils/constants";
 
 @WebSocketGateway({
-	cors: {
-		origin: ['http://localhost:5173'], // List the allowed origins
-		methods: ['GET', 'POST'],
-		allowedHeaders: ['Content-Type'],
-		credentials: true,
-	},
+	cors: SOCKET_GATEWAY_CORS_POLICY,
 })
 export class BidItemGateway {
 	@WebSocketServer()

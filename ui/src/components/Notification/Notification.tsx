@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Alert, Badge, Snackbar } from "@mui/material"
 import { CustomNotificationsIcon } from "./NotificationStyles"
 import socket, { SocketEvents } from "../../utils/SocketClient"

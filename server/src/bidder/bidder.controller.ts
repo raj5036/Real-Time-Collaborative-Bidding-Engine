@@ -1,3 +1,4 @@
+import { BidderGateway } from './bidder.gateway';
 import { Body, Controller, Delete, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { JWTGuard } from 'src/auth/guard';
 import { BidderGuard } from './guard';
@@ -9,7 +10,10 @@ import { GetBidAmountDTO } from './dto/get-bid-amount.dto';
 @UseGuards(JWTGuard, BidderGuard)
 @Controller('bidder')
 export class BidderController {
-	constructor(private readonly bidderService: BidderService) {}
+	constructor(
+		private readonly bidderService: BidderService,
+		private readonly bidderGateway: BidderGateway
+	) {}
 
 	@Get("get-active-bids")
 	getAllAcceptedBids (@GetUser('id') userId: string) {
@@ -23,8 +27,12 @@ export class BidderController {
 	}
 
 	@Patch("edit-bid-amount")
-	editBidAmount (@GetUser('id') userId: string, @Body() dto: EditBidAmountDTO) {
-		return this.bidderService.editBidAmount(userId, dto)
+	async editBidAmount (@GetUser('id') userId: string, @Body() dto: EditBidAmountDTO) {
+		const response = await this.bidderService.editBidAmount(userId, dto);
+		if (response.success) {
+			this.bidderGateway.server.emit("BidUpdated", response);
+			return response
+		}
 	}
 
 	@Delete("delete-active-bids")
