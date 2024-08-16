@@ -6,6 +6,8 @@ import { Button } from "@mui/material";
 import { PageContainer } from "./BidsLeaderBoardPageStyles";
 import { CommonUtils } from "../../utils/CommonUtils";
 import CustomTable from "../../commonComponents/CustomTable/CustomTable";
+import { useNavigate } from "react-router-dom";
+import AppRoutes from "../../routes/routes";
 
 const headCells = [
 	{
@@ -60,6 +62,8 @@ const BidsLeaderBoardPage: React.FC = () => {
 		}
 	}, [])
 
+	const navigate = useNavigate()
+
 	const fetchActiveBids = async () => {
 		try {
 			const response = await GetAllActiveBids()
@@ -93,6 +97,7 @@ const BidsLeaderBoardPage: React.FC = () => {
 
 	const handleViewDetails = (bidId: string) => () => {
 		console.log(bidId)
+		navigate(AppRoutes.LEADERBOARD_DETAILS(bidId))
 	}
 
 	return (
