@@ -102,6 +102,8 @@ const BidsLeaderBoardPage: React.FC = () => {
 				rows={tableRows}
 				tableTitle={"See Leaderboards"}
 				handleRowsDelete={() => {}}
+				selectRowsEnabled={false}
+				showDeleteButton={false}
 			/>)}
 		</PageContainer>
 	)

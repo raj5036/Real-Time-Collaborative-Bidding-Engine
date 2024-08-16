@@ -68,10 +68,11 @@ interface EnhancedTableProps {
   order: Order;
   orderBy: string;
   rowCount: number;
+  selectRowsEnabled: boolean;
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headCells } =
+  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headCells, selectRowsEnabled } =
     props;
   const createSortHandler =
     (property: any) => (event: React.MouseEvent<unknown>) => {
@@ -81,7 +82,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="none">
+        {selectRowsEnabled && <TableCell padding="none">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -91,7 +92,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               'aria-label': 'select all desserts',
             }}
           />
-        </TableCell>
+        </TableCell>}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -183,10 +184,18 @@ type CustomTableProps = {
 	headCells: any[]
 	rows: any[]
   handleRowsDelete: any
+  selectRowsEnabled: boolean
+  showDeleteButton?: boolean
 }
 
-const CustomTable: React.FC<CustomTableProps> = ({tableTitle, headCells, rows, handleRowsDelete}) => {
-
+const CustomTable: React.FC<CustomTableProps> = ({
+  tableTitle, 
+  headCells, 
+  rows, 
+  handleRowsDelete, 
+  selectRowsEnabled, 
+  showDeleteButton
+}) => {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<any>('calories');
   const [selected, setSelected] = React.useState<readonly number[]>([]);
@@ -282,6 +291,7 @@ const CustomTable: React.FC<CustomTableProps> = ({tableTitle, headCells, rows, h
               onRequestSort={handleRequestSort}
               rowCount={rows.length}
               headCells={headCells}
+              selectRowsEnabled={selectRowsEnabled}
             />
             <TableBody>
               {visibleRows.map((row, index: number) => {
@@ -299,12 +309,12 @@ const CustomTable: React.FC<CustomTableProps> = ({tableTitle, headCells, rows, h
                     selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell padding="none">
+                    {selectRowsEnabled && <TableCell padding="none">
                       <Checkbox
                         color="primary"
                         checked={isItemSelected}
                       />
-                    </TableCell>
+                    </TableCell>}
                     <CustomTableCell align="center">{index + 1}</CustomTableCell>
                     {rowKeys.map((key: string) => {
                       return key !== 'id' && <CustomTableCell key={key} align="center">{row[key]}</CustomTableCell>
