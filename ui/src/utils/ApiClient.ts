@@ -135,3 +135,13 @@ export const UpdateBidAmount = (bidId: string, amount: number) => {
 			throw error
 		})
 }
+
+export const GetAllActiveBids = () => {
+	return Promise.resolve(
+		axios.get(`${Config.SERVER_URL_TEST}/api/bid-item/get-all-active-bids`)
+	)
+		.then(res => res.data)
+		.catch(error => {
+			throw error
+		})
+}

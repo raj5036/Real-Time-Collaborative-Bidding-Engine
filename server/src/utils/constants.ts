@@ -9,3 +9,9 @@ export const SOCKET_GATEWAY_CORS_POLICY = {
 	allowedHeaders: ['Content-Type'],
 	credentials: true,
 }
+
+export const BID_STATUS = {
+	ACTIVE: "active",
+	EXPIRED: "expired",
+	CLOSED: "closed"
+}

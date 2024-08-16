@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateBidDTO } from './dto';
+import { BID_STATUS } from 'src/utils/constants';
 
 @Injectable()
 export class BidItemService {
@@ -70,8 +71,16 @@ export class BidItemService {
 
 	async getAllActiveBids () {
 		try {
-			const response = await this.prisma.userActiveBid.findMany();
-			return response;
+			const response = await this.prisma.bid.findMany({
+				where: {
+					status: BID_STATUS.ACTIVE
+				}
+			});
+			return {
+				success: true,
+				message: "Bids fetched successfully",
+				bids: response
+			};
 		} catch (error) {
 			return this.prisma.errorHandler(error);
 		}
