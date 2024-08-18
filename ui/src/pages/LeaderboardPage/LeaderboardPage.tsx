@@ -95,7 +95,7 @@ const LeaderboardPage: React.FC = () => {
 				<CustomTable
 					headCells={headCells}
 					rows={tableRows}
-					tableTitle={"Leaderboard"}
+					tableTitle={""}
 					showDeleteButton={false}
 					selectRowsEnabled={false}
 					handleRowsDelete={() => {}}
