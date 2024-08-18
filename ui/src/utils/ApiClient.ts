@@ -145,3 +145,13 @@ export const GetAllActiveBids = () => {
 			throw error
 		})
 }
+
+export const GetBidByBidId = (bidId: string) => {
+	return Promise.resolve(
+		axios.get(`${Config.SERVER_URL_TEST}/api/bid-item/get/${bidId}`)
+	)
+		.then(res => res.data)
+		.catch(error => {
+			throw error
+		})
+}

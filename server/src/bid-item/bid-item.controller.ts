@@ -34,6 +34,11 @@ export class BidItemController {
 		return this.bidItemService.getAllActiveBids();
 	}
 
+	@Get('get/:bidId')
+	getBidById (@Param('bidId') bidId: string) {
+		return this.bidItemService.getBidById(bidId);
+	}
+
 	@UseGuards(BidCreatorGuard)
 	@Delete('delete-bulk')
 	deleteBidsInBulk (@Body() { ids }: DeleteBulkDTO) {
