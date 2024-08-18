@@ -21,9 +21,9 @@ For Bidders:
 4. Update their bid amounts any number of times before the BID closes to improve their rank if necessary.
 
 Tech Stack Requirements:
-Backend: NodeJs (feel free to use frameworks like NestJS)
+Backend: NestJS
 Frontend: Single-page application using ReactJS (NextJS is an option)
-Database: Your choice
+Database: Mongodb
 
 https://www.geeksforgeeks.org/real-time-auction-platform-using-node-and-express-js/
 https://oyugoobonyo.medium.com/uploading-files-in-nestjs-eeec53883696
@@ -31,3 +31,5 @@ https://www.geeksforgeeks.org/what-is-web-socket-and-how-it-is-different-from-th
 
 TODO: 
 1. Make create & end initial to current date on UI.
+2. Push notifications for bidders in case they login after new bid is created
+3. Bug in accept bids

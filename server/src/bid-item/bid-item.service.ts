@@ -59,7 +59,11 @@ export class BidItemService {
 					id: bidId
 				},
 				include: {
-					currentBidders: true,
+					currentBidders: {
+						include: {
+							user: true
+						}
+					},
 					bidCreator: true,
 				}
 			});

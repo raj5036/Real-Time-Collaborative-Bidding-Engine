@@ -14,6 +14,7 @@ export type UserType = typeof USER_TYPES[keyof typeof USER_TYPES]
 export type IBid = {
 	id: string,
 	bidCreatorId: string,
+	bidCreator: IUser,
 	title: string,
 	startDate: string,
 	startTime: string,
@@ -21,7 +22,8 @@ export type IBid = {
 	endTime: string,
 	bidItems: IBidItem[],
 	status: IBidStatus
-	highestBidPrice?: number
+	highestBidPrice?: number,
+	currentBidders?: any[]
 }
 
 export type IBidItem = {

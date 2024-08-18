@@ -3,6 +3,10 @@ import { styled } from "@mui/material/styles";
 
 export const PageTitle = styled(Typography)(({ theme }) => `
 	margin-bottom: ${theme.spacing(1)};
+
+	& .bid-title {
+		color: ${theme.palette.primary.main};
+	}
 `)
 
 export const PageSubtitle = styled(Typography)(({theme}) => `
