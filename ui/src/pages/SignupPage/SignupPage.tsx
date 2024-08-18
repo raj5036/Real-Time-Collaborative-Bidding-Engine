@@ -50,6 +50,10 @@ const SignUp = () => {
 
 	const handleSubmit = async () => {
 		try {
+			if (!email || !password || !firstname || !lastname || !role) {
+				toast.error("Please fill all the fields")
+				return
+			}
 			const result = await SignupUser({
 				email, password, firstname, lastname, role
 			})
@@ -77,7 +81,11 @@ const SignUp = () => {
 	};
 
 	return (
-		<Container component="main" maxWidth="xs">
+		<Container component="main" maxWidth="xs" onKeyDown={(e) => {
+			if (e.key === "Enter") {
+			  handleSubmit()
+			}
+		}}>
 			<SignupFormContainer>
 			<Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
 				<LockOutlinedIcon />
