@@ -51,6 +51,10 @@ export default function Login() {
 
 	const handleSubmit = async () => {
     try {
+      if (!email || !password) {
+        toast.error("Please enter email and password")
+        return
+      }
       const result = await LoginUser({email, password})
       console.log(result)
       if (result.error) {
@@ -73,7 +77,11 @@ export default function Login() {
   }
 
   return (
-      <Container component="main" maxWidth="xs" sx={{ height: "100vh" }}>
+      <Container component="main" maxWidth="xs" sx={{ height: "100vh" }}  onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          handleSubmit()
+        }
+      }}>
         <LoginController>
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
