@@ -54,18 +54,19 @@ export class BidItemService {
 
 	async getBidById (bidId: string) {
 		try {
-			const bidWithCurrentBidders = await this.prisma.bid.findUnique({
+			const bid = await this.prisma.bid.findUnique({
 				where: {
 					id: bidId
 				},
 				include: {
-					currentBidders: true
+					currentBidders: true,
+					bidCreator: true,
 				}
 			});
 			return {
 				success: true,
 				message: "Bid fetched successfully",
-				bid: bidWithCurrentBidders
+				bid,
 			};
 		} catch (error) {
 			return this.prisma.errorHandler(error);

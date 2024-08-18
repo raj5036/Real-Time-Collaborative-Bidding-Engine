@@ -37,7 +37,7 @@ model Bid {
   updatedAt       DateTime @updatedAt
 
   bidCreatorId    String @db.ObjectId
-  user            User @relation("createdBids", fields: [bidCreatorId], references: [id])
+  bidCreator      User @relation("createdBids", fields: [bidCreatorId], references: [id])
   currentBidders  UserActiveBid[]
 
   title           String
