@@ -78,9 +78,8 @@ const LeaderboardPage: React.FC = () => {
 	}
 	
 	return (
-		<Container 
-			// sx={{height: "100vh"}}
-		>	{!bid.bidCreator ? <CircularProgress /> :
+		<Container>	
+			{!bid.bidCreator ? <CircularProgress /> :
 			<React.Fragment>
 				<PageTitle variant="h4">Leaderboard for Bid <span className="bid-title">#{bid.title}</span></PageTitle>
 				<PageSubtitle variant="caption">

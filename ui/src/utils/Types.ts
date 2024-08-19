@@ -44,7 +44,7 @@ export type IActiveBid = {
 }
 
 export type IActiveBidListRowData = {
-	id: string
+	id: number
 	bidTitle: string
 	startDate: string
 	startTime: string

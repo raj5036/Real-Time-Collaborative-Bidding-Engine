@@ -142,7 +142,7 @@ const UsersCurrentBidsPage: React.FC = () => {
 		console.log("bidAmounts in createRowData", bidAmounts)
 		const rows = bidsData.map((bid, index) => {
 			const rowData: IActiveBidListRowData = {
-				id: bid.id || index.toString(),
+				id: index + 1,
 				bidTitle: bid.title,
 				startDate: bid.startDate,
 				startTime: bid.startTime,

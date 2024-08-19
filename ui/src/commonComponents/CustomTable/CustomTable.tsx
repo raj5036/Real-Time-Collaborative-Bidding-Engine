@@ -320,9 +320,8 @@ const CustomTable: React.FC<CustomTableProps> = ({
                         checked={isItemSelected}
                       />
                     </TableCell>}
-                    {/* <CustomTableCell align="center">{index + 1}</CustomTableCell> */}
                     {rowKeys.map((key: string) => {
-                      return key !== 'id' && <CustomTableCell key={key} align="center">{row[key]}</CustomTableCell>
+                      return <CustomTableCell key={key} align="center">{row[key]}</CustomTableCell>
                     })}
                   </TableRow>
                 );
