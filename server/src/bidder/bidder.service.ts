@@ -19,32 +19,32 @@ export class BidderService {
 			})
 
 			//Put bid inside bidder's active bids
-			await this.prisma.user.update({
-				where: {
-					id: userId
-				},
-				data: {
-					activeBids: {
-						connect: {
-							id: dto.bidId
-						}
-					}
-				}
-			})
+			// await this.prisma.user.update({
+			// 	where: {
+			// 		id: userId
+			// 	},
+			// 	data: {
+			// 		activeBids: {
+			// 			connect: {
+			// 				id: dto.bidId
+			// 			}
+			// 		}
+			// 	}
+			// })
 
 			// Put Bidder inside the bid's currentBidders
-			await this.prisma.bid.update({
-				where: {
-					id: dto.bidId
-				},
-				data: {
-					currentBidders: {
-						connect: {
-							id: userId
-						}
-					}
-				}
-			})
+			// await this.prisma.bid.update({
+			// 	where: {
+			// 		id: dto.bidId
+			// 	},
+			// 	data: {
+			// 		currentBidders: {
+			// 			connect: {
+			// 				id: userId
+			// 			}
+			// 		}
+			// 	}
+			// })
 
 			return {
 				success: true,
