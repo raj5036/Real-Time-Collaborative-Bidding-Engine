@@ -32,4 +32,4 @@ https://www.geeksforgeeks.org/what-is-web-socket-and-how-it-is-different-from-th
 TODO: 
 1. Make create & end initial to current date on UI.
 2. Push notifications for bidders in case they login after new bid is created
-3. Bug in accept bids
+3. Bug in accept bids [SOLVED]

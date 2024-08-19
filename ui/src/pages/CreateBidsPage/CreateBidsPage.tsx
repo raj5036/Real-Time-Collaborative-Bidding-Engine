@@ -8,7 +8,7 @@ import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import { toast } from "react-toastify"
 import { CreateBid } from "../../utils/ApiClient"
-import { IBidItem } from "../../utils/Types"
+import { IBidItem, IUser } from "../../utils/Types"
 import { API_ERROR_MESSAGES } from "../../utils/Constants"
 import { useNavigate } from "react-router-dom"
 import AppRoutes from "../../routes/routes"
@@ -16,11 +16,12 @@ import { CommonUtils } from "../../utils/CommonUtils"
 
 const CreateBidsPage: React.FC = () => {
 	const [title, setTitle] = useState<string>("")
+	
 	const [startTime, setStartTime] = useState<string>(
-		dayjs('2014-08-18T21:11:54').format('YYYY-MM-DD HH:mm:ss'),
+		dayjs().format('YYYY-MM-DD HH:mm:ss'),
 	);
 	const [endTime, setEndTime] = useState<string>(
-		dayjs('2014-08-18T21:11:54').format('YYYY-MM-DD HH:mm:ss'),
+		dayjs().format('YYYY-MM-DD HH:mm:ss'),
 	);
 	const [currentBidItem, setCurrentBidItem] = useState<IBidItem>({
 		title: "",
@@ -83,7 +84,10 @@ const CreateBidsPage: React.FC = () => {
 				endDate: CommonUtils.parseDate(endTime),
 				endTime: CommonUtils.parseTime(endTime),
 				bidItems: bidItems.slice(1),
-				status: "active"	
+				status: "active",
+				id: "",
+				bidCreatorId: "",
+				bidCreator: {} as IUser
 			})
 			console.log("result", result)
 			if (result.success) {
